@@ -1,15 +1,6 @@
-@extends('layouts.admin')
-@section('title')
-LesPrixBas Admin UI
-@stop
+{% extends 'layouts/admin.html.twig' %}
 
-@section('stylesheets')
-@stop
-
-@section('head_javascripts')
-@stop
-@section('children')
-
+{% block children %}
 <div class="container">
     <div class="row my-5 mx-3 justify-content-center">
         <h1>
@@ -17,14 +8,10 @@ LesPrixBas Admin UI
         </h1>
     </div>
 
-        <div class="row my-5 mx-3 justify-content-center">
-
+    <div class="row my-5 mx-3 justify-content-center">
         <h2>
-        Choisissez une option du menu
+            Choisissez une option du menu
         </h2>
     </div>
 </div>
-@stop
-
-@section('body_javascripts')
-@stop
+{% endblock %}

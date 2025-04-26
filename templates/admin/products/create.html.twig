@@ -1,83 +1,71 @@
-@extends('layouts.admin')
-@section('title')
-Les prix bas !
-@stop
+{% extends 'layouts/admin.html.twig' %}
 
-@section('stylesheets')
-@stop
-
-@section('head_javascripts')
-@stop
-
-@php
-@endphp
-
-@section('children')
+{% block children %}
 <div class="container">
     <h2 class="text-center my-5">
         Ajouter un produit
     </h2>
-    <form method="POST" action="{{ route('products.store') }}">
-        @csrf
+    <form method="POST" action="{{ path('products_store') }}">
+        {{ csrf_token() }}
         <div class="col-12">
             <div class="form-group">
                 <label>Nom</label>
-                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nom du produit" />
-                @error("name")
+                <input type="text" name="name" class="form-control {{ errors.name ? 'is-invalid' : '' }}" placeholder="Nom du produit" />
+                {% if errors.name %}
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
+                        <strong>{{ errors.name }}</strong>
                     </span>
-                @enderror
+                {% endif %}
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
                 <label>Description</label>
-                <textarea name="description" class="form-control w-100 @error('description') is-invalid @enderror" placeholder="Décrivez le produit en un paragraphe de 1000 caractères maximum"></textarea>
-                @error("description")
+                <textarea name="description" class="form-control w-100 {{ errors.description ? 'is-invalid' : '' }}" placeholder="Décrivez le produit en un paragraphe de 1000 caractères maximum"></textarea>
+                {% if errors.description %}
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
+                        <strong>{{ errors.description }}</strong>
                     </span>
-                @enderror
+                {% endif %}
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
                 <label>Compléments d'information (liste énumérée)</label>
                 <textarea name="more_infos" class="form-control w-100" placeholder="Entrez de petites phrases séparées par des point-virgules"></textarea>
-                @error("more_infos")
+                {% if errors.more_infos %}
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
+                        <strong>{{ errors.more_infos }}</strong>
                     </span>
-                @enderror                
+                {% endif %}
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
                 <label>Prix</label>
-                <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" placeholder="0,00" />
-                @error("price")
+                <input type="text" name="price" class="form-control {{ errors.price ? 'is-invalid' : '' }}" placeholder="0,00" />
+                {% if errors.price %}
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
+                        <strong>{{ errors.price }}</strong>
                     </span>
-                @enderror   
+                {% endif %}
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
                 <label>Marque</label>
-                <select name="brand" class="form-control" >
-                @foreach($brands as $brand)
-                    <option value="{{ $brand->id }}">
-                        {{ $brand->name }}
+                <select name="brand" class="form-control">
+                {% for brand in brands %}
+                    <option value="{{ brand.id }}">
+                        {{ brand.name }}
                     </option>
-                @endforeach
+                {% endfor %}
                 </select>
-                @error("brand")
+                {% if errors.brand %}
                     <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
+                        <strong>{{ errors.brand }}</strong>
                     </span>
-                @enderror  
+                {% endif %}
             </div>
         </div>
         <div class="col-12">
@@ -87,4 +75,4 @@ Les prix bas !
         </div>
     </form>
 </div>
-@stop
+{% endblock %}
