@@ -1,0 +1,33 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% block title %}
+    Les prix bas !
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block head_javascripts %}
+{% endblock %}
+
+{% block children %}
+    <div class="container">
+        <h2 class="text-center my-5">
+            Ajouter une marque
+        </h2>
+        <form method="POST" action="{{ path('admin_brands_store') }}">
+            {{ csrf_token('brands') }}
+            <div class="col-12">
+                <div class="form-group">
+                    <label>Nom</label>
+                    <input type="text" name="name" class="form-control" placeholder="Nom de la marque" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex justify-content-center mb-5">
+                    <button type="submit" class="btn btn-outline-primary">Valider</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
