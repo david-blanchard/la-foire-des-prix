@@ -1,3 +1,4 @@
+{# filepath: /home/david/Sites/DavidBlanchard/SDK/php/la-foire-des-prix/templates/product_info/tabs_panel.html.twig #}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Description</a>
@@ -14,16 +15,16 @@
         <p class='lead'>
         </p>
         <p class=''>
-            {{ $description }}
+            {{ description }}
         </p>
-        @if(count($features))
-        <label htmlFor='features'>{{ $featuresCaption }} :</label>
+        {% if features|length > 0 %}
+        <label for='features'>{{ featuresCaption }} :</label>
         <ul id='features'>
-            @foreach ($features as $item) 
-                <li> {{ $item }} </li>     
-            @endforeach
+            {% for item in features %}
+                <li>{{ item }}</li>
+            {% endfor %}
         </ul>
-        @endif
+        {% endif %}
     </div>
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
         ...

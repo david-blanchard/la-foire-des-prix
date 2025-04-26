@@ -1,0 +1,41 @@
+{% set hasNoImage = images[0] is not defined %}
+{% set isAdmin = app.user and app.user.isAdmin() %}
+
+{% if hasNoImage %}
+    {% set images = [] %}
+    {% for i in 0..3 %}
+        {% set image = {
+            url: '/assets/images/misc/no-image.png',
+            alt: "pas d'image disponible",
+            title: "pas d'image disponible"
+        } %}
+        {% set images = images|merge([image]) %}
+    {% endfor %}
+{% endif %}
+
+{% set image = images[0] %}
+{% set size = 500 %}
+
+<div id="main-picto">
+    {% include 'product_info/image.html.twig' %}
+</div>
+
+{% set size = 50 %}
+
+{% for image in images %}
+    {% if loop.first %}
+        <button class="btn focus" name="btn-picto" focusable="true" data-toggle="button" aria-pressed="true">
+    {% else %}
+        <button class="btn" name="btn-picto" focusable="true" data-toggle="button" aria-pressed="true">
+    {% endif %}
+        {% include 'product_info/image.html.twig' %}
+    </button>
+{% endfor %}
+
+{% if isAdmin %}
+    <div class="row bg-cyan justify-content-center my-3 mx-3">
+        <a href="{{ path('product_images_create', { id: id }) }}" class="btn btn-outline-danger">
+            Ajouter des images au produit
+        </a>
+    </div>
+{% endif %}
