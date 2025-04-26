@@ -1,0 +1,47 @@
+{% extends 'layouts/app.html.twig' %}
+
+{% block children %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ 'Reset Password'|trans }}</div>
+
+                <div class="card-body">
+                    {% if app.session.flashBag.has('status') %}
+                        <div class="alert alert-success" role="alert">
+                            {{ app.session.flashBag.get('status')[0] }}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST" action="{{ path('password_email') }}">
+                        {{ csrf_token() }}
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ 'E-Mail Address'|trans }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control {{ errors.email is defined ? 'is-invalid' : '' }}" name="email" value="{{ old_email }}" required autocomplete="email" autofocus>
+
+                                {% if errors.email is defined %}
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ errors.email }}</strong>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    {{ 'Send Password Reset Link'|trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

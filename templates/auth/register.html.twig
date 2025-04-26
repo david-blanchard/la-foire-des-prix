@@ -1,0 +1,78 @@
+{# filepath: /home/david/Sites/DavidBlanchard/SDK/php/la-foire-des-prix/templates/auth/register.html.twig #}
+{% extends 'layouts/app.html.twig' %}
+
+{% block children %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ 'Register'|trans }}</div>
+
+                <div class="card-body">
+                    <form method="POST" action="{{ path('register') }}">
+                        {{ csrf_token() }}
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ 'Name'|trans }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control {{ errors.name is defined ? 'is-invalid' : '' }}" name="name" value="{{ old_name }}" required autocomplete="name" autofocus>
+
+                                {% if errors.name is defined %}
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ errors.name }}</strong>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ 'E-Mail Address'|trans }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control {{ errors.email is defined ? 'is-invalid' : '' }}" name="email" value="{{ old_email }}" required autocomplete="email">
+
+                                {% if errors.email is defined %}
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ errors.email }}</strong>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ 'Password'|trans }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control {{ errors.password is defined ? 'is-invalid' : '' }}" name="password" required autocomplete="new-password">
+
+                                {% if errors.password is defined %}
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ errors.password }}</strong>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ 'Confirm Password'|trans }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    {{ 'Register'|trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
