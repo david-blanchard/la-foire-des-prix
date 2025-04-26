@@ -1,0 +1,21 @@
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+app_register:
+    path: /register
+    controller: App\Controller\RegistrationController::register
+
+app_logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout
+
+admin_brands_create:
+    path: /admin/brands/create
+    controller: App\Controller\Admin\BrandController::create
+
+admin_images_store:
+    path: /admin/images
+    controller: App\Controller\Admin\ImageController::store
+    methods: [POST]
+

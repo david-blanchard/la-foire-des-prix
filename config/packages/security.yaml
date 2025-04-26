@@ -1,0 +1,7 @@
+security:
+    enable_authenticator_manager: true
+    firewalls:
+        main:
+            logout:
+                path: app_logout
+            csrf_token_generator: Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
