@@ -18,15 +18,7 @@
         </thead>
         <tbody>
         {% for item in brands %}
-            <tr>            knp_paginator:
-                page_range: 5
-                default_options:
-                    page_name: page
-                    sort_field_name: sort
-                    sort_direction_name: direction
-                    distinct: true
-                template:
-                    pagination: '@KnpPaginator/Pagination/bootstrap_v4_pagination.html.twig'
+            <tr>
                 <th>
                     <a href="javascript:void(0)" class="btn btn-outline-warning" alt="Editer {{ item.id }}" title="Editer {{ item.id }}">
                         <i class="fa fa-edit" aria-hidden="true"></i>

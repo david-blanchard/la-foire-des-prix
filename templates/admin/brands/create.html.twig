@@ -8,10 +8,7 @@
         <form method="POST" action="{{ path('admin_brands_store') }}">
             {{ csrf_token('brands') }}
             <div class="col-12">
-                <div class="form-group">                admin_images_store:
-                    path: /admin/images
-                    controller: App\Controller\Admin\ImageController::store
-                    methods: [POST]
+                <div class="form-group">
                     <label>Nom</label>
                     <input type="text" name="name" class="form-control" placeholder="Nom de la marque" />
                 </div>
