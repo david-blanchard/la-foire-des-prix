@@ -1,24 +1,22 @@
-@extends('layouts.admin')
-@section('title')
-Les prix bas !
-@stop
+{% extends 'layouts/admin.html.twig' %}
 
-@section('stylesheets')
-@stop
+{% block title %}
+    Les prix bas !
+{% endblock %}
 
-@section('head_javascripts')
-@stop
+{% block stylesheets %}
+{% endblock %}
 
-@php
-@endphp
+{% block head_javascripts %}
+{% endblock %}
 
-@section('children')
+{% block children %}
 <div class="container">
     <h2 class="text-center my-5">
         Ajouter une image
     </h2>
-    <form method="POST" action="{{ route('images.store') }}">
-        @csrf
+    <form method="POST" action="{{ path('admin_images_store') }}">
+        {{ csrf_token('images') }}
         <div class="col-12">
             <div class="form-group">
                 <label>URL</label>
@@ -44,4 +42,4 @@ Les prix bas !
         </div>
     </form>
 </div>
-@stop
+{% endblock %}

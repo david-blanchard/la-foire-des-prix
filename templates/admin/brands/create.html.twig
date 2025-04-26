@@ -1,15 +1,5 @@
 {% extends 'layouts/admin.html.twig' %}
 
-{% block title %}
-    Les prix bas !
-{% endblock %}
-
-{% block stylesheets %}
-{% endblock %}
-
-{% block head_javascripts %}
-{% endblock %}
-
 {% block children %}
     <div class="container">
         <h2 class="text-center my-5">
@@ -18,7 +8,10 @@
         <form method="POST" action="{{ path('admin_brands_store') }}">
             {{ csrf_token('brands') }}
             <div class="col-12">
-                <div class="form-group">
+                <div class="form-group">                admin_images_store:
+                    path: /admin/images
+                    controller: App\Controller\Admin\ImageController::store
+                    methods: [POST]
                     <label>Nom</label>
                     <input type="text" name="name" class="form-control" placeholder="Nom de la marque" />
                 </div>

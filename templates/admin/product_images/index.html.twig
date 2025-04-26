@@ -1,18 +1,6 @@
-@extends('layouts.admin')
-@section('title')
-LesPrixBas Admin UI
-@stop
+{% extends 'layouts/admin.html.twig' %}
 
-@section('stylesheets')
-@stop
-
-@section('head_javascripts')
-@stop
-
-@php
-@endphp
-
-@section('children')
+{% block children %}
 <div class="container">
     <h2 class="text-center my-5">
         Sélectionnez un produit
@@ -22,28 +10,23 @@ LesPrixBas Admin UI
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Nom</th>
-                </th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($products as $item)
+            {% for item in products %}
             <tr>
                 <th>
-                    <a href="{{ route('product_images.create', $item->id) }}" class="btn btn-outline-warning" alt="Editer {{ $item->id }}" title="Editer {{ $item->id }}">
+                    <a href="{{ path('product_images_create', { id: item.id }) }}" class="btn btn-outline-warning" alt="Editer {{ item.id }}" title="Editer {{ item.id }}">
                         <i class="fa fa-edit" aria-hidden="true"></i>
                     </a>
                 </th>
-                <td>{{ $item->name }}</td>
+                <td>{{ item.name }}</td>
             </tr>
-            @endforeach
-        </thead>
+            {% endfor %}
         </tbody>
     </table>
 </div>
 <div class="d-flex justify-content-center mt-5">
-    {{ $products->links('vendor.pagination.custom') }}
+    {{ products.links('vendor/pagination/custom.html.twig') }}
 </div>
-@stop
-
-@section('body_javascripts')
-@stop
+{% endblock %}
