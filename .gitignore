@@ -1,31 +1,41 @@
+###> IDE cache
+.idea/
+.vscode/
+.nbproject/
+.project/
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
 /vendor/
-node_modules/
-npm-debug.log
-yarn-error.log
-php_errors.log
-.phpunit.cache/*
+###< symfony/framework-bundle ###
 
-# Laravel 4 specific
-bootstrap/compiled.php
-app/storage/
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###
 
-# Laravel 5 & Lumen specific
-public/storage
-public/hot
-
-# Laravel 5 & Lumen specific with changed public path
-public_html/storage
-public_html/hot
-
-storage/*.key
-.env
-Homestead.yaml
-Homestead.json
-/.vagrant
+###> symfony/phpunit-bridge ###
 .phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
 
-# MacOS files
-.DS_Store
-.idea
-.vscode
-nbproject
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+node_modules
+/php_errors.log
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
+
+###> pentatrion/vite-bundle ###
+/node_modules/
+/public/build/
+###< pentatrion/vite-bundle ###
