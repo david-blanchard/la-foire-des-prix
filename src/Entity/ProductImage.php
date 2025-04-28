@@ -1,31 +1,25 @@
 <?php
+
 namespace App\Entity;
 
+use App\Repository\ProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ProductImageRepository::class)]
 class ProductImage
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $product;
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productImages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Image::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $image;
+    #[ORM\ManyToOne(targetEntity: Image::class, inversedBy: 'productImages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Image $image = null;
 
     public function getId(): ?int
     {
@@ -40,6 +34,7 @@ class ProductImage
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
         return $this;
     }
 
@@ -51,6 +46,7 @@ class ProductImage
     public function setImage(?Image $image): self
     {
         $this->image = $image;
+
         return $this;
     }
 }

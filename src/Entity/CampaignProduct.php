@@ -1,38 +1,36 @@
 <?php
+
 namespace App\Entity;
 
+use App\Repository\CampaignProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: CampaignProductRepository::class)]
 class CampaignProduct
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'campaignProducts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getProduct(): ?Product
     {
-        return $this->name;
+        return $this->product;
     }
 
-    public function setName(string $name): self
+    public function setProduct(?Product $product): self
     {
-        $this->name = $name;
+        $this->product = $product;
+
         return $this;
     }
 }
