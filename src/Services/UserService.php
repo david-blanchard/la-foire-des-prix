@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class UserRepository
+class UserService
 {
     public static function isAdmin(): bool
     {
