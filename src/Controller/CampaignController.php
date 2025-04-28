@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CampaignsController extends AbstractController
+class CampaignController extends AbstractController
 {
     /**
      * @Route("/campaigns", name="campaigns_index", methods={"GET"})

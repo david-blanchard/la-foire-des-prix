@@ -1,12 +1,13 @@
 <?php
 namespace App\Entity;
 
+use App\Repository\CampaignProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
-use newrelic\DistributedTracePayload;
 
 /**
  * @ORM\Entity
  */
+#[ORM\Entity(repositoryClass: CampaignRepository::class)]
 class Campaign
 {
     #[ORM\Id]
@@ -58,7 +59,7 @@ class Campaign
         return $this->end;
     }
 
-    public function setEnd(\DateTimUpdeImmutable $end): Campaign
+    public function setEnd(\DateTimeImmutable $end): Campaign
     {
         $this->end = $end;
         return $this;

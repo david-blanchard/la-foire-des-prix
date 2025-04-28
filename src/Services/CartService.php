@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Repository\ProductsRepository;
+use App\Repository\ProductRepository;
 use App\Session\AbstractSessionObject;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface
 {
     public function __construct(
-        private readonly ProductsRepository $productsRepository
+        private readonly ProductRepository $productsRepository
     ) {
     }
 
@@ -102,12 +102,11 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
 
     /**
      * Optimize the cart so that there's no duplicate key
-     * This allows the compute the exact sum of a given product
+     * This allows computing the exact sum of a given product
      * accordingly to its actual quantity
      *
      * @param array $sessioncData state of the cart in session
      * @param array $input data to update the cart with
-     * @return \App\Session\Cart Cart object
      */
     public function reduce(array $sessioncData, ?array $input = null): void
     {
@@ -142,7 +141,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     public function makeEmptySessionObject(): array
     {
         return [
-            'type' => 'Cart',
+            'type' => self::type(),
             'content' => [
                 [
                     'productId' => 0,

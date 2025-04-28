@@ -11,7 +11,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 /**
  * @extends ServiceEntityRepository<Brand>
  */
-class BrandsRepository extends ServiceEntityRepository
+class BrandRepository extends ServiceEntityRepository
 {
     private CacheInterface $cache;
 

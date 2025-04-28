@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\CampaignProductRepository;
+use App\Repository\CampaignProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CampaignProductRepository::class)]
+#[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
 class CampaignProduct
 {
     #[ORM\Id]
@@ -16,6 +16,10 @@ class CampaignProduct
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'campaignProducts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
+
+    #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignCampaigns')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Campaign $campaign = null;
 
     public function getId(): ?int
     {
@@ -33,4 +37,17 @@ class CampaignProduct
 
         return $this;
     }
+
+    public function getCampaign(): ?Campaign
+    {
+        return $this->campaign;
+    }
+
+    public function setCampaign(Campaign $campaign): self
+    {
+        $this->campaign = $campaign;
+
+        return $this;
+    }
+
 }

@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Image;
+use App\Entity\Product;
 use App\Entity\ProductImage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -17,10 +19,16 @@ class ProductImagesFixture extends Fixture
             ['product' => 1, 'image' => 4],
         ];
 
+        $imageRepository = $manager->getRepository(Image::class);
+        $productRepository = $manager->getRepository(Product::class);
+
         foreach ($productImages as $data) {
+            $product = $productRepository->find($productImages['product']);
+            $image = $imageRepository->find($productImages['image']);
+
             $productImage = new ProductImage();
-            $productImage->setProduct($data['product']);
-            $productImage->setImage($data['image']);
+            $productImage->setProduct($product);
+            $productImage->setImage($image);
             $manager->persist($productImage);
         }
 

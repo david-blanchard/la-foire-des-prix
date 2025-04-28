@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ImagesRepository;
+use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ImagesRepository::class)]
+#[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
 {
  #[ORM\Id]
@@ -24,7 +24,7 @@ class Image
  #[ORM\Column(type: 'string', length: 255, nullable: true)]
  private ?string $title = null;
 
- #[ORM\OneToMany(mappedBy: 'image', targetEntity: ProductImages::class, cascade: ['persist', 'remove'])]
+ #[ORM\OneToMany(mappedBy: 'image', targetEntity: ProductImage::class, cascade: ['persist', 'remove'])]
  private Collection $productImages;
 
  public function __construct()
@@ -78,7 +78,7 @@ class Image
      return $this->productImages;
  }
 
- public function addProductImage(ProductImages $productImage): self
+ public function addProductImage(ProductImage $productImage): self
  {
      if (!$this->productImages->contains($productImage)) {
          $this->productImages[] = $productImage;
@@ -88,7 +88,7 @@ class Image
      return $this;
  }
 
- public function removeProductImage(ProductImages $productImage): self
+ public function removeProductImage(ProductImage $productImage): self
  {
      if ($this->productImages->removeElement($productImage)) {
          if ($productImage->getImage() === $this) {
