@@ -2,6 +2,76 @@ controllers:
     resource: ../src/Controller/
     type: attribute
 
+default:
+    path: /mode-femme
+    controller: App\Controller\ProductInfoController::index
+
+product:
+    path: /mode-femme/{slug}
+    controller: App\Controller\ProductInfoController::show
+
+search:
+    path: /recherche/{slug}
+    controller: App\Controller\ProductInfoController::show
+
+root:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirect
+    defaults:
+        route: default
+        permanent: true
+
+home:
+    path: /home
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirect
+    defaults:
+        route: default
+        permanent: true
+
+session_store:
+    path: /session/store
+    controller: App\Controller\SessionController::store
+    methods: [POST]
+
+session_retrieve:
+    path: /session/retrieve
+    controller: App\Controller\SessionController::retrieve
+    methods: [POST]
+
+admin_index:
+    path: /admin
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    defaults:
+        template: admin/index.html.twig
+    requirements:
+        _role: ROLE_ADMIN
+
+admin_products:
+    resource: ../src/Controller/ProductsController.php
+    type: annotation
+    prefix: /admin/products
+
+admin_brands:
+    resource: ../src/Controller/BrandsController.php
+    type: annotation
+    prefix: /admin/brands
+
+admin_images:
+    resource: ../src/Controller/ImagesController.php
+    type: annotation
+    prefix: /admin/images
+
+admin_product_images:
+    resource: ../src/Controller/ProductImagesController.php
+    type: annotation
+    prefix: /admin/product_images
+
+admin_product_images_create:
+    path: /admin/product_images/{product}/create
+    controller: App\Controller\ProductImagesController::create
+    requirements:
+        _role: ROLE_ADMIN
+
 app_login:
     path: /login
     controller: App\Controller\SecurityController::login
