@@ -2,65 +2,71 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use Faker\Factory;
-use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserModelTest extends TestCase
+class UserModelTest extends WebTestCase
 {
-    // use RefreshDatabase;
-
-    /**
-     * Test if registration is valid.
-     *
-     * @return void
-     */
-    public function test_registrationWithEmailIsValid()
+    public function test_registrationWithEmailIsValid(): void
     {
-        $faker = Factory::create();
+        $client = static::createClient();
+        $faker = \Faker\Factory::create();
         $email = $faker->unique()->email;
-        $usersCountBefore = User::count();
 
-        $this->post("/register", [
+        // Compter les utilisateurs avant l'inscription
+        $usersCountBefore = $this->getUserCount();
+
+        // Effectuer une requête POST pour l'inscription
+        $client->request('POST', '/register', [
             "name" => "test",
             "email" => $email,
             "password" => "@demo1234#",
             "password_confirmation" => "@demo1234#",
         ]);
 
-        $usersCountAfter = User::count();
-        
-        $this->assertEqualsWithDelta($usersCountAfter, $usersCountBefore, 1.0);
+        // Compter les utilisateurs après l'inscription
+        $usersCountAfter = $this->getUserCount();
 
+        $this->assertEquals($usersCountBefore + 1, $usersCountAfter);
+
+        // Supprimer l'utilisateur créé
         $this->deleteUser($email);
     }
 
-    /**
-     * Test if registration is invalid.
-     *
-     * @return void
-     */
-    public function test_registrationWithoutEmailIsInvalid()
+    public function test_registrationWithoutEmailIsInvalid(): void
     {
-        $usersCountBefore = User::count();
+        $client = static::createClient();
 
-        $this->post("/register", [
+        // Compter les utilisateurs avant l'inscription
+        $usersCountBefore = $this->getUserCount();
+
+        // Effectuer une requête POST pour l'inscription
+        $client->request('POST', '/register', [
             "name" => "test",
             "email" => "",
             "password" => "@demo1234#",
             "password_confirmation" => "@demo1234#",
         ]);
 
-        $usersCountAfter = User::count();
-        
-        $this->assertEqualsWithDelta($usersCountAfter, $usersCountBefore, 0);
+        // Compter les utilisateurs après l'inscription
+        $usersCountAfter = $this->getUserCount();
 
+        $this->assertEquals($usersCountBefore, $usersCountAfter);
     }
 
-
-    public function deleteUser($email)
+    private function getUserCount(): int
     {
-        $user = DB::table('users')->where('email', '=',  $email)->delete();
+        // Simuler une méthode pour compter les utilisateurs
+        $client = static::createClient();
+        $client->request('GET', '/api/users/count'); // Remplacez par une route réelle
+        $response = $client->getResponse();
+
+        return json_decode($response->getContent(), true)['count'] ?? 0;
+    }
+
+    private function deleteUser(string $email): void
+    {
+        // Simuler une méthode pour supprimer un utilisateur
+        $client = static::createClient();
+        $client->request('DELETE', '/api/users', ['email' => $email]); // Remplacez par une route réelle
     }
 }

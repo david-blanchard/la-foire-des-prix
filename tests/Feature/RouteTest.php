@@ -2,98 +2,77 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Tests\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class RouteTest extends TestCase
+class RouteTest extends WebTestCase
 {
-
-    /**
-     * Test Mode Femme page
-     *
-     * @return void
-     */
-    public function test_modeFemmePageIsFound()
+    public function test_modeFemmePageIsFound(): void
     {
-        $response = $this->get('/mode-femme/');
+        $client = static::createClient();
+        $client->request('GET', '/mode-femme/');
 
-        $response->assertStatus(200);
+        $this->assertResponseIsSuccessful();
     }
 
-   /**
-     * Test Mode Femme page
-     *
-     * @return void
-     */
-    public function test_modeFemmePageWithValidSlugVesteIsFound_1_of_3()
+    public function test_modeFemmePageWithValidSlugVesteIsFound(): void
     {
-        $response = $this->get('/mode-femme/veste');
+        $client = static::createClient();
+        $client->request('GET', '/mode-femme/veste');
 
-        $response->assertStatus(200);
+        $this->assertResponseIsSuccessful();
     }
 
-    public function test_modeFemmePageWithValidSlugRobeIsFound_2_of_3()
+    public function test_modeFemmePageWithValidSlugRobeIsFound(): void
     {
-        $response = $this->get('/mode-femme/robe');
+        $client = static::createClient();
+        $client->request('GET', '/mode-femme/robe');
 
-        $response->assertStatus(200);
+        $this->assertResponseIsSuccessful();
     }
 
-    public function test_modeFemmePageWithValidSlugMailleIsFound_3_of_3()
+    public function test_modeFemmePageWithValidSlugMailleIsFound(): void
     {
-        $response = $this->get('/mode-femme/maille');
+        $client = static::createClient();
+        $client->request('GET', '/mode-femme/maille');
 
-        $response->assertStatus(200);
+        $this->assertResponseIsSuccessful();
     }
 
-    public function test_modeFemmePageWithInvalidSlugPantalonIs_404()
+    public function test_modeFemmePageWithInvalidSlugPantalonIs404(): void
     {
-        $response = $this->get('/mode-femme/pantalon');
+        $client = static::createClient();
+        $client->request('GET', '/mode-femme/pantalon');
 
-        $response->assertStatus(404);
+        $this->assertResponseStatusCodeSame(404);
     }
 
-    /**
-     * Test Admin UI access with simple user role
-     *
-     * @return void
-     */
-    public function test_adminUiRedirectToLoginAsGuest()
+    public function test_adminUiRedirectToLoginAsGuest(): void
     {
-        $response = $this->get('/admin/');
+        $client = static::createClient();
+        $client->request('GET', '/admin/');
 
-        $response->assertRedirect('/login');
+        $this->assertResponseRedirects('/login');
     }
 
-    /**
-     * Test Admin UI access with simple user role
-     *
-     * @return void
-     */
-    public function test_adminUiRequestAsAdminIsValid()
+    public function test_adminUiRequestAsAdminIsValid(): void
     {
-        $admin = Auth::loginUsingId(1);
-        $this->actingAs($admin);
-        $response = $this->get('/admin/');
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'admin@example.com',
+            'PHP_AUTH_PW'   => 'password',
+        ]);
+        $client->request('GET', '/admin/');
 
-        $response->assertStatus(200);
+        $this->assertResponseIsSuccessful();
     }
 
-    /**
-     * Test Admin UI access with simple user role
-     *
-     * @return void
-     */
-    public function test_adminUiEditProductOneIsValid()
+    public function test_adminUiEditProductOneIsValid(): void
     {
-        $admin = Auth::loginUsingId(1);
-        $this->actingAs($admin);
-        $response = $this->get('/admin/products/1/edit');
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'admin@example.com',
+            'PHP_AUTH_PW'   => 'password',
+        ]);
+        $client->request('GET', '/admin/products/1/edit');
 
-        $response->assertStatus(200);
+        $this->assertResponseIsSuccessful();
     }
-
-
 }
