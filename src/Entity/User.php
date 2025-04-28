@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
@@ -41,27 +40,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $email = null;
 
-    
-    #[ORM\Column(length: 180)]
-    private ?string $verificationToken = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $password = null;
 
-    /**
-     * @var list<string> The user roles
-     */
+    #[ORM\Column(type: 'string', length: 50)]
+    private ?string $role = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $emailVerifiedAt = null;
+
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $rememberToken = null;
+
     #[ORM\Column]
     private array $roles = [];
-
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
 
     #[ORM\Column]
     private bool $isVerified = false;
@@ -71,12 +72,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -125,20 +138,53 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getEmailVerifiedAt(): ?\DateTimeInterface
+    {
+        return $this->emailVerifiedAt;
+    }
+
+    public function setEmailVerifiedAt(?\DateTimeInterface $emailVerifiedAt): self
+    {
+        $this->emailVerifiedAt = $emailVerifiedAt;
+
+        return $this;
+    }
+
+    public function getRememberToken(): ?string
+    {
+        return $this->rememberToken;
+    }
+
+    public function setRememberToken(?string $rememberToken): self
+    {
+        $this->rememberToken = $rememberToken;
+
+        return $this;
+    }
+
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // Si nécessaire, effacez les données sensibles
+        $this->plainPassword = null;
     }
 
     public function isVerified(): bool
@@ -153,7 +199,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
     public function getVerificationToken(): ?string
     {
         return $this->verificationToken;
