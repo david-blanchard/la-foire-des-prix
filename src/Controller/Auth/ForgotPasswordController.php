@@ -21,7 +21,7 @@ class ForgotPasswordController extends AbstractController
             $email = $request->request->get('email');
 
             // Find the user by email
-            $user = $userProvider->loadUserByUsername($email);
+            $user = $userProvider->loadUserByIdentifier($email);
             if (!$user) {
                 $this->addFlash('error', 'No user found with this email address.');
                 return $this->redirectToRoute('app_forgot_password');
