@@ -1,0 +1,11 @@
+# config/packages/third_party_services.yaml
+parameters:
+    mailgun_domain: '%env(MAILGUN_DOMAIN)%'
+    mailgun_secret: '%env(MAILGUN_SECRET)%'
+    mailgun_endpoint: '%env(MAILGUN_ENDPOINT)%'
+
+    postmark_token: '%env(POSTMARK_TOKEN)%'
+
+    aws_access_key_id: '%env(AWS_ACCESS_KEY_ID)%'
+    aws_secret_access_key: '%env(AWS_SECRET_ACCESS_KEY)%'
+    aws_default_region: '%env(AWS_DEFAULT_REGION)%'

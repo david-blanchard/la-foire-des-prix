@@ -1,19 +1,31 @@
 framework:
     cache:
-        # Unique name of your app: used to compute stable namespaces for cache keys.
-        #prefix_seed: your_vendor_name/app_name
+        # Définit le cache par défaut (équivalent de 'default' dans Laravel)
+        default_redis_provider: '%env(REDIS_URL)%'
+        app: cache.adapter.redis
+        system: cache.adapter.system
 
-        # The "app" cache stores to the filesystem by default.
-        # The data in this cache should persist between deploys.
-        # Other options include:
+        # Configuration des pools de cache (équivalent de 'stores' dans Laravel)
+        pools:
+            cache.apc:
+                adapter: cache.adapter.apcu
+            cache.array:
+                adapter: cache.adapter.array
+            cache.file:
+                adapter: cache.adapter.filesystem
+                provider: null
+            cache.database:
+                adapter: cache.adapter.doctrine
+                provider: null
+            cache.memcached:
+                adapter: cache.adapter.memcached
+                provider: '%env(MEMCACHED_DSN)%'
+            cache.redis:
+                adapter: cache.adapter.redis
+                provider: '%env(REDIS_URL)%'
+            cache.dynamodb:
+                adapter: cache.adapter.custom
+                provider: '%env(DYNAMODB_URL)%'
 
-        # Redis
-        #app: cache.adapter.redis
-        #default_redis_provider: redis://localhost
-
-        # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
-        #app: cache.adapter.apcu
-
-        # Namespaced pools use the above "app" backend by default
-        #pools:
-            #my.dedicated.cache: null
+    # Préfixe des clés de cache (équivalent de 'prefix' dans Laravel)
+    cache_prefix: '%env(CACHE_PREFIX)%'
