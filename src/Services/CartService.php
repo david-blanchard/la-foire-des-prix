@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\ProductsRepository;
+use App\Repository\ProductsRepository;
 use App\Session\AbstractSessionObject;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface
