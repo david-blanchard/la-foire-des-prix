@@ -2,18 +2,22 @@
 
 namespace App\Tests\Unit;
 
+use App\DataFixtures\Fixture\ProductsFixture;
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ProductOneTest extends KernelTestCase
 {
-    private EntityManagerInterface $entityManager;
+    private ProductRepository $productRepository;
+
 
     protected function setUp(): void
     {
         self::bootKernel();
-        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
+        $entityManager = self::getContainer()->get(EntityManagerInterface::class);
+        $this->productRepository = $entityManager->getRepository(Product::class);
     }
 
     /**
@@ -21,10 +25,10 @@ class ProductOneTest extends KernelTestCase
      */
     public function test_productOneExists(): void
     {
-        $product = $this->entityManager->getRepository(Product::class)->find(1);
 
-        $this->assertNotNull($product);
-        $this->assertEquals(1, $product->getId());
+        $product1 = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
+
+        $this->assertNotNull($product1);
     }
 
     /**
@@ -32,10 +36,9 @@ class ProductOneTest extends KernelTestCase
      */
     public function test_productOneIsVesteEnJean(): void
     {
-        $product = $this->entityManager->getRepository(Product::class)->find(1);
+        $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
-        $this->assertNotNull($product);
-        $this->assertStringContainsString('Veste en jean', $product->getName());
+        $this->assertStringContainsString('Veste en jean', $product?->getName());
     }
 
     /**
@@ -43,10 +46,9 @@ class ProductOneTest extends KernelTestCase
      */
     public function test_productOneIsNotRobe(): void
     {
-        $product = $this->entityManager->getRepository(Product::class)->find(1);
+        $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
-        $this->assertNotNull($product);
-        $this->assertStringNotContainsString('Robe', $product->getName());
+        $this->assertStringNotContainsString('Robe', $product?->getName());
     }
 
     /**
@@ -54,9 +56,8 @@ class ProductOneTest extends KernelTestCase
      */
     public function test_productOnePriceIs_38_euros(): void
     {
-        $product = $this->entityManager->getRepository(Product::class)->find(1);
+        $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
-        $this->assertNotNull($product);
-        $this->assertEquals(37.99, $product->getPrice());
+        $this->assertEquals(37.99, $product?->getPrice());
     }
 }

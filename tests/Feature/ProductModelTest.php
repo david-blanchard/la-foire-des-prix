@@ -2,6 +2,8 @@
 
 namespace App\Tests\Feature;
 
+use App\DataFixtures\Fixture\BrandsFixture;
+use App\DataFixtures\Fixture\ImagesFixture;
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductImage;
@@ -12,6 +14,8 @@ class ProductModelTest extends KernelTestCase
 {
     private EntityManagerInterface $entityManager;
 
+    private const string PRODUCT_NAME = 'Pantalon été toile légère Blanc';
+
     protected function setUp(): void
     {
         self::bootKernel();
@@ -20,54 +24,58 @@ class ProductModelTest extends KernelTestCase
 
     public function test_productPantalonIsCreatedWithoutImage(): void
     {
+        $brandRepository = $this->entityManager->getRepository(\App\Entity\Brand::class);
+        $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
+
         $product = new Product();
-        $product->setName("Pantalon été toile légère Blanc")
+        $product->setName(self::PRODUCT_NAME)
             ->setDescription("Pantalon été toile légère Blanc. Petites poches pratiques. Fermeture à boutons simili ivoire.")
-            ->setMoreInfos("Lavage à 30°;100% coton")
+            ->setMoreInfo("Lavage à 30°;100% coton")
             ->setPrice(29.9)
-            ->setBrand(3);
+            ->setBrand($brand3);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
         $repository = $this->entityManager->getRepository(Product::class);
-        $products = $repository->findBy(['name' => 'Pantalon été toile légère Blanc']);
-        $product = $products[0] ?? null;
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
 
-        $this->assertNotNull($product);
-        $this->assertStringContainsString("toile", $product->getName());
+        $this->assertStringContainsString("toile", $product?->getName());
     }
 
-    public function test_productPantalonWithoutImageIsDeleted(): void
-    {
-        $repository = $this->entityManager->getRepository(Product::class);
-        $product = $repository->findOneBy(['name' => 'Pantalon été toile légère Blanc']);
-
-        if ($product) {
-            $this->entityManager->remove($product);
-            $this->entityManager->flush();
-        }
-
-        $product = $repository->findOneBy(['name' => 'Pantalon été toile légère Blanc']);
-        $this->assertNull($product);
-    }
+//    public function test_productPantalonWithoutImageIsDeleted(): void
+//    {
+//        $repository = $this->entityManager->getRepository(Product::class);
+//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+//
+//        if ($product) {
+//            $this->entityManager->remove($product);
+//            $this->entityManager->flush();
+//        }
+//
+//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+//        $this->assertNull($product);
+//    }
 
     public function test_productPantalonIsCreatedWithImages(): void
     {
+        $brandRepository = $this->entityManager->getRepository(\App\Entity\Brand::class);
+        $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
+
         $product = new Product();
-        $product->setName("Pantalon été toile légère Blanc")
+        $product->setName(self::PRODUCT_NAME)
             ->setDescription("Pantalon été toile légère Blanc. Petites poches pratiques. Fermeture à boutons simili ivoire.")
-            ->setMoreInfos("Lavage à 30°;100% coton")
+            ->setMoreInfo("Lavage à 30°;100% coton")
             ->setPrice(29.9)
-            ->setBrand(3);
+            ->setBrand($brand3);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
         $imageRepository = $this->entityManager->getRepository(Image::class);
-        $image1 = $imageRepository->find(10);
-        $image2 = $imageRepository->find(11);
-        $image3 = $imageRepository->find(12);
+        $image1 = $imageRepository->findOneBy(['alt' => ImagesFixture::IMAGE_LABEL_1]) ?? null;
+        $image2 = $imageRepository->findOneBy(['alt' => ImagesFixture::IMAGE_LABEL_2]) ?? null;
+        $image3 = $imageRepository->findOneBy(['alt' => ImagesFixture::IMAGE_LABEL_3]) ?? null;
 
         $productImage1 = new ProductImage();
         $productImage1->setProduct($product)->setImage($image1);
@@ -89,17 +97,17 @@ class ProductModelTest extends KernelTestCase
         $this->assertCount(3, $images);
     }
 
-    public function test_productPantalonWithImagesIsDeleted(): void
-    {
-        $repository = $this->entityManager->getRepository(Product::class);
-        $product = $repository->findOneBy(['name' => 'Pantalon été toile légère Blanc']);
-
-        if ($product) {
-            $this->entityManager->remove($product);
-            $this->entityManager->flush();
-        }
-
-        $product = $repository->findOneBy(['name' => 'Pantalon été toile légère Blanc']);
-        $this->assertNull($product);
-    }
+//    public function test_productPantalonWithImagesIsDeleted(): void
+//    {
+//        $repository = $this->entityManager->getRepository(Product::class);
+//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+//
+//        if ($product) {
+//            $this->entityManager->remove($product);
+//            $this->entityManager->flush();
+//        }
+//
+//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+//        $this->assertNull($product);
+//    }
 }

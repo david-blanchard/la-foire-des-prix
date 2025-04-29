@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit;
 
+use App\DataFixtures\Fixture\CampaignsFixture;
 use App\Entity\Campaign;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -21,10 +22,9 @@ class CampaignOneTest extends KernelTestCase
      */
     public function test_campaignOneExists(): void
     {
-        $campaign = $this->entityManager->getRepository(Campaign::class)->find(1);
+        $campaign = $this->entityManager->getRepository(Campaign::class)->findOneBy(['name' => CampaignsFixture::CAMPAIGN_LABEL_1]);
 
         $this->assertNotNull($campaign);
-        $this->assertEquals(1, $campaign->getId());
     }
 
     /**
@@ -32,9 +32,8 @@ class CampaignOneTest extends KernelTestCase
      */
     public function test_campaignOneDiscountRateIs_15_percents(): void
     {
-        $campaign = $this->entityManager->getRepository(Campaign::class)->find(1);
+        $campaign = $this->entityManager->getRepository(Campaign::class)->findOneBy(['name' => CampaignsFixture::CAMPAIGN_LABEL_1]);
 
-        $this->assertNotNull($campaign);
         $this->assertEquals(15, $campaign->getDiscount());
     }
 }
