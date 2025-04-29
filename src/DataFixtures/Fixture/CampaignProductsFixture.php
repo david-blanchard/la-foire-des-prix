@@ -5,25 +5,24 @@ namespace App\DataFixtures\Fixture;
 use App\Entity\Campaign;
 use App\Entity\CampaignProduct;
 use App\Entity\Product;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class CampaignProductsFixture extends Fixture
+class CampaignProductsFixture implements CustomFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    public function execute(ObjectManager $manager): void
     {
-        $data = [
-            ['campaign' => 1, 'product' => 1],
-            ['campaign' => 2, 'product' => 1],
-            ['campaign' => 2, 'product' => 2],
-        ];
-
         $campaignRepository = $manager->getRepository(Campaign::class);
         $productRepository = $manager->getRepository(Product::class);
 
+        $data = [
+            ['campaign' => CampaignsFixture::CAMPAIGN_LABEL_1, 'product' => ProductsFixture::PRODUCT_LABEL_1],
+            ['campaign' => CampaignsFixture::CAMPAIGN_LABEL_2, 'product' => ProductsFixture::PRODUCT_LABEL_1],
+            ['campaign' => CampaignsFixture::CAMPAIGN_LABEL_2, 'product' => ProductsFixture::PRODUCT_LABEL_2],
+        ];
+
         foreach ($data as $item) {
-            $campaign = $campaignRepository->find($item['campaign']);
-            $product = $productRepository->find($item['product']);
+            $campaign = $campaignRepository->findOneBy(['name' => $item['campaign']]) ?? null;
+            $product = $productRepository->findOneBy(['name' => $item['product']]) ?? null;
             $campaignProduct = new CampaignProduct();
             $campaignProduct->setCampaign($campaign);
             $campaignProduct->setProduct($product);

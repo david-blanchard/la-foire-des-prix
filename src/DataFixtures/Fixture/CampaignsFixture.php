@@ -3,33 +3,36 @@
 namespace App\DataFixtures\Fixture;
 
 use App\Entity\Campaign;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use phpDocumentor\Reflection\Types\This;
 
-class CampaignsFixture extends Fixture
+class CampaignsFixture implements CustomFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    public const string CAMPAIGN_LABEL_1 = "Les Promos Printanières";
+    public const string CAMPAIGN_LABEL_2 = "C'est l'Été sur les Prix !";
+
+    public function execute(ObjectManager $manager): void
     {
         $campaigns = [
             [
-                'name' => "Les Promos Printanières",
-                'start' => new \DateTime("2021-03-21"),
-                'end' => new \DateTime("2021-06-20"),
+                'name' => self::CAMPAIGN_LABEL_1,
+                'start' => new \DateTimeImmutable("2021-03-21"),
+                'end' => new \DateTimeImmutable("2021-06-20"),
                 'discount' => 15,
             ],
             [
-                'name' => "C'est l'Été sur les Prix !",
-                'start' => new \DateTime("2021-06-21"),
-                'end' => new \DateTime("2021-09-20"),
+                'name' => self::CAMPAIGN_LABEL_2,
+                'start' => new \DateTimeImmutable("2021-06-21"),
+                'end' => new \DateTimeImmutable("2021-09-20"),
                 'discount' => 25,
             ],
         ];
 
-        foreach ($campaigns as $data) {
+        foreach ($campaigns as $key => $data) {
             $campaign = new Campaign();
             $campaign->setName($data['name']);
-            $campaign->setStart($data['start']);
-            $campaign->setEnd($data['end']);
+            $campaign->setStartsAt($data['start']);
+            $campaign->setEndsAt($data['end']);
             $campaign->setDiscount($data['discount']);
             $manager->persist($campaign);
         }

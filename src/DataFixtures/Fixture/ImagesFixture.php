@@ -3,32 +3,37 @@
 namespace App\DataFixtures\Fixture;
 
 use App\Entity\Image;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class ImagesFixture extends Fixture
+class ImagesFixture implements CustomFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+
+    public const IMAGE_LABEL_1 = 'Veste en jean cintrée manches longues femme bleue 1/4';
+    public const IMAGE_LABEL_2 = 'Veste en jean cintrée manches longues femme bleue 2/4';
+    public const IMAGE_LABEL_3 = 'Veste en jean cintrée manches longues femme bleue 3/4';
+    public const IMAGE_LABEL_4 = 'Veste en jean cintrée manches longues femme bleue 4/4';
+
+    public function execute(ObjectManager $manager): void
     {
         $images = [
             [
                 'url' => "/assets/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-1.webp",
-                'alt' => "Veste en jean cintrée manches longues femme bleue 1/4",
+                'alt' => self::IMAGE_LABEL_1,
                 'title' => "Veste en jean bleu cintrée manches longues pour femme, pas chère",
             ],
             [
                 'url' => "/assets/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-2.webp",
-                'alt' => "Veste en jean cintrée manches longues femme bleue 2/4",
+                'alt' => self::IMAGE_LABEL_2,
                 'title' => "Veste en jean bleu cintrée manches longues pour femme, pas chère",
             ],
             [
                 'url' => "/assets/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-3.webp",
-                'alt' => "Veste en jean cintrée manches longues femme bleue 3/4",
+                'alt' => self::IMAGE_LABEL_3,
                 'title' => "Veste en jean bleu cintrée manches longues pour femme, pas chère",
             ],
             [
                 'url' => "/assets/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-4.webp",
-                'alt' => "Veste en jean cintrée manches longues femme bleue 4/4",
+                'alt' => self::IMAGE_LABEL_4,
                 'title' => "Veste en jean bleu cintrée manches longues pour femme, pas chère",
             ],
             [
@@ -73,7 +78,7 @@ class ImagesFixture extends Fixture
             ],
         ];
 
-        foreach ($images as $data) {
+        foreach ($images as $key => $data) {
             $image = new Image();
             $image->setUrl($data['url']);
             $image->setAlt($data['alt']);

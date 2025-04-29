@@ -3,18 +3,21 @@
 namespace App\DataFixtures\Fixture;
 
 use App\Entity\Product;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductsFixture extends Fixture
+class ProductsFixture implements CustomFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    public const string PRODUCT_LABEL_1 = 'Veste en jean cintrée manches longues';
+    public const string PRODUCT_LABEL_2 = 'Robe courte éponge Jodie Réédition';
+    public const string PRODUCT_LABEL_3 = 'Tee-shirt uni à bretelles maille élastique';
+
+    public function execute(ObjectManager $manager): void
     {
         $brandRepository = $manager->getRepository('App\Entity\Brand');
 
-        $brand1 = $brandRepository->find(1);
-        $brand2 = $brandRepository->find(2);
-        $brand3 = $brandRepository->find(3);
+        $brand1 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_1]) ?? null;
+        $brand2 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_2]) ?? null;
+        $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
 
         $products = [
             [
@@ -40,11 +43,11 @@ class ProductsFixture extends Fixture
             ],
         ];
 
-        foreach ($products as $data) {
+        foreach ($products as $key => $data) {
             $product = new Product();
             $product->setName($data['name']);
             $product->setDescription($data['description']);
-            $product->setMoreInfos($data['more_infos']);
+            $product->setMoreInfo($data['more_infos']);
             $product->setPrice($data['price']);
             $product->setBrand($data['brand']);
             $manager->persist($product);

@@ -3,26 +3,29 @@
 namespace App\DataFixtures\Fixture;
 
 use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class AdminFixture extends Fixture
+class AdminFixture implements CustomFixtureInterface
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher
     ) {
     }
 
-    public function load(ObjectManager $manager): void
+    public function execute(ObjectManager $manager): void
     {
-        $user = new User();
-        $user->setEmail('admin@lfdp.fr');
-        $user->setName('Administrator');
-        $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
-        $user->setRole(User::ADMIN_ROLE);
+        $existingUser = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@lfdp.fr']);
 
-        $manager->persist($user);
-        $manager->flush();
+        if (!$existingUser) {
+            $user = new User();
+            $user->setEmail('admin@lfdp.fr');
+            $user->setName('Administrator');
+            $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
+            $user->setRole(User::ADMIN_ROLE);
+
+            $manager->persist($user);
+            $manager->flush();
+        }
     }
 }

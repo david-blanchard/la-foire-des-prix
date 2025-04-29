@@ -5,26 +5,25 @@ namespace App\DataFixtures\Fixture;
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductImage;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductImagesFixture extends Fixture
+class ProductImagesFixture implements CustomFixtureInterface
 {
-    public function load(ObjectManager $manager): void
+    public function execute(ObjectManager $manager): void
     {
         $productImages = [
-            ['product' => 1, 'image' => 1],
-            ['product' => 1, 'image' => 2],
-            ['product' => 1, 'image' => 3],
-            ['product' => 1, 'image' => 4],
+            ['product' => ProductsFixture::PRODUCT_LABEL_1, 'image' => ImagesFixture::IMAGE_LABEL_1],
+            ['product' => ProductsFixture::PRODUCT_LABEL_1, 'image' => ImagesFixture::IMAGE_LABEL_2],
+            ['product' => ProductsFixture::PRODUCT_LABEL_1, 'image' => ImagesFixture::IMAGE_LABEL_3],
+            ['product' => ProductsFixture::PRODUCT_LABEL_1, 'image' => ImagesFixture::IMAGE_LABEL_4],
         ];
 
         $imageRepository = $manager->getRepository(Image::class);
         $productRepository = $manager->getRepository(Product::class);
 
-        foreach ($productImages as $data) {
-            $product = $productRepository->find($productImages['product']);
-            $image = $imageRepository->find($productImages['image']);
+        foreach ($productImages as $key => $data) {
+            $product = $productRepository->findOneBy(['name' => $data['product']]) ?? null;
+            $image = $imageRepository->findOneBy(['alt' => $data['image']]) ?? null;
 
             $productImage = new ProductImage();
             $productImage->setProduct($product);

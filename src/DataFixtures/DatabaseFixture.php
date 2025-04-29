@@ -24,29 +24,27 @@ class DatabaseFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         $adminFixture = new AdminFixture($this->passwordHasher);
-        $adminFixture->load($manager);
+        $adminFixture->execute($manager);
 
-//        $userFixture = new UserFixture($this->passwordHasher);
-//        $userFixture->load($manager);
-//
-//        $brandsFixture = new BrandsFixture();
-//        $brandsFixture->load($manager);
-//
-//        $imagesFixture = new ImagesFixture();
-//        $imagesFixture->load($manager);
-//
-//        $productsFixture = new ProductsFixture();
-//        $productsFixture->load($manager);
-//
-//        $productImagesFixture = new ProductImagesFixture();
-//        $productImagesFixture->load($manager);
-//
-//        $campaignsFixture = new CampaignsFixture();
-//        $campaignsFixture->load($manager);
-//
-//        $campaignProductsFixture = new CampaignProductsFixture();
-//        $campaignProductsFixture->load($manager);
+        $userFixture = new UserFixture($this->passwordHasher);
+        $userFixture->execute($manager);
 
-//        $manager->flush();
+        $brandsFixture = new BrandsFixture();
+        $brandsFixture->execute($manager);
+
+        $imagesFixture = new ImagesFixture();
+        $imagesFixture->execute($manager);
+
+        $productsFixture = new ProductsFixture();
+        $productsFixture->execute($manager);
+
+        $productImagesFixture = new ProductImagesFixture();
+        $productImagesFixture->execute($manager);
+
+        $campaignsFixture = new CampaignsFixture();
+        $campaignsFixture->execute($manager);
+
+        $campaignProductsFixture = new CampaignProductsFixture();
+        $campaignProductsFixture->execute($manager);
     }
 }
