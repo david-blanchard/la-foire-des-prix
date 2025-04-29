@@ -5,14 +5,12 @@ namespace App\Controller\Auth;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    /**
-     * @Route("/login", name="app_login", methods={"GET", "POST"})
-     */
+    #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // If the user is already logged in, redirect to the home page
@@ -32,9 +30,7 @@ class LoginController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/logout", name="app_logout", methods={"GET"})
-     */
+    #[Route('/logout', name: 'app_logout', methods: ['GET'])]
     public function logout(): void
     {
         // Symfony handles the logout automatically via the firewall configuration.

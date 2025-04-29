@@ -7,16 +7,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 class VerificationController extends AbstractController
 {
-    /**
-     * @Route("/verify/email", name="app_verify_email", methods={"GET"})
-     */
+    #[Route('/verify/email', name: 'app_verify_email', methods: ['GET'])]
     public function verifyEmail(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -42,9 +40,7 @@ class VerificationController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
-    /**
-     * @Route("/verify/resend", name="app_resend_verification_email", methods={"POST"})
-     */
+    #[Route('/verify/resend', name: 'app_resend_verification_email', methods: ['POST'])]
     public function resendVerificationEmail(MailerInterface $mailer, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();

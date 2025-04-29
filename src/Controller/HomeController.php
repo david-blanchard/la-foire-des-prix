@@ -6,7 +6,7 @@ use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
@@ -15,9 +15,7 @@ class HomeController extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/", name="home", methods={"GET"})
-     */
+    #[Route('/', name: 'home', methods: ['GET'])]
     public function index(): Response
     {
         // Attempt to fetch properties from cache by ID
@@ -36,9 +34,8 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', $props);
     }
 
-    /**
-     * @Route("/product/{slug}", name="product_show", methods={"GET"})
-     */
+    #[Route('/mode-femme/{slug}', name: 'product_info', methods: ['GET'])]
+    #[Route('/recherche/{slug}', name: 'search', methods: ['GET'])]
     public function show(string $slug): Response
     {
         // Attempt to fetch properties from cache by slug

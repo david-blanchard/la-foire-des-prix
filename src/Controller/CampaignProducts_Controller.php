@@ -7,13 +7,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class CampaignProductsController extends AbstractController
 {
-    /**
-     * @Route("/campaign-products", name="campaign_products_index", methods={"GET"})
-     */
+    #[Route('/campaign-products', name: 'campaign_products_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $campaignProducts = $entityManager->getRepository(CampaignProduct::class)->findAll();
@@ -23,9 +21,7 @@ class CampaignProductsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/campaign-products/create", name="campaign_products_create", methods={"GET", "POST"})
-     */
+    #[Route('/campaign-products/create', name: 'campaign_products_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
@@ -43,9 +39,7 @@ class CampaignProductsController extends AbstractController
         return $this->render('campaign_products/create.html.twig');
     }
 
-    /**
-     * @Route("/campaign-products/{id}", name="campaign_products_show", methods={"GET"})
-     */
+    #[Route('/campaign-products/{id}', name: 'campaign_products_show', methods: ['GET'])]
     public function show(CampaignProduct $campaignProduct): Response
     {
         return $this->render('campaign_products/show.html.twig', [
@@ -53,9 +47,7 @@ class CampaignProductsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/campaign-products/{id}/edit", name="campaign_products_edit", methods={"GET", "POST"})
-     */
+    #[Route('/campaign-products/{id}/edit', name: 'campaign_products_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CampaignProduct $campaignProduct, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
@@ -72,9 +64,7 @@ class CampaignProductsController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/campaign-products/{id}/delete", name="campaign_products_delete", methods={"POST"})
-     */
+    #[Route('/campaign-products/{id}/delete', name: 'campaign_products_delete', methods: ['POST'])]
     public function delete(Request $request, CampaignProduct $campaignProduct, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $campaignProduct->getId(), $request->request->get('_token'))) {

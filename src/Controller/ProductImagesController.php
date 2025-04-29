@@ -13,7 +13,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ProductImagesController extends AbstractController
 {
@@ -24,24 +24,20 @@ class ProductImagesController extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/admin/product-images", name="admin_product_images_index", methods={"GET"})
-     */
+    #[Route('/admin/product-images', name: 'admin_product_images_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
 
-        // Check if the user is authenticated and has the admin role
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
             return $this->redirectToRoute('app_login');
         }
 
-        // Fetch products and paginate
         $query = $entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery();
         $products = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1), // Current page number
-            20 // Items per page
+            $request->query->getInt('page', 1),
+            20
         );
 
         return $this->render('admin/product_images/index.html.twig', [
@@ -49,9 +45,7 @@ class ProductImagesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/product-images/create/{id}", name="admin_product_images_create", methods={"GET", "POST"})
-     */
+    #[Route('/admin/product-images/create/{id}', name: 'admin_product_images_create', methods: ['GET', 'POST'])]
     public function create(Product $product, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
@@ -79,9 +73,7 @@ class ProductImagesController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/admin/product-images/{id}/delete", name="admin_product_images_delete", methods={"POST"})
-     */
+    #[Route('/admin/product-images/{id}/delete', name: 'admin_product_images_delete', methods: ['POST'])]
     public function delete(ProductImage $productImage, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $productImage->getId(), $request->request->get('_token'))) {

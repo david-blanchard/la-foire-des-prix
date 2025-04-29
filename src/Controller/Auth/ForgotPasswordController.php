@@ -5,16 +5,14 @@ namespace App\Controller\Auth;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ForgotPasswordController extends AbstractController
 {
-    /**
-     * @Route("/forgot-password", name="app_forgot_password", methods={"GET", "POST"})
-     */
+    #[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET', 'POST'])]
     public function forgotPassword(Request $request, MailerInterface $mailer, UserProviderInterface $userProvider): Response
     {
         if ($request->isMethod('POST')) {
