@@ -53,3 +53,5 @@ services:
             - '@service_container'
 
 
+imports:
+    - { resource: './services_test.yaml' }
