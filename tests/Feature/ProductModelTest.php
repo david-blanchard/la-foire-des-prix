@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Feature;
+namespace App\Tests\Feature;
 
+use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductImage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,14 +64,19 @@ class ProductModelTest extends KernelTestCase
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
+        $imageRepository = $this->entityManager->getRepository(Image::class);
+        $image1 = $imageRepository->find(10);
+        $image2 = $imageRepository->find(11);
+        $image3 = $imageRepository->find(12);
+
         $productImage1 = new ProductImage();
-        $productImage1->setProduct($product)->setImage(10);
+        $productImage1->setProduct($product)->setImage($image1);
 
         $productImage2 = new ProductImage();
-        $productImage2->setProduct($product)->setImage(11);
+        $productImage2->setProduct($product)->setImage($image2);
 
         $productImage3 = new ProductImage();
-        $productImage3->setProduct($product)->setImage(12);
+        $productImage3->setProduct($product)->setImage($image3);
 
         $this->entityManager->persist($productImage1);
         $this->entityManager->persist($productImage2);

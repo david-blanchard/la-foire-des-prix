@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Unit;
+namespace App\Tests\Unit;
 
+use App\Entity\Campaign;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -20,11 +21,10 @@ class CampaignOneTest extends KernelTestCase
      */
     public function test_campaignOneExists(): void
     {
-        $query = $this->entityManager->createQuery('SELECT c.id FROM App\Entity\Campaign c WHERE c.id = 1');
-        $result = $query->getOneOrNullResult();
+        $campaign = $this->entityManager->getRepository(Campaign::class)->find(1);
 
-        $this->assertNotNull($result);
-        $this->assertEquals(1, $result['id']);
+        $this->assertNotNull($campaign);
+        $this->assertEquals(1, $campaign->getId());
     }
 
     /**
@@ -32,10 +32,9 @@ class CampaignOneTest extends KernelTestCase
      */
     public function test_campaignOneDiscountRateIs_15_percents(): void
     {
-        $query = $this->entityManager->createQuery('SELECT c.discount FROM App\Entity\Campaign c WHERE c.id = 1');
-        $result = $query->getOneOrNullResult();
+        $campaign = $this->entityManager->getRepository(Campaign::class)->find(1);
 
-        $this->assertNotNull($result);
-        $this->assertEquals(15, $result['discount']);
+        $this->assertNotNull($campaign);
+        $this->assertEquals(15, $campaign->getDiscount());
     }
 }

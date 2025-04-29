@@ -1,11 +1,14 @@
 <?php
 
-namespace Tests\Feature;
+namespace App\Tests\Feature;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RouteTest extends WebTestCase
 {
+    private const ADMIN_EMAIL = 'admin@example.com';
+    private const ADMIN_PASSWORD = 'password';
+
     public function test_modeFemmePageIsFound(): void
     {
         $client = static::createClient();
@@ -57,8 +60,8 @@ class RouteTest extends WebTestCase
     public function test_adminUiRequestAsAdminIsValid(): void
     {
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'admin@example.com',
-            'PHP_AUTH_PW'   => 'password',
+            'PHP_AUTH_USER' => self::ADMIN_EMAIL,
+            'PHP_AUTH_PW'   => self::ADMIN_PASSWORD,
         ]);
         $client->request('GET', '/admin/');
 
@@ -68,11 +71,22 @@ class RouteTest extends WebTestCase
     public function test_adminUiEditProductOneIsValid(): void
     {
         $client = static::createClient([], [
-            'PHP_AUTH_USER' => 'admin@example.com',
-            'PHP_AUTH_PW'   => 'password',
+            'PHP_AUTH_USER' => self::ADMIN_EMAIL,
+            'PHP_AUTH_PW'   => self::ADMIN_PASSWORD,
         ]);
         $client->request('GET', '/admin/products/1/edit');
 
         $this->assertResponseIsSuccessful();
+    }
+
+    public function test_adminUiInvalidCredentials(): void
+    {
+        $client = static::createClient([], [
+            'PHP_AUTH_USER' => 'invalid@example.com',
+            'PHP_AUTH_PW'   => 'wrongpassword',
+        ]);
+        $client->request('GET', '/admin/');
+
+        $this->assertResponseStatusCodeSame(401);
     }
 }
