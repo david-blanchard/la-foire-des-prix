@@ -1,12 +1,9 @@
 <?php
 namespace App\Entity;
 
-use App\Repository\CampaignProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CampaignRepository;
 
-/**
- * @ORM\Entity
- */
 #[ORM\Entity(repositoryClass: CampaignRepository::class)]
 class Campaign
 {
