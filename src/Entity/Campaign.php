@@ -1,28 +1,32 @@
 <?php
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CampaignRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CampaignRepository::class)]
+#[ApiResource]
 class Campaign
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private \DateTimeImmutable $start;
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $startsAt = null;
 
-    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private \DateTimeImmutable $end;
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    private ?\DateTimeImmutable $endsAt = null;
 
-    #[ORM\Column(type: 'float', options: ['default' => 0])]
-    private float $discount;
+    #[ORM\Column]
+    private ?float $discount = null;
 
     public function getId(): ?int
     {
@@ -34,42 +38,46 @@ class Campaign
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
-    public function getStart(): \DateTimeImmutable
+    public function getStartsAt(): ?\DateTimeImmutable
     {
-        return $this->start;
+        return $this->startsAt;
     }
 
-    public function setStart(\DateTimeImmutable $start): Campaign
+    public function setStartsAt(\DateTimeImmutable $start): static
     {
-        $this->start = $start;
+        $this->startsAt = $start;
+
         return $this;
     }
 
-    public function getEnd(): \DateTimeImmutable
+    public function getEndsAt(): ?\DateTimeImmutable
     {
-        return $this->end;
+        return $this->endsAt;
     }
 
-    public function setEnd(\DateTimeImmutable $end): Campaign
+    public function setEndsAt(\DateTimeImmutable $endsAt): static
     {
-        $this->end = $end;
+        $this->endsAt = $endsAt;
+
         return $this;
     }
 
-    public function getDiscount(): float
+    public function getDiscount(): ?float
     {
         return $this->discount;
     }
 
-    public function setDiscount(float $discount): Campaign
+    public function setDiscount(float $discount): static
     {
         $this->discount = $discount;
+
         return $this;
     }
 }

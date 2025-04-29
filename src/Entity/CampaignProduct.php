@@ -2,23 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\CampaignProductsRepository;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\CampaignProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
+#[ORM\Entity(repositoryClass: CampaignProductRepository::class)]
+#[ApiResource]
 class CampaignProduct
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'campaignProducts')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
-    #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignCampaigns')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignProducts')]
     private ?Campaign $campaign = null;
 
     public function getId(): ?int
@@ -31,7 +31,7 @@ class CampaignProduct
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(?Product $product): static
     {
         $this->product = $product;
 
@@ -43,7 +43,7 @@ class CampaignProduct
         return $this->campaign;
     }
 
-    public function setCampaign(Campaign $campaign): self
+    public function setCampaign(?Campaign $campaign): static
     {
         $this->campaign = $campaign;
 

@@ -2,100 +2,109 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[ApiResource]
 class Image
 {
- #[ORM\Id]
- #[ORM\GeneratedValue]
- #[ORM\Column(type: 'integer')]
- private ?int $id = null;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
- #[ORM\Column(type: 'string', length: 255)]
- private ?string $url = null;
+    #[ORM\Column(length: 255)]
+    private ?string $url = null;
 
- #[ORM\Column(type: 'string', length: 255, nullable: true)]
- private ?string $alt = null;
+    #[ORM\Column(length: 255)]
+    private ?string $alt = null;
 
- #[ORM\Column(type: 'string', length: 255, nullable: true)]
- private ?string $title = null;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
- #[ORM\OneToMany(mappedBy: 'image', targetEntity: ProductImage::class, cascade: ['persist', 'remove'])]
- private Collection $productImages;
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'image')]
+    private Collection $productImages;
 
- public function __construct()
- {
-     $this->productImages = new ArrayCollection();
- }
+    public function __construct()
+    {
+        $this->productImages = new ArrayCollection();
+    }
 
- public function getId(): ?int
- {
-     return $this->id;
- }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
- public function getUrl(): ?string
- {
-     return $this->url;
- }
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
 
- public function setUrl(string $url): self
- {
-     $this->url = $url;
+    public function setUrl(string $url): static
+    {
+        $this->url = $url;
 
-     return $this;
- }
+        return $this;
+    }
 
- public function getAlt(): ?string
- {
-     return $this->alt;
- }
+    public function getAlt(): ?string
+    {
+        return $this->alt;
+    }
 
- public function setAlt(?string $alt): self
- {
-     $this->alt = $alt;
+    public function setAlt(string $alt): static
+    {
+        $this->alt = $alt;
 
-     return $this;
- }
+        return $this;
+    }
 
- public function getTitle(): ?string
- {
-     return $this->title;
- }
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
 
- public function setTitle(?string $title): self
- {
-     $this->title = $title;
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
 
-     return $this;
- }
+        return $this;
+    }
 
- public function getProductImages(): Collection
- {
-     return $this->productImages;
- }
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProductImages(): Collection
+    {
+        return $this->productImages;
+    }
 
- public function addProductImage(ProductImage $productImage): self
- {
-     if (!$this->productImages->contains($productImage)) {
-         $this->productImages[] = $productImage;
-         $productImage->setImage($this);
-     }
+    public function addProductImage(Product $productImage): static
+    {
+        if (!$this->productImages->contains($productImage)) {
+            $this->productImages->add($productImage);
+            $productImage->setImage($this);
+        }
 
-     return $this;
- }
+        return $this;
+    }
 
- public function removeProductImage(ProductImage $productImage): self
- {
-     if ($this->productImages->removeElement($productImage)) {
-         if ($productImage->getImage() === $this) {
-             $productImage->setImage(null);
-         }
-     }
+    public function removeProductImage(Product $productImage): static
+    {
+        if ($this->productImages->removeElement($productImage)) {
+            // set the owning side to null (unless already changed)
+            if ($productImage->getImage() === $this) {
+                $productImage->setImage(null);
+            }
+        }
 
-     return $this;
- }
+        return $this;
+    }
 }

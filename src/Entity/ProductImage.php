@@ -2,23 +2,23 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
+#[ApiResource]
 class ProductImage
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productImages')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
     #[ORM\ManyToOne(targetEntity: Image::class, inversedBy: 'productImages')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Image $image = null;
 
     public function getId(): ?int
@@ -31,7 +31,7 @@ class ProductImage
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(?Product $product): static
     {
         $this->product = $product;
 
@@ -43,10 +43,11 @@ class ProductImage
         return $this->image;
     }
 
-    public function setImage(?Image $image): self
+    public function setImage(?Image $image): static
     {
         $this->image = $image;
 
         return $this;
     }
+
 }
