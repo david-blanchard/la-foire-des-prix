@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Services;
+namespace App\Service;
 
 use App\Repository\ProductRepository;
 use App\Session\AbstractSessionObject;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface
 {
     public function __construct(
-        private readonly ProductRepository $productsRepository
+        private readonly ProductRepository $productRepository,
+        private readonly Session $session,
     ) {
     }
 
@@ -36,8 +38,8 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
             if (is_array($quantity)) {
                 continue;
             }
-            $attr = $this->productsRepository->getAttributesByProductId($productId);
-            $props = $this->productsRepository->attributesToProperties($attr);
+            $attr = $this->productRepository->getAttributesByProductId($productId);
+            $props = $this->productRepository->attributesToProperties($attr);
             $price = $props['discount'] ?: floatval($props['price']);
 
             $numberOfProducts += $quantity;
@@ -66,7 +68,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     {
         $result = $this->makeEmptySessionObject();
 
-        $result = session('cart') ?: $result;
+        $result = $this->session->get('cart') ?: $result;
         if (is_object($result)) {
             $result = self::toArray($result);
         }
@@ -85,7 +87,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
 
         $this->reduce($sessioncData, $input);
         $sessionCart = $this->makeSessionObject();
-        session(['cart' => $sessionCart]);
+        $this->session->set('cart', $sessionCart);
 
         return $sessionCart;
     }
