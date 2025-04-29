@@ -3,12 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Product;
+use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManager;
-use Psr\Cache\InvalidArgumentException;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * @extends ServiceEntityRepository<Product>
@@ -17,9 +15,9 @@ class ProductRepository extends ServiceEntityRepository
 {
 
     public function __construct(
-        ManagerRegistry                  $registry,
-        private EntityManager            $em,
-        private readonly CacheInterface  $cache,
+        ManagerRegistry $registry,
+        private EntityManagerInterface $em,
+        private readonly CustomCacheInterface $cache,
         private readonly BrandRepository $brandsRepository,
         private readonly ImageRepository $imagesRepository
     ) {
@@ -36,6 +34,12 @@ class ProductRepository extends ServiceEntityRepository
         return $this->find($id);
     }
 
+    /**
+     * Retrieve the values of a given product
+     *
+     * @param integer|null $productId
+     * @return array
+     */
     public function getAttributesByProductId(?int $productId = null): array
     {
         if ($productId === null) {
@@ -47,6 +51,12 @@ class ProductRepository extends ServiceEntityRepository
         return $product ? $product->toArray() : [];
     }
 
+    /**
+     * Transform ProductInfo attributes in properties usable in views
+     *
+     * @param array $props
+     * @return array
+     */
     public function attributesToProperties(array $props): array
     {
         $discount = $this->getProductDiscountById($props['id']);
@@ -63,11 +73,23 @@ class ProductRepository extends ServiceEntityRepository
         return $props;
     }
 
+    /**
+     * Transform a string of more info into an array
+     *
+     * @param string|null $phrase
+     * @return array
+     */
     public function grabMoreInfo(?string $phrase): array
     {
         return $phrase ? explode(';', $phrase) : [];
     }
 
+    /**
+     * Retrieve the discount of a product by its ID
+     *
+     * @param int $productId
+     * @return int Discount percentage
+     */
     public function getProductDiscountById(int $productId): int
     {
         $today = new \DateTime();
@@ -86,6 +108,13 @@ class ProductRepository extends ServiceEntityRepository
         return $result['discount'] ?? 0;
     }
 
+    /**
+     * Compute the discounted price of a product
+     *
+     * @param float|string $price Original price
+     * @param int $percent Discount percentage
+     * @return float Discounted price
+     */
     public function computeDiscount(float|string $price, int $percent): float
     {
         $price = is_string($price) ? floatval($price) : $price;
@@ -95,25 +124,65 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws InvalidArgumentException
+     * Delete the product page properties from the cache by ID
+     *
+     * @param int $productId
+     * @return void
      */
     public function deletePropertiesFromCacheById(int $productId): void
     {
         $this->cache->delete("product$productId");
     }
 
-    public function getPropertiesFromCacheById(int $id): ?array
+    public function deletePropertiesFromCache(Product $product) : void
     {
-        return $this->cache->get("product$id", function () {
-            return null;
-        });
+        self::deletePropertiesFromCacheById($product->getId());
     }
 
-    public function putPropertiesInCacheById(int $id, array $properties): void
+    public function getPropertiesFromCacheById(int $productId): ?array
     {
-        $this->cache->get("product$id", function (ItemInterface $item) use ($properties) {
-            $item->set($properties);
-            $item->expiresAfter(3600); // Cache expiration: 1 heure
-        });
+        return $this->cache->get("product$productId");
     }
+
+    public function putPropertiesInCacheById(int $productId, array $properties): void
+    {
+        $this->cache->get("product$productId"); // Cache expiration: 1 heure
+    }
+
+
+    /**
+     * Retrieve the product page properties from the cache by slug
+     *
+     * @param string $slug Free form of the product name
+     * @return array|null $properties Values to be set in product page view
+     */
+    public function getPropertiesFromCacheBySlug(string $slug): ?array
+    {
+        $result = null;
+
+        $productId = $this->cache->get("product$slug") ?? null;
+        if($productId !== null) {
+            $result = $this->getPropertiesFromCacheById($productId);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Store the product page properties in cache by slug
+     *
+     * @param string $slug Free form of the product name
+     * @param array $properties Values to be set in product page view
+     * @return void
+     */
+    public function putPropertiesInCacheBySlug(string $slug, array $properties): void
+    {
+        if(!$this->cache->get("product$slug"))
+        {
+            $id = $properties['id'];
+            $this->cache->set("product$slug", $id);
+            $this->putPropertiesInCacheById($id, $properties);
+        }
+    }
+
 }
