@@ -7,7 +7,7 @@
     use Doctrine\DBAL\Schema\Schema;
     use Doctrine\Migrations\AbstractMigration;
 
-    final class Version20231012CreateProductImagesTable extends AbstractMigration
+    final class Version20210527000004 extends AbstractMigration
     {
         public function getDescription(): string
         {

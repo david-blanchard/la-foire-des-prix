@@ -7,7 +7,7 @@
      use Doctrine\DBAL\Schema\Schema;
      use Doctrine\Migrations\AbstractMigration;
 
-     final class Version20231012CreateFailedJobsTable extends AbstractMigration
+     final class Version20190819000000 extends AbstractMigration
      {
          public function getDescription(): string
          {
