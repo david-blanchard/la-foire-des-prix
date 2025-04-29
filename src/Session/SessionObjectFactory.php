@@ -2,31 +2,28 @@
 
 namespace App\Session;
 
-use App\Services\CartService;
-use Illuminate\Contracts\Foundation\Application;
+use App\Service\CartService;
+use Psr\Container\ContainerInterface;
 
 class SessionObjectFactory implements SessionObjectFactoryInterface
 {
     public function __construct(
-        private Application $app
+        private ContainerInterface $container
     ) {
     }
 
-    public function create(array $data) : ?SessionObjectInterface
+    public function create(array $data): ?SessionObjectInterface
     {
-
         $result = null;
 
-        if(!isset($data["type"])) {
+        if (!isset($data['type'])) {
             return $result;
         }
 
-        if( $data["type"] === CartService::type()) {
-            $result = $this->app->make(CartService::class);
+        if ($data['type'] === CartService::type()) {
+            $result = $this->container->get(CartService::class);
         }
 
         return $result;
-
     }
-
 }
