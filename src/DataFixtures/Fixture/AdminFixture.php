@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\Fixture;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -17,7 +17,7 @@ class AdminFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         $user = new User();
-        $user->setEmail('admin@lpb.fr');
+        $user->setEmail('admin@lfdp.fr');
         $user->setName('Administrator');
         $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
         $user->setRole(User::ADMIN_ROLE);

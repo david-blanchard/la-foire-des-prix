@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\DataFixtures\Fixture;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -19,7 +19,7 @@ class UserFixture extends Fixture
     {
         // Create one main user
         $user = new User();
-        $user->setEmail('dblanchard1@bbox.fr');
+        $user->setEmail('dblanchard1@lfdp.fr');
         $user->setName('David Blanchard');
         $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
         $user->setRole(User::USER_ROLE);
@@ -37,6 +37,7 @@ class UserFixture extends Fixture
             $user->setPassword(
                 $this->passwordHasher->hashPassword($user, 'password')
             );
+            $user->setRole(User::USER_ROLE);
             $user->setRememberToken(bin2hex(random_bytes(10)));
 
             $manager->persist($user);
