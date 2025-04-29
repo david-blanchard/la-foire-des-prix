@@ -5,7 +5,7 @@ namespace App\Security\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class AuthenticatedVoter extends Voter
+class RedirectIfAuthenticatedVoter extends Voter
 {
     private const IS_AUTHENTICATED = 'IS_AUTHENTICATED';
 
