@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\CampaignProduct;
 use App\Entity\Product;
 use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -18,7 +19,6 @@ class ProductRepository extends ServiceEntityRepository
         ManagerRegistry $registry,
         private EntityManagerInterface $em,
         private readonly CustomCacheInterface $cache,
-        private readonly BrandRepository $brandsRepository,
         private readonly ImageRepository $imagesRepository
     ) {
         parent::__construct($registry, Product::class);
@@ -40,7 +40,7 @@ class ProductRepository extends ServiceEntityRepository
      * @param integer|null $productId
      * @return array
      */
-    public function getAttributesByProductId(?int $productId = null): array
+    public function getAttributesByProductId(?int $productId = null): ?Product
     {
         if ($productId === null) {
             $product = $this->findOneBy([]);
@@ -48,7 +48,7 @@ class ProductRepository extends ServiceEntityRepository
             $product = $this->find($productId);
         }
 
-        return $product ? $product->toArray() : [];
+        return $product;
     }
 
     /**
@@ -57,17 +57,23 @@ class ProductRepository extends ServiceEntityRepository
      * @param array $props
      * @return array
      */
-    public function attributesToProperties(array $props): array
+    public function attributesToProperties(Product $product): array
     {
-        $discount = $this->getProductDiscountById($props['id']);
-        $props['brand'] = $this->brandsRepository->getBrandNameById($props['brand']);
+        $discount = $this->getProductDiscountById($product->getId());
+        $props = [];
+        $props['name'] = $product->getName();
+        $props['id'] = $product->getId();
+        $props['description'] = $product->getDescription();
+        $props['moreInfo'] = $product->getMoreInfo();
+        $props['price'] = $product->getPrice();
+        $props['brand'] = $product->getBrand()->getName();
         $props['discountRate'] = $discount;
-        $props['discount'] = $this->computeDiscount($props['price'], $discount);
+        $props['discount'] = $this->computeDiscount($product->getPrice(), $discount);
 
         $props['featuresCaption'] = 'Information complémentaires';
-        $props['features'] = $this->grabMoreInfo($props['more_infos']);
+        $props['features'] = $this->grabMoreInfo($product->getMoreInfo());
 
-        $images = $this->imagesRepository->getImagesByProductId($props['id']);
+        $images = $this->imagesRepository->getImagesByProductId($product->getId());
         $props['images'] = $images;
 
         return $props;
@@ -84,6 +90,26 @@ class ProductRepository extends ServiceEntityRepository
         return $phrase ? explode(';', $phrase) : [];
     }
 
+    public function findBySlug(string $slug): array
+    {
+        return $this->em->createQueryBuilder()
+            ->from(Product::class, 'p')
+            ->where('p.slug = :slug')
+            ->orWhere('p.slug LIKE :slugLike')
+            ->setParameter('slug', $slug)
+            ->setParameter('slugLike', '%' . $slug . '%')
+            ->select('p')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOneBySlug(string $slug): ?Product
+    {
+        $array = $this->findBySlug($slug);
+
+        return $array[0] ?? null;
+    }
+
     /**
      * Retrieve the discount of a product by its ID
      *
@@ -96,10 +122,12 @@ class ProductRepository extends ServiceEntityRepository
         $qb = $this->em->createQueryBuilder();
 
         $qb->select('c.discount')
-            ->from('App\Entity\Campaign', 'c')
-            ->join('c.products', 'p')
+            ->from(CampaignProduct::class, 'cp')
+            ->join('cp.campaign', 'c')
+            ->where('cp.product = :productId')
+            ->join('cp.product', 'p')
             ->where('p.id = :productId')
-            ->andWhere(':today BETWEEN c.start AND c.end')
+            ->andWhere(':today BETWEEN c.startsAt AND c.endsAt')
             ->setParameter('productId', $productId)
             ->setParameter('today', $today);
 

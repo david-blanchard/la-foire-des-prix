@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Image;
+use App\Entity\ProductImage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -25,9 +26,11 @@ class ImageRepository extends ServiceEntityRepository
     public function getImagesByProductId(int $productId): array
     {
         $qb = $this->createQueryBuilder('i')
-            ->join('i.productImages', 'pi')
+            ->join(ProductImage::class, 'pi')
             ->where('pi.product = :productId')
-            ->setParameter('productId', $productId);
+            ->setParameter('productId', $productId)
+            ->select('i');
+
 
         return $qb->getQuery()->getResult();
     }
