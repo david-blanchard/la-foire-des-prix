@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Base\IdentifierTrait;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use IdentifierTrait;
 
     public const USER_ROLE = 'ROLE_USER';
     public const ADMIN_ROLE = 'ROLE_ADMIN';
@@ -36,12 +38,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         self::USER_ROLE => 'User',
         self::ADMIN_ROLE => 'Admin',
     ];
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
@@ -72,11 +68,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getName(): ?string
     {

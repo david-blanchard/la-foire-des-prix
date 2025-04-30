@@ -52,6 +52,9 @@ services:
         - arguments:
             - '@service_container'
 
+    App\Twig\FormatPriceExtension:
+        tags: ['twig.extension']
+
 
 imports:
     - { resource: './services_test.yaml' }

@@ -2,29 +2,20 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use App\Entity\Base\IdentifierTrait;
 use App\Repository\ProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
-#[ApiResource]
 class ProductImage
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use IdentifierTrait;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productImages')]
     private ?Product $product = null;
 
     #[ORM\ManyToOne(targetEntity: Image::class, inversedBy: 'productImages')]
     private ?Image $image = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getProduct(): ?Product
     {
