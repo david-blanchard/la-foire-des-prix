@@ -21,7 +21,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         self::USER_ROLE,
         self::ADMIN_ROLE,
     ];
-    public const DEFAULT_ROLE = self::USER_ROLE;
     public const DEFAULT_ROLES = [self::USER_ROLE];
     public const DEFAULT_ADMIN_ROLE = self::ADMIN_ROLE;
     public const DEFAULT_ADMIN_ROLES = [self::ADMIN_ROLE];
@@ -40,16 +39,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private ?int $id = null;
+
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
     private ?string $password = null;
 
     #[ORM\Column(type: 'string', length: 50)]
@@ -61,6 +64,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $rememberToken = null;
 
+    /**
+     * @var list<string> The user roles
+     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -89,7 +95,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
@@ -138,7 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): static
     {
         $this->password = $password;
 
@@ -181,10 +187,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function eraseCredentials(): void
     {
-        // Si nécessaire, effacez les données sensibles
-        $this->plainPassword = null;
+        // If you store any temporary, sensitive data on the user, clear it here
+        $this->password = null;
     }
 
     public function isVerified(): bool
@@ -196,17 +205,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->isVerified = $isVerified;
 
-        return $this;
-    }
-
-    public function getVerificationToken(): ?string
-    {
-        return $this->verificationToken;
-    }
-
-    public function setVerificationToken(?string $verificationToken): self
-    {
-        $this->verificationToken = $verificationToken;
         return $this;
     }
 }
