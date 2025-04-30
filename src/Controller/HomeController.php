@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
+use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -11,7 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     public function __construct(
-        private ProductRepository $productRepository
+        private ProductRepository $productRepository,
+        private CartService $cartService
     ) {
     }
 
@@ -28,10 +30,15 @@ class HomeController extends AbstractController
         $attr = $this->productRepository->getAttributesByProductId();
         $props = $this->productRepository->attributesToProperties($attr);
 
+        $cartFields = $this->cartService->prepareViewFields();
+
         // Store properties in cache
         $this->productRepository->putPropertiesInCacheById(-1, $props);
 
-        return $this->render('home/index.html.twig', $props);
+        return $this->render('home/index.html.twig', [
+            ...$props,
+            ...$cartFields,
+        ]);
     }
 
     #[Route('/mode-femme/{slug}', name: 'product_info', methods: ['GET'])]
@@ -52,12 +59,17 @@ class HomeController extends AbstractController
         }
 
         // Fetch attributes and convert them to properties
-        $attr = $product->getAttributes();
+        $attr = $this->productRepository->getAttributesByProductId();
         $props = $this->productRepository->attributesToProperties($attr);
-
         // Store properties in cache
+
+        $cartFields = $this->cartService->prepareViewFields();
+
         $this->productRepository->putPropertiesInCacheBySlug($slug, $props);
 
-        return $this->render('home/index.html.twig', $props);
+        return $this->render('home/index.html.twig', [
+            ...$props,
+            ...$cartFields,
+        ]);
     }
 }

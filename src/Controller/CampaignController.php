@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/campaign')]
+#[Route('/admin/campaign')]
 final class CampaignController extends AbstractController
 {
     #[Route(name: 'app_campaign_index', methods: ['GET'])]
