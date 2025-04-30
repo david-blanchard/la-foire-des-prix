@@ -8,10 +8,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface
 {
+    private Session $session;
+
     public function __construct(
         private readonly ProductRepository $productRepository,
-        private readonly Session $session,
     ) {
+        $this->session = new Session();
     }
 
     public static function type(): string
