@@ -4,7 +4,6 @@ namespace App\DataFixtures\Fixture;
 
 use App\Entity\Campaign;
 use Doctrine\Persistence\ObjectManager;
-use phpDocumentor\Reflection\Types\This;
 
 class CampaignsFixture implements CustomFixtureInterface
 {
