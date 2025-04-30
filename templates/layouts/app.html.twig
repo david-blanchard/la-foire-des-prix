@@ -8,7 +8,7 @@
     <title>
         {% block title %}{% endblock %}
     </title>
-    
+
     <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/turbinado-light.woff2') }}" crossorigin>
     <link rel="preload" as="font" type="font/woff2" href="{{ asset('fonts/montserrat-regular.woff2') }}" crossorigin>
 
@@ -26,9 +26,9 @@
 </head>
 
 <body class="d-flex flex-column h-100">
-    {{ include('header/_app.html.twig') }}
+    {{ include('header/app.html.twig') }}
     {% block children %}{% endblock %}
-    {{ include('footer/_app.html.twig') }}
+    {{ include('footer/app.html.twig') }}
     <script src="{{ asset('js/cart.js') }}"></script>
     <script src="{{ asset('js/search.js') }}"></script>
     {% block javascripts %}{% endblock %}

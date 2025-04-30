@@ -1,13 +1,13 @@
-{% set home = path('admin') %}
+{% set home = path('app_admin') %}
 {% set logo = '/assets/images/logos/lesprixbas_smaller.png' %}
 
 <header>
     <nav id="navbar0" class='navbar navbar-expand-md fixed-top navbar-dark bg-white shadow-sm'>
         <a class='navbar-brand mr-auto mr-lg-0' href='{{ home }}'>
             <picture>
-                <source 
-                srcset="{{ asset(logo) }}" media="(max-width: 1200px)" 
-                srcset="{{ asset(logo) }}" media="(min-width: 1200px)" 
+                <source
+                srcset="{{ asset(logo) }}" media="(max-width: 1200px)"
+                srcset="{{ asset(logo) }}" media="(min-width: 1200px)"
                 />
                 <img id="logo" src='{{ asset(logo) }}' alt='Les Prix Bas' />
             </picture>
@@ -16,14 +16,14 @@
         <div id="subnavbar0" class='navbar-collapse offcanvas-collapse'>
             <ul class="navbar-nav navbar-dark mr-auto">
             </ul>
-            {{ include('search/_search_nav_bar.html.twig') }}
-            {{ include('user/_user_nav_button.html.twig') }}
+            {{ include('search/search_nav_bar.html.twig') }}
+            {{ include('user/user_nav_button.html.twig') }}
         </div>
     </nav>
 
     <div id="placeholder" aria-label="placeholder">
     </div>
-    
+
     <div id="subnavbar1" class='nav-scroller bg-light shadow-sm'>
         <nav class='nav nav-underline'>
             <div class='nav-item active'>
@@ -32,7 +32,7 @@
                 </a>
             </div>
             <div class='nav-item active'>
-                <a class="nav-link bg-light" href="{{ path('products_index') }}">
+                <a class="nav-link bg-light" href="{{ path('home') }}">
                     Gérer les produits
                 </a>
             </div>

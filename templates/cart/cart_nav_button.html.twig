@@ -1,7 +1,4 @@
-{% set cartService = app.make('App\\Services\\CartService') %}
-{% set fields = cartService.prepareViewFields() %}
-{% set total = fields.total|format_price %}
-{% set quantity = fields.quantity %}
+{% set total = total|format_price %}
 
 <span id="cart-cta" class="btn btn-outline-success my-2 my-sm-0 ml-3" href="javascript:void(0)">
     <i class="fa fa-shopping-cart"></i>

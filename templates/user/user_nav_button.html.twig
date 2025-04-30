@@ -1,5 +1,5 @@
 {% set home = path('home') %}
-{% set admin_ui = path('admin') %}
+{% set admin_ui = path('app_admin') %}
 {% set login = 'Connexion' %}
 {% set register = 'Pas encore inscrit ?' %}
 {% set logout = 'Déconnexion' %}
@@ -27,7 +27,7 @@
             {{ csrf_token('logout') }}
         </form>
     {% endif %}
-    
+
     {% if not isAdmin %}
         <a class='dropdown-item' href='{{ home }}'>F.A.Q</a>
         <a class='dropdown-item' href='{{ home }}'>Mentions légales</a>
