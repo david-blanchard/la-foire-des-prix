@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Entity\Base;
+namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
-trait IdentifierTrait
+trait Identifier
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
     protected ?int $id = null;
 
     public function getId(): ?int

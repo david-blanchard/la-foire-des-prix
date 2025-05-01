@@ -2,62 +2,55 @@
 
 namespace App\Entity;
 
-use App\Entity\Base\ClassifierTrait;
-use App\Entity\Base\IdentifierTrait;
-use App\Repository\ProductRepository;
+use App\Entity\Traits\Classifier;
+use App\Entity\Traits\Identifier;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'products')]
 class Product
 {
-    use IdentifierTrait;
-    use ClassifierTrait;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    use Identifier;
+    use Classifier;
+    use TimestampableEntity;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(length: 1024)]
+    private string $description;
+
+    #[ORM\Column(length: 1024, nullable: true)]
     private ?string $moreInfo = null;
 
-    #[ORM\Column]
-    private ?float $price = null;
+    #[ORM\Column(type: 'float')]
+    private float $price;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?Brand $brand = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private Brand $brand;
 
-    #[ORM\ManyToOne(inversedBy: 'productImages')]
-    private ?Image $image = null;
-
-    /**
-     * @var Collection<int, ProductImage>
-     */
-    #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'product')]
-    private Collection $productImages;
-
-    /**
-     * @var Collection<int, CampaignProduct>
-     */
-    #[ORM\OneToMany(targetEntity: CampaignProduct::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: CampaignProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
     private Collection $campaignProducts;
+
+    #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private Collection $productImages;
 
     public function __construct()
     {
-        $this->productImages = new ArrayCollection();
         $this->campaignProducts = new ArrayCollection();
+        $this->productImages = new ArrayCollection();
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -66,22 +59,20 @@ class Product
         return $this->moreInfo;
     }
 
-    public function setMoreInfo(?string $moreInfo): static
+    public function setMoreInfo(?string $moreInfo): self
     {
         $this->moreInfo = $moreInfo;
-
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): static
+    public function setPrice(float $price): self
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -90,80 +81,74 @@ class Product
         return $this->brand;
     }
 
-    public function setBrand(?Brand $brand): static
+    public function setBrand(Brand $brand): self
     {
         $this->brand = $brand;
+        return $this;
+    }
+
+    public function getCampaignProducts(): Collection
+    {
+        return $this->campaignProducts;
+    }
+
+    public function addCampaignProduct(CampaignProduct $campaignProduct): self
+    {
+        if (!$this->campaignProducts->contains($campaignProduct)) {
+            $this->campaignProducts[] = $campaignProduct;
+            $campaignProduct->setProduct($this);
+        }
+        return $this;
+    }
+
+    public function removeCampaignProduct(CampaignProduct $campaignProduct): self
+    {
+        if ($this->campaignProducts->contains($campaignProduct)) {
+            $this->campaignProducts->removeElement($campaignProduct);
+        }
 
         return $this;
     }
 
-    public function getImage(): ?Image
-    {
-        return $this->image;
-    }
-
-    public function setImage(?Image $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProductImage>
-     */
     public function getProductImages(): Collection
     {
         return $this->productImages;
     }
 
-    public function addProductImage(ProductImage $productImage): static
+    public function addImage(Image $image): self
+    {
+        $productImage = new ProductImage();
+        $productImage->setProduct($this);
+        $productImage->setImage($image);
+
+        $this->addProductImage($productImage);
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        $productImage = new ProductImage();
+        $productImage->setProduct($this);
+        $productImage->setImage($image);
+
+        $this->removeProductImage($productImage);
+
+        return $this;
+    }
+
+    public function addProductImage(ProductImage $productImage): self
     {
         if (!$this->productImages->contains($productImage)) {
-            $this->productImages->add($productImage);
-            $productImage->setProduct($this);
+            $this->productImages[] = $productImage;
         }
-
         return $this;
     }
 
-    public function removeProductImage(ProductImage $productImage): static
+    public function removeProductImage(ProductImage $productImage): self
     {
-        if ($this->productImages->removeElement($productImage)) {
-            // set the owning side to null (unless already changed)
-            if ($productImage->getProduct() === $this) {
-                $productImage->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CampaignProduct>
-     */
-    public function getCampaignProduct(): Collection
-    {
-        return $this->campaignProducts;
-    }
-
-    public function addCampaignProduct(CampaignProduct $campaignProduct): static
-    {
-        if (!$this->campaignProducts->contains($campaignProduct)) {
-            $this->campaignProducts->add($campaignProduct);
-            $campaignProduct->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCampaignProduct(CampaignProduct $campaignProduct): static
-    {
-        if ($this->campaignProducts->removeElement($campaignProduct)) {
-            // set the owning side to null (unless already changed)
-            if ($campaignProduct->getProduct() === $this) {
-                $campaignProduct->setProduct(null);
-            }
+        if ($this->productImages->contains($productImage)) {
+            $this->productImages->removeElement($productImage);
         }
 
         return $this;

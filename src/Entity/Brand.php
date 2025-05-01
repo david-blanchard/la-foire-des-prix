@@ -2,25 +2,24 @@
 
 namespace App\Entity;
 
-use App\Entity\Base\ClassifierTrait;
-use App\Entity\Base\IdentifierTrait;
-use App\Repository\BrandRepository;
+use App\Entity\Traits\Classifier;
+use App\Entity\Traits\Identifier;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: BrandRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'brands')]
 class Brand
 {
-    use IdentifierTrait;
-    use ClassifierTrait;
 
+    use Identifier;
+    use TimestampableEntity;
+    use Classifier;
 
-    /**
-     * @var Collection<int, Product>
-     */
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'brand')]
-    protected Collection $products;
+    #[ORM\OneToMany(mappedBy: 'brand', targetEntity: Product::class, cascade: ['persist', 'remove'])]
+    private Collection $products;
 
     public function __construct()
     {
@@ -35,25 +34,22 @@ class Brand
         return $this->products;
     }
 
-    public function addProduct(Product $product): static
+    public function addProduct(Product $product): self
     {
         if (!$this->products->contains($product)) {
-            $this->products->add($product);
+            $this->products[] = $product;
             $product->setBrand($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): static
+    public function removeProduct(Product $product): self
     {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getBrand() === $this) {
-                $product->setBrand(null);
-            }
-        }
+        $this->products->removeElement($product);
 
         return $this;
     }
 }
+
+// I will now proceed to write the full Campaign, Product, CampaignProduct, Image, ProductImage, and User entities in the same style with complete getters, setters, and relation management.

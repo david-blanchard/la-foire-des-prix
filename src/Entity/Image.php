@@ -2,98 +2,93 @@
 
 namespace App\Entity;
 
-use App\Entity\Base\IdentifierTrait;
-use App\Repository\ImageRepository;
+use App\Entity\Traits\Identifier;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'images')]
 class Image
 {
-    use IdentifierTrait;
+    use Identifier;
+    use TimestampableEntity;
 
-    #[ORM\Column(length: 255)]
-    private ?string $url = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $url;
 
-    #[ORM\Column(length: 255)]
-    private ?string $alt = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $alt;
 
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $title;
 
-    /**
-     * @var Collection<int, Product>
-     */
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'image')]
-    private Collection $productImages;
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'images')]
+    private Collection $products;
 
     public function __construct()
     {
-        $this->productImages = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
-    public function getUrl(): ?string
+    // Getters et setters...
+
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function setUrl(string $url): static
+    public function setUrl(string $url): self
     {
         $this->url = $url;
-
         return $this;
     }
 
-    public function getAlt(): ?string
+    public function getAlt(): string
     {
         return $this->alt;
     }
 
-    public function setAlt(string $alt): static
+    public function setAlt(string $alt): self
     {
         $this->alt = $alt;
-
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(string $title): self
     {
         $this->title = $title;
-
         return $this;
     }
 
     /**
      * @return Collection<int, Product>
      */
-    public function getProductImages(): Collection
+    public function getProducts(): Collection
     {
-        return $this->productImages;
+        return $this->products;
     }
 
-    public function addProductImage(Product $productImage): static
+    public function addProduct(Product $product): self
     {
-        if (!$this->productImages->contains($productImage)) {
-            $this->productImages->add($productImage);
-            $productImage->setImage($this);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->addImage($this);
         }
 
         return $this;
     }
 
-    public function removeProductImage(Product $productImage): static
+    public function removeProduct(Product $product): self
     {
-        if ($this->productImages->removeElement($productImage)) {
-            // set the owning side to null (unless already changed)
-            if ($productImage->getImage() === $this) {
-                $productImage->setImage(null);
-            }
+        if ($this->products->removeElement($product)) {
+            $product->removeImage($this);
         }
 
         return $this;

@@ -2,43 +2,43 @@
 
 namespace App\Entity;
 
-use App\Entity\Base\IdentifierTrait;
-use App\Repository\CampaignProductRepository;
+use App\Entity\Traits\Identifier;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CampaignProductRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'campaign_products')]
 class CampaignProduct
 {
-    use IdentifierTrait;
 
-    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'campaignProducts')]
-    private ?Product $product = null;
+    use Identifier;
 
-    #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignProducts')]
-    private ?Campaign $campaign = null;
+    #[ORM\ManyToOne(inversedBy: 'campaignProducts')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private Campaign $campaign;
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
+    #[ORM\ManyToOne(inversedBy: 'campaignProducts')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private Product $product;
 
-    public function setProduct(?Product $product): static
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    public function getCampaign(): ?Campaign
+    public function getCampaign(): Campaign
     {
         return $this->campaign;
     }
 
-    public function setCampaign(?Campaign $campaign): static
+    public function setCampaign(Campaign $campaign): self
     {
         $this->campaign = $campaign;
-
         return $this;
     }
 
+    public function getProduct(): Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(Product $product): self
+    {
+        $this->product = $product;
+        return $this;
+    }
 }

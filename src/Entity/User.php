@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Entity\Base\IdentifierTrait;
+use App\Entity\Traits\Identifier;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    use IdentifierTrait;
+    use Identifier;
 
     public const USER_ROLE = 'ROLE_USER';
     public const ADMIN_ROLE = 'ROLE_ADMIN';

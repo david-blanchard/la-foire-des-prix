@@ -2,59 +2,93 @@
 
 namespace App\Entity;
 
-use App\Entity\Base\ClassifierTrait;
-use App\Entity\Base\IdentifierTrait;
-use App\Repository\CampaignRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Entity\Traits\Classifier;
+use App\Entity\Traits\Identifier;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: CampaignRepository::class)]
+#[ORM\Entity]
+#[ORM\Table(name: 'campaigns')]
 class Campaign
 {
-    use IdentifierTrait;
-    use ClassifierTrait;
+    use Identifier;
+    use Classifier;
+    use TimestampableEntity;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private ?\DateTimeImmutable $startsAt = null;
+    #[ORM\Column(type: 'date_immutable')]
+    private DateTimeImmutable $startsAt;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private ?\DateTimeImmutable $endsAt = null;
+    #[ORM\Column(type: 'date_immutable')]
+    private DateTimeImmutable $endsAt;
 
-    #[ORM\Column]
-    private ?float $discount = null;
+    #[ORM\Column(type: 'smallint')]
+    private int $discount;
 
-    public function getStartsAt(): ?\DateTimeImmutable
+    #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: CampaignProduct::class, cascade: ['persist', 'remove'])]
+    private Collection $campaignProducts;
+
+    public function __construct()
+    {
+        $this->campaignProducts = new ArrayCollection();
+    }
+
+    public function getStartsAt(): DateTimeImmutable
     {
         return $this->startsAt;
     }
 
-    public function setStartsAt(\DateTimeImmutable $start): static
+    public function setStartsAt(DateTimeImmutable $start): self
     {
         $this->startsAt = $start;
-
         return $this;
     }
 
-    public function getEndsAt(): ?\DateTimeImmutable
+    public function getEndsAt(): DateTimeImmutable
     {
         return $this->endsAt;
     }
 
-    public function setEndsAt(\DateTimeImmutable $endsAt): static
+    public function setEndsAt(DateTimeImmutable $end): self
     {
-        $this->endsAt = $endsAt;
-
+        $this->endsAt = $end;
         return $this;
     }
 
-    public function getDiscount(): ?float
+    public function getDiscount(): int
     {
         return $this->discount;
     }
 
-    public function setDiscount(float $discount): static
+    public function setDiscount(int $discount): self
     {
         $this->discount = $discount;
+        return $this;
+    }
+
+    public function getCampaignProducts(): Collection
+    {
+        return $this->campaignProducts;
+    }
+
+    public function addCampaignProduct(CampaignProduct $campaignProduct): self
+    {
+        if (!$this->campaignProducts->contains($campaignProduct)) {
+            $this->campaignProducts[] = $campaignProduct;
+            $campaignProduct->setCampaign($this);
+        }
+        return $this;
+    }
+
+    public function removeCampaignProduct(CampaignProduct $campaignProduct): self
+    {
+        if ($this->campaignProducts->contains($campaignProduct)) {
+            if ($this->campaignProducts->removeElement($campaignProduct)) {
+                $campaignProduct = null;
+            }
+        }
 
         return $this;
     }

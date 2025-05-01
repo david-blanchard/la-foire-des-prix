@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Entity\Base;
+namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 
-trait ClassifierTrait
+trait Classifier
 {
 
     #[ORM\Column(length: 255)]
