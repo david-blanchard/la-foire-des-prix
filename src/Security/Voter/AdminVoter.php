@@ -24,8 +24,10 @@
                  return false; // L'utilisateur n'est pas connecté
              }
 
+             dd($attribute, $subject, $token);
+
              // Vérifie si l'utilisateur a le rôle ADMIN
-             return $user->getRole() === self::ADMIN_ROLE;
+             return isset($user->getRoles()[User::ADMIN_ROLE]);
          }
      }
 

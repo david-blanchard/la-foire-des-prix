@@ -8,72 +8,59 @@
                 <div class="card-header">{{ 'Register'|trans }}</div>
 
                 <div class="card-body">
-                    {# <form method="POST" action="{{ path('register') }}"> #}
                     {{ form_start(registrationForm) }}
 
-                        {{ csrf_token() }}
+                    {{ csrf_token() }}
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ 'Name'|trans }}</label>
+                    <div class="form-group row">
+                        <label for="name" class="col-md-4 col-form-label text-md-right">{{ 'Name'|trans }}</label>
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control {{ errors.name is defined ? 'is-invalid' : '' }}" name="name" value="{{ old_name }}" required autocomplete="name" autofocus>
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control {{ errors.name is defined ? 'is-invalid' : '' }}" name="name" value="{{ old_name }}" required autocomplete="name" autofocus>
 
-                                {% if errors.name is defined %}
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ errors.name }}</strong>
-                                    </span>
-                                {% endif %}
-                            </div>
+                            {{ form_errors(registrationForm) }}
+
                         </div>
+                    </div>
 
-                        <div class="form-group row">
-                            {# <label for="email" class="col-md-4 col-form-label text-md-right">{{ 'E-Mail Address'|trans }}</label> #}
+                    <div class="form-group row">
+                        <div class="col-md-6">
                             {{ form_row(registrationForm.email) }}
 
-                            <div class="col-md-6">
-                                <input id="username" type="email" class="form-control {{ errors.email is defined ? 'is-invalid' : '' }}" name="_username" value="{{ old_email }}" required autocomplete="email">
-
-                                {% if errors.email is defined %}
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ errors.email }}</strong>
-                                    </span>
-                                {% endif %}
-                            </div>
+                            {% if errors.email is defined %}
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ errors.email }}</strong>
+                                </span>
+                            {% endif %}
                         </div>
+                    </div>
 
-                        <div class="form-group row">
-                            {# <label for="password" class="col-md-4 col-form-label text-md-right">{{ 'Password'|trans }}</label> #}
+                    <div class="form-group row">
+                        <div class="col-md-6">
                             {{ form_row(registrationForm.password) }}
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control {{ errors.password is defined ? 'is-invalid' : '' }}" name="_password" required autocomplete="new-password">
-
-                                {% if errors.password is defined %}
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ errors.password }}</strong>
-                                    </span>
-                                {% endif %}
-                            </div>
+                            {% if errors.password is defined %}
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ errors.password }}</strong>
+                                </span>
+                            {% endif %}
                         </div>
+                    </div>
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ 'Confirm Password'|trans }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            {{ form_row(registrationForm.agreeTerms) }}
                         </div>
+                    </div>
 
-                        <div class="form-group row mb-0">
+                    <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-outline-primary">
                                     {{ 'Register'|trans }}
                                 </button>
                             </div>
                         </div>
-                    {{ form_end(registrationForm) }}
-                    {# </form> #}
+                {{ form_end(registrationForm) }}
                 </div>
             </div>
         </div>

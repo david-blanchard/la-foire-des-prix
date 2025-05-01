@@ -26,18 +26,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const DEFAULT_ROLES = [self::USER_ROLE];
     public const DEFAULT_ADMIN_ROLE = self::ADMIN_ROLE;
     public const DEFAULT_ADMIN_ROLES = [self::ADMIN_ROLE];
-    public const DEFAULT_ROLES_LIST = [
-        self::USER_ROLE => 'User',
-        self::ADMIN_ROLE => 'Admin',
-    ];
-    public const DEFAULT_ROLES_LIST_ADMIN = [
-        self::USER_ROLE => 'User',
-        self::ADMIN_ROLE => 'Admin',
-    ];
-    public const DEFAULT_ROLES_LIST_ALL = [
-        self::USER_ROLE => 'User',
-        self::ADMIN_ROLE => 'Admin',
-    ];
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;

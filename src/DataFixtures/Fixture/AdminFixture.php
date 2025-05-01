@@ -23,6 +23,7 @@ class AdminFixture implements CustomFixtureInterface
             $user->setName('Administrator');
             $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
             $user->setRole(User::ADMIN_ROLE);
+            $user->setRoles([User::ADMIN_ROLE]);
 
             $manager->persist($user);
             $manager->flush();
