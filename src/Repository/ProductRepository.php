@@ -94,9 +94,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         return $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
-            ->where('p.slug = :slug')
-            ->orWhere('p.slug LIKE :slugLike')
-            ->setParameter('slug', $slug)
+            ->Where('p.slug LIKE :slugLike')
             ->setParameter('slugLike', '%' . $slug . '%')
             ->select('p')
             ->getQuery()

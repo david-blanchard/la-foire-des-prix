@@ -59,7 +59,7 @@ class HomeController extends AbstractController
         }
 
         // Fetch attributes and convert them to properties
-        $attr = $this->productRepository->getAttributesByProductId();
+        $attr = $this->productRepository->getAttributesByProductId($product->getId());
         $props = $this->productRepository->attributesToProperties($attr);
         // Store properties in cache
 
