@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Image;
 use App\Entity\ProductImage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +13,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ImageRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(
+        ManagerRegistry $registry,
+        private EntityManagerInterface $em,
+    )
     {
         parent::__construct($registry, Image::class);
     }
@@ -28,9 +32,9 @@ class ImageRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('i')
             ->join(ProductImage::class, 'pi')
             ->where('pi.product = :productId')
+            ->andWhere('pi.image = i.id')
             ->setParameter('productId', $productId)
             ->select('i');
-
 
         return $qb->getQuery()->getResult();
     }
