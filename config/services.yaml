@@ -36,13 +36,6 @@ services:
 
     App\Service\CartServiceInterface: '@App\Service\CartService'
 
-    App\Service\CartService:
-        arguments:
-            $productRepository: '@App\Repository\ProductRepository'
-        public: true
-
-    Psr\Container\ContainerInterface: '@service_container'
-
     App\Twig\FormatPriceExtension:
         tags: ['twig.extension']
 

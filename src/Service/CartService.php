@@ -29,8 +29,6 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      */
     public function computeCart(): array
     {
-        $result = [];
-
         $total = 0.0;
         $numberOfProducts = 0;
 
