@@ -1,7 +1,8 @@
-<!DOCTYPE html>
 <html lang="en" class="h-100">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="csrf-token" content="{{ csrf_token('app') }}">
     <meta name="description" content="" />
     <meta charset="UTF-8">
     <title>
@@ -13,27 +14,24 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/dist/css/bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}" />
 
     {% block stylesheets %}{% endblock %}
-
-    <script src="{{ asset('assets/js/vendor/jquery.slim.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/dist/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('js/server-session.js') }}"></script>
     {% block head_javascripts %}{% endblock %}
 
-    {% if app.session.flashbag.peekAll|length > 0 %}
-    <style>
-        .invalid-feedback {
-            display: block !important;
-        </style>
-    {% endif %}
 </head>
 
 <body class="d-flex flex-column h-100">
-    {{ include('header/admin.html.twig') }}
+    {{ include('header/auth.html.twig') }}
     {% block children %}{% endblock %}
-    {{ include('footer/admin.html.twig') }}
+    {{ include('footer/app.html.twig') }}
+    <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/search.js') }}"></script>
     {% block javascripts %}{% endblock %}
 </body>
+
 </html>
