@@ -14,11 +14,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class SessionController extends AbstractController
 {
     public function __construct(
-        private SessionObjectFactory $sessionObjectFactory
+        private readonly SessionObjectFactory $sessionObjectFactory
     ) {
     }
 
-    #[Route('/retrieve', name: 'sessions_retrieve', methods: ['POST'])]
+    #[Route('/retrieve', name: 'sessions_retrieve', methods: ['POST'] )]
     public function retrieve(Request $request): JsonResponse
     {
         $input = $request->request->all();

@@ -4,11 +4,13 @@ namespace App\Session;
 
 use App\Service\CartService;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class SessionObjectFactory implements SessionObjectFactoryInterface
 {
+    #[Autowire(ContainerInterface::class)]
     public function __construct(
-        private ContainerInterface $container
+        private readonly ContainerInterface $container
     ) {
     }
 
