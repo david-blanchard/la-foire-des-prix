@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Brand;
 use App\Entity\User;
@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/admin/brands')]
 class BrandsController extends AbstractController
 {
-    #[Route('/admin/brands', name: 'admin_brands_index', methods: ['GET'])]
+    #[Route(name: 'admin_brands_show', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -34,7 +35,7 @@ class BrandsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/brands/create', name: 'admin_brands_create', methods: ['GET', 'POST'])]
+    #[Route('/create', name: 'admin_brands_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {

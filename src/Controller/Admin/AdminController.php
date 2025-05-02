@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
-use App\Security\Voter\AdminVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/admin')]
 final class AdminController extends AbstractController
 {
     public function __construct(
         private readonly Security $security,
-    )
-    {
+    ) {
     }
 
-    #[Route('/admin', name: 'admin_dashboard')]
+    #[Route(name: 'admin_dashboard')]
     #[IsGranted('ROLE_ADMIN')]
     public function index(): Response
     {

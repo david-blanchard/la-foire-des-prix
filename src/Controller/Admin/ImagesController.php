@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Image;
 use App\Entity\User;
@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/admin/images')]
 class ImagesController extends AbstractController
 {
-    #[Route('/admin/images', name: 'admin_images_index', methods: ['GET'])]
+    #[Route(name: 'admin_images_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -34,7 +35,7 @@ class ImagesController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/images/create', name: 'admin_images_create', methods: ['GET', 'POST'])]
+    #[Route('/create', name: 'admin_images_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
@@ -56,7 +57,7 @@ class ImagesController extends AbstractController
         return $this->render('admin/images/create.html.twig');
     }
 
-    #[Route('/admin/images/{id}/edit', name: 'admin_images_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'admin_images_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Image $image, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
@@ -78,7 +79,7 @@ class ImagesController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/images/{id}/delete', name: 'admin_images_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'admin_images_delete', methods: ['POST'])]
     public function delete(Request $request, Image $image, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $image->getId(), $request->request->get('_token'))) {

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductImage;
 use App\Repository\BrandRepository;
 use App\Repository\ImageRepository;
-use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,16 +14,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/admin/product/images')]
 class ProductImagesController extends AbstractController
 {
     public function __construct(
-        private ProductRepository $productRepository,
         private BrandRepository $brandRepository,
         private ImageRepository $imageRepository
     ) {
     }
 
-    #[Route('/admin/product-images', name: 'admin_product_images_index', methods: ['GET'])]
+    #[Route( name: 'admin_product_images_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -45,7 +44,7 @@ class ProductImagesController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/product-images/create/{id}', name: 'admin_product_images_create', methods: ['GET', 'POST'])]
+    #[Route('/create/{id}', name: 'admin_product_images_create', methods: ['GET', 'POST'])]
     public function create(Product $product, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
@@ -73,7 +72,7 @@ class ProductImagesController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/product-images/{id}/delete', name: 'admin_product_images_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'admin_product_images_delete', methods: ['POST'])]
     public function delete(ProductImage $productImage, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $productImage->getId(), $request->request->get('_token'))) {
