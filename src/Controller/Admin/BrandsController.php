@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/brands')]
 class BrandsController extends AbstractController
 {
-    #[Route(name: 'admin_brands_show', methods: ['GET'])]
+    #[Route(name: 'admin_brands_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();

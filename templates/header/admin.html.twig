@@ -1,4 +1,4 @@
-{% set home = path('app_admin') %}
+{% set home = path('admin_dashboard') %}
 {% set logo = '/assets/images/logos/lesprixbas_smaller.png' %}
 
 <header>
@@ -32,26 +32,26 @@
                 </a>
             </div>
             <div class='nav-item active'>
-                <a class="nav-link bg-light" href="{{ path('home') }}">
+                <a class="nav-link bg-light" href="{{ path('admin_products_index') }}">
                     Gérer les produits
                 </a>
             </div>
             <div class='nav-item active'>
-                <a class="nav-link bg-light" href="{{ path('product_images_index') }}">
+                <a class="nav-link bg-light" href="{{ path('admin_product_images_index') }}">
                     Gérer les images par produit
                 </a>
             </div>
             <div class='nav-item active'>
-                <a class="nav-link bg-light" href="{{ path('images_index') }}">
+                <a class="nav-link bg-light" href="{{ path('admin_images_index') }}">
                     Gérer la bibliothèque d'images
                 </a>
             </div>
             <div class='nav-item active'>
-                <a class="nav-link bg-light" href="{{ path('brands_index') }}">
+                <a class="nav-link bg-light" href="{{ path('admin_brands_index') }}">
                     Gérer les marques
                 </a>
             </div>
         </nav>
     </div>
 </header>
-{{ include('admin/includes/_alerts.html.twig') }}
+{{ include('admin/includes/alerts.html.twig') }}
