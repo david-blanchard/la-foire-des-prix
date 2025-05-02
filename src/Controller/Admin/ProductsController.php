@@ -23,12 +23,6 @@ class ProductsController extends AbstractController
     #[Route('/admin/products', name: 'admin_products_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $user = $this->getUser();
-
-        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            return $this->redirectToRoute('app_login');
-        }
-
         $query = $this->productRepository->createQueryBuilder('p')->getQuery();
         $products = $paginator->paginate(
             $query,
@@ -48,7 +42,7 @@ class ProductsController extends AbstractController
             $product = new Product();
             $product->setName($request->request->get('name'));
             $product->setDescription($request->request->get('description'));
-            $product->setMoreInfos($request->request->get('more_infos'));
+            $product->setMoreInfo($request->request->get('more_infos'));
             $product->setPrice($request->request->get('price'));
             $product->setBrand($this->brandRepository->find($request->request->get('brand')));
 
@@ -71,7 +65,7 @@ class ProductsController extends AbstractController
         if ($request->isMethod('POST')) {
             $product->setName($request->request->get('name'));
             $product->setDescription($request->request->get('description'));
-            $product->setMoreInfos($request->request->get('more_infos'));
+            $product->setMoreInfo($request->request->get('more_infos'));
             $product->setPrice($request->request->get('price'));
             $product->setBrand($this->brandRepository->find($request->request->get('brand')));
 
