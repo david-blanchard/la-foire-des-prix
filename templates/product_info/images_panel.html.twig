@@ -1,5 +1,5 @@
 {% set hasNoImage = images[0] is not defined %}
-{% set isAdmin = app.user and app.user.isAdmin() %}
+{% set isAdmin = app.user and isAdmin() %}
 
 {% if hasNoImage %}
     {% set images = [] %}
@@ -34,7 +34,7 @@
 
 {% if isAdmin %}
     <div class="row bg-cyan justify-content-center my-3 mx-3">
-        <a href="{{ path('product_images_create', { id: id }) }}" class="btn btn-outline-danger">
+        <a href="{{ path('admin_product_images_create', { id: id }) }}" class="btn btn-outline-danger">
             Ajouter des images au produit
         </a>
     </div>

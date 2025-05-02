@@ -5,8 +5,8 @@
     <h2 class="text-center my-5">
         Ajouter un produit
     </h2>
-    <form method="POST" action="{{ path('products_store') }}">
-        {{ csrf_token() }}
+    <form method="POST" action="{{ path('admin_products_create') }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
         <div class="col-12">
             <div class="form-group">
                 <label>Nom</label>

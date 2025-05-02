@@ -5,8 +5,8 @@
         <h2 class="text-center my-5">
             Ajouter une marque
         </h2>
-        <form method="POST" action="{{ path('admin_brands_store') }}">
-            {{ csrf_token('brands') }}
+        <form method="POST" action="{{ path('admin_brands_create') }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('brands') }}">
             <div class="col-12">
                 <div class="form-group">
                     <label>Nom</label>

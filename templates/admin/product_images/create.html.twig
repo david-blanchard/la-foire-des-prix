@@ -30,14 +30,14 @@
                 <td>
                     {% set size = 50 %}
                     {% for image in assocImages %}
-                        {{ include('product_info/_image.html.twig') }}
+                        {{ include('product_info/image.html.twig') }}
                     {% endfor %}
                 </td>
             </tr>
             <tr>
                 <td colspan="4">
-                    <form method="POST" action="{{ path('admin_product_images_store') }}">
-                        {{ csrf_token('product_images') }}
+                    <form method="POST" action="{{ path('admin_product_images_create') }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('product_images') }}">
                         <input type="hidden" name="product" value="{{ productId }}" />
                         <div class="col-12">
                             <div class="form-group">

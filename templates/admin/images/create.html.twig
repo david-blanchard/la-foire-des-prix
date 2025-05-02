@@ -9,24 +9,24 @@
     <h2 class="text-center my-5">
         Ajouter une image
     </h2>
-    <form method="POST" action="{{ path('admin_images_store') }}">
-        {{ csrf_token('images') }}
+    <form method="POST" action="{{ path('admin_images_create') }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('images') }}">
         <div class="col-12">
             <div class="form-group">
-                <label>URL</label>
-                <input type="text" name="url" class="form-control" placeholder="URL" />
+                <label for="url">URL</label>
+                <input type="text" id="url" name="url" class="form-control" placeholder="URL" />
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
-                <label>Alt</label>
-                <input type="text" name="alt" class="form-control" placeholder="Alt" />
+                <label for="alt">Alt</label>
+                <input type="text" id="alt" name="alt" class="form-control" placeholder="Alt" />
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
-                <label>Title</label>
-                <input type="text" name="title" class="form-control" placeholder="Title" />
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-control" placeholder="Title" />
             </div>
         </div>
         <div class="col-12">

@@ -5,7 +5,7 @@
     <h2 class="text-center my-5">
         Modifier un produit
     </h2>
-    <form method="POST" action="{{ path('products_update', { id: product.id }) }}">
+    <form method="POST" action="{{ path('admin_products_edit', { id: product.id }) }}">
         {{ csrf_token() }}
         <input type="hidden" name="_method" value="PUT" />
         <div class="col-12">
