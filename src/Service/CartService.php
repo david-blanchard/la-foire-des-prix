@@ -3,8 +3,6 @@
 namespace App\Service;
 
 use App\Repository\ProductRepository;
-use App\Service\ProductService;
-use App\Session\AbstractSessionObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface

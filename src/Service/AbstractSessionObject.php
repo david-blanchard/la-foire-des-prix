@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Session;
+namespace App\Service;
 
-use App\Utils\ObjectUtilsTrait;
+use App\Service\Traits\ObjectUtils;
 
 abstract class AbstractSessionObject implements SessionObjectInterface
 {
-    use ObjectUtilsTrait;
+    use ObjectUtils;
 
     private $list = [];
 

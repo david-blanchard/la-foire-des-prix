@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Utils;
+namespace App\Service\Utils;
+
+use App\Service\Traits\ObjectUtils;
 
 final class MiscUtils
 {
-    use ObjectUtilsTrait;
+    use ObjectUtils;
 
     public static function formatPrice(float|int $price): string
     {

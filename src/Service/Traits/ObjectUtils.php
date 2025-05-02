@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Utils;
+namespace App\Service\Traits;
 
-trait ObjectUtilsTrait
+trait ObjectUtils
 {
     public static function toObject(array $data): object
     {
