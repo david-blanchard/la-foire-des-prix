@@ -20,9 +20,7 @@ class AdminFixture implements CustomFixtureInterface
         if (!$existingUser) {
             $user = new User();
             $user->setEmail('admin@lfdp.fr');
-            $user->setName('Administrator');
             $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
-            $user->setRole(User::ADMIN_ROLE);
             $user->setRoles([User::ADMIN_ROLE]);
 
             $manager->persist($user);

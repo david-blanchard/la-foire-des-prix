@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\Identifier;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,38 +14,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    use Identifier;
-
     public const USER_ROLE = 'ROLE_USER';
     public const ADMIN_ROLE = 'ROLE_ADMIN';
-    public const ROLES = [
-        self::USER_ROLE,
-        self::ADMIN_ROLE,
-    ];
-    public const DEFAULT_ROLES = [self::USER_ROLE];
-    public const DEFAULT_ADMIN_ROLE = self::ADMIN_ROLE;
-    public const DEFAULT_ADMIN_ROLES = [self::ADMIN_ROLE];
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name = null;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
-
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
-
-    #[ORM\Column(type: 'string', length: 50)]
-    private ?string $role = null;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $emailVerifiedAt = null;
-
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private ?string $rememberToken = null;
 
     /**
      * @var list<string> The user roles
@@ -54,19 +31,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
+
     #[ORM\Column]
     private bool $isVerified = false;
 
-    public function getName(): ?string
+    public function getId(): ?int
     {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
+        return $this->id;
     }
 
     public function getEmail(): ?string
@@ -98,11 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return $this->roles;
     }
 
     /**
@@ -110,7 +82,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = self::USER_ROLE;
+
+        $this->roles = array_unique($roles);
 
         return $this;
     }
@@ -130,49 +105,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
-    public function getEmailVerifiedAt(): ?\DateTimeInterface
-    {
-        return $this->emailVerifiedAt;
-    }
-
-    public function setEmailVerifiedAt(?\DateTimeInterface $emailVerifiedAt): self
-    {
-        $this->emailVerifiedAt = $emailVerifiedAt;
-
-        return $this;
-    }
-
-    public function getRememberToken(): ?string
-    {
-        return $this->rememberToken;
-    }
-
-    public function setRememberToken(?string $rememberToken): self
-    {
-        $this->rememberToken = $rememberToken;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        $this->password = null;
+        // $this->plainPassword = null;
     }
 
     public function isVerified(): bool

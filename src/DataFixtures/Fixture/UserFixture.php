@@ -16,15 +16,14 @@ class UserFixture implements CustomFixtureInterface
 
     public function execute(ObjectManager $manager): void
     {
-        $existingUser = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@lfdp.fr']);
+        $existingUser = $manager->getRepository(User::class)->findOneBy(['email' => 'dblanchard1@lfdp.fr']);
 
         if (!$existingUser) {
             // Create one main user
             $user = new User();
             $user->setEmail('dblanchard1@lfdp.fr');
-            $user->setName('David Blanchard');
             $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
-            $user->setRole(User::USER_ROLE);
+            $user->setRoles(['ROLE_USER']);
 
             $manager->persist($user);
             $manager->flush();
@@ -43,14 +42,10 @@ class UserFixture implements CustomFixtureInterface
             if (!$existingUser) {
 
                 $user = new User();
-                $user->setName($userName);
                 $user->setEmail($userEmail);
-                $user->setEmailVerifiedAt(new \DateTime());
                 $user->setPassword(
                     $this->passwordHasher->hashPassword($user, 'password')
                 );
-                $user->setRole(User::USER_ROLE);
-                $user->setRememberToken(bin2hex(random_bytes(10)));
 
                 $manager->persist($user);
                 $manager->flush();
