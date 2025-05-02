@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Repository\ProductRepository;
+use App\Service\ProductService;
 use App\Session\AbstractSessionObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -12,6 +13,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
 
     public function __construct(
         private readonly ProductRepository $productRepository,
+        private readonly ProductService    $productService,
     ) {
         $this->session = new Session();
     }
@@ -38,8 +40,8 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
             if (is_array($quantity)) {
                 continue;
             }
-            $attr = $this->productRepository->getAttributesByProductId($productId);
-            $props = $this->productRepository->attributesToProperties($attr);
+            $product = $this->productRepository->findById($productId);
+            $props = $this->productService->prepareViewFields($product);
             $price = $props['discount'] ?: floatval($props['price']);
 
             $numberOfProducts += $quantity;
@@ -97,7 +99,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      *
      * @return array a simplified form of the Cart
      */
-    public function prepareViewFields(): array
+    public function prepareViewFields(?object $data = null): array
     {
         return $this->computeCart();
     }

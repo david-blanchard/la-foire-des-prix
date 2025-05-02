@@ -15,9 +15,7 @@ class ImageRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-        private EntityManagerInterface $em,
-    )
-    {
+    ) {
         parent::__construct($registry, Image::class);
     }
 
@@ -27,7 +25,7 @@ class ImageRepository extends ServiceEntityRepository
      * @param int $productId
      * @return array
      */
-    public function getImagesByProductId(int $productId): array
+    public function findByProductId(int $productId): array
     {
         $qb = $this->createQueryBuilder('i')
             ->join(ProductImage::class, 'pi')
@@ -37,15 +35,5 @@ class ImageRepository extends ServiceEntityRepository
             ->select('i');
 
         return $qb->getQuery()->getResult();
-    }
-
-    public function getAll(): array
-    {
-        return $this->findAll();
-    }
-
-    public function getById($id): ?Image
-    {
-        return $this->find($id);
     }
 }

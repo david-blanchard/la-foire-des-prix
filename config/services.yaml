@@ -34,8 +34,6 @@ services:
 
     App\Service\CustomCacheInterface: '@App\Service\CustomCache'
 
-    App\Service\CartServiceInterface: '@App\Service\CartService'
-
     App\Twig\FormatPriceExtension:
         tags: ['twig.extension']
 

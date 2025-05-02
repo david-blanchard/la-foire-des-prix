@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\CartService;
+use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,27 +12,28 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     public function __construct(
-        private ProductRepository $productRepository,
-        private CartService $cartService
+        private readonly ProductRepository $productRepository,
+        private readonly CartService       $cartService,
+        private readonly ProductService    $productService,
     ) {
     }
 
     #[Route('/', name: 'home', methods: ['GET'])]
     public function index(): Response
     {
-        // Attempt to fetch properties from cache by ID
+        // Attempt to fetch properties from a cache by ID
         $props = $this->productRepository->getPropertiesFromCacheById(-1);
         if ($props !== null) {
             return $this->render('home/index.html.twig', $props);
         }
 
         // Fetch attributes and convert them to properties
-        $attr = $this->productRepository->getAttributesByProductId();
-        $props = $this->productRepository->attributesToProperties($attr);
+        $product = $this->productRepository->findById();
+        $props = $this->productService->prepareViewFields($product);
 
         $cartFields = $this->cartService->prepareViewFields();
 
-        // Store properties in cache
+        // Store properties in a cache
         $this->productRepository->putPropertiesInCacheById(-1, $props);
 
         return $this->render('home/index.html.twig', [
@@ -45,7 +46,7 @@ class HomeController extends AbstractController
     #[Route('/recherche/{slug}', name: 'search', methods: ['GET'])]
     public function show(string $slug): Response
     {
-        // Attempt to fetch properties from cache by slug
+        // Attempt to fetch properties from a cache by slug
         $props = $this->productRepository->getPropertiesFromCacheBySlug($slug);
         if ($props !== null) {
             return $this->render('home/index.html.twig', $props);
@@ -59,13 +60,13 @@ class HomeController extends AbstractController
         }
 
         // Fetch attributes and convert them to properties
-        $attr = $this->productRepository->getAttributesByProductId($product->getId());
-        $props = $this->productRepository->attributesToProperties($attr);
-        // Store properties in cache
+        $product = $this->productRepository->findById($product->getId());
+        $props = $this->productService->prepareViewFields($product);
+
+        // Store properties in a cache
+        $this->productRepository->putPropertiesInCacheBySlug($slug, $props);
 
         $cartFields = $this->cartService->prepareViewFields();
-
-        $this->productRepository->putPropertiesInCacheBySlug($slug, $props);
 
         return $this->render('home/index.html.twig', [
             ...$props,

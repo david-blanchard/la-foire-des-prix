@@ -11,21 +11,9 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProductImageRepository extends ServiceEntityRepository
 {
-
     public function __construct(
         ManagerRegistry $registry,
     ) {
         parent::__construct($registry, ProductImage::class);
     }
-
-    public function getAll(): array
-    {
-        return $this->findAll();
-    }
-
-    public function getById(int $id): ?ProductImage
-    {
-        return $this->find($id);
-    }
-
 }

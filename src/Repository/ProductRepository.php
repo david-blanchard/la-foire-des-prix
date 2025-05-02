@@ -24,23 +24,13 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    public function getAll(): array
-    {
-        return $this->findAll();
-    }
-
-    public function getById(int $id): ?Product
-    {
-        return $this->find($id);
-    }
-
     /**
      * Retrieve the values of a given product
      *
      * @param integer|null $productId
      * @return array
      */
-    public function getAttributesByProductId(?int $productId = null): ?Product
+    public function findById(?int $productId = null): ?Product
     {
         if ($productId === null) {
             $product = $this->findOneBy([]);
@@ -49,45 +39,6 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         return $product;
-    }
-
-    /**
-     * Transform ProductInfo attributes in properties usable in views
-     *
-     * @param array $props
-     * @return array
-     */
-    public function attributesToProperties(Product $product): array
-    {
-        $discount = $this->getProductDiscountById($product->getId());
-        $props = [];
-        $props['name'] = $product->getName();
-        $props['id'] = $product->getId();
-        $props['description'] = $product->getDescription();
-        $props['moreInfo'] = $product->getMoreInfo();
-        $props['price'] = $product->getPrice();
-        $props['brand'] = $product->getBrand()->getName();
-        $props['discountRate'] = $discount;
-        $props['discount'] = $this->computeDiscount($product->getPrice(), $discount);
-
-        $props['featuresCaption'] = 'Information complémentaires';
-        $props['features'] = $this->grabMoreInfo($product->getMoreInfo());
-
-        $images = $this->imagesRepository->getImagesByProductId($product->getId());
-        $props['images'] = $images;
-
-        return $props;
-    }
-
-    /**
-     * Transform a string of more info into an array
-     *
-     * @param string|null $phrase
-     * @return array
-     */
-    public function grabMoreInfo(?string $phrase): array
-    {
-        return $phrase ? explode(';', $phrase) : [];
     }
 
     public function findBySlug(string $slug): array
@@ -132,21 +83,6 @@ class ProductRepository extends ServiceEntityRepository
         $result = $qb->getQuery()->getOneOrNullResult();
 
         return $result['discount'] ?? 0;
-    }
-
-    /**
-     * Compute the discounted price of a product
-     *
-     * @param float|string $price Original price
-     * @param int $percent Discount percentage
-     * @return float Discounted price
-     */
-    public function computeDiscount(float|string $price, int $percent): float
-    {
-        $price = is_string($price) ? floatval($price) : $price;
-        $discountedPrice = $price - ($price * $percent / 100);
-
-        return round($discountedPrice, 2);
     }
 
     /**
