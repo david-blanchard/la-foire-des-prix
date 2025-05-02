@@ -37,9 +37,11 @@ services:
     App\Twig\FormatPriceExtension:
         tags: ['twig.extension']
 
-    App\Security\LoginSuccessHandler:
-      arguments:
-        $router: '@router'
+    # Nice to know how to make, but it's totally useless. Consider using isGranted('ROLE_ADMIN') instead.
+    App\Twig\Extension\IsAdminExtension:
+        tags: ['twig.extension']
 
-imports:
-    - { resource: './services_test.yaml' }
+    App\Security\LoginSuccessHandler:
+        arguments:
+            $router: '@router'
+

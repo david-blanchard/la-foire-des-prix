@@ -1,5 +1,0 @@
-# config/services_test.yaml
-services:
-    # Configuration spécifique pour les tests
-    Psr\Container\ContainerInterface:
-        alias: '@service_container'
