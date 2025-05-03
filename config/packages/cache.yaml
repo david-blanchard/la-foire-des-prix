@@ -1,0 +1,14 @@
+framework:
+    cache:
+        # Définit le cache par défaut (équivalent de 'default' dans Laravel)
+        app: cache.adapter.memcached
+        default_memcached_provider: memcached://localhost
+
+        pools:
+          app.cache.memcached:
+            adapter: cache.adapter.memcached
+            provider: memcached://localhost
+#          app.cache.redis:
+#            adapter: cache.adapter.redis
+#            provider: redis://localhost
+

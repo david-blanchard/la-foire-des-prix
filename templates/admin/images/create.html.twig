@@ -1,0 +1,39 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% block title %}
+    Les prix bas !
+{% endblock %}
+
+{% block children %}
+<div class="container">
+    <h2 class="text-center my-5">
+        Ajouter une image
+    </h2>
+    <form method="POST" action="{{ path('admin_images_create') }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('images') }}">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="url">URL</label>
+                <input type="text" id="url" name="url" class="form-control" placeholder="URL" />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="alt">Alt</label>
+                <input type="text" id="alt" name="alt" class="form-control" placeholder="Alt" />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" class="form-control" placeholder="Title" />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="d-flex justify-content-center mb-5">
+                <button type="submit" class="btn btn-outline-primary">Valider</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

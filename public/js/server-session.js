@@ -1,6 +1,9 @@
 class ServerSession {
 
-    constructor() {
+    #baseApiUrl = '/session';
+
+    constructor(baseApiUrl) {
+        this.#baseApiUrl = baseApiUrl;
         $.ajaxSetup({
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -12,7 +15,7 @@ class ServerSession {
         const context = this
         $.ajax({
             type: "POST",
-            url: "/session/retrieve",
+            url: this.#baseApiUrl + "/retrieve",
             data: data,
             success: (data) => {
                 if ("function" == typeof callback) {
@@ -27,7 +30,7 @@ class ServerSession {
         const context = this
         $.ajax({
             type: "POST",
-            url: "/session/store",
+            url: this.#baseApiUrl + "/store",
             data: data,
             success: (data) => {
                 if ("function" == typeof callback) {

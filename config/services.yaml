@@ -1,0 +1,47 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+      autowire: true
+      autoconfigure: true
+      public: false
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+      resource: '../src/'
+      exclude: '../src/{DependencyInjection,Entity,Tests,Kernel.php}'
+
+#    parameters:
+#        mailer_from_address: '%env(MAIL_FROM_ADDRESS)%'
+#        mailer_from_name: '%env(MAIL_FROM_NAME)%'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+#    App\EventListener\RedirectIfAuthenticatedListener:
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.request, priority: 10 }
+
+    App\Service\CustomCache:
+        arguments:
+            $pool: '@cache.app'
+
+    App\Service\CustomCacheInterface: '@App\Service\CustomCache'
+
+    App\Twig\FormatPriceExtension:
+        tags: ['twig.extension']
+
+    # Nice to know how to make, but it's totally useless. Consider using isGranted('ROLE_ADMIN') instead.
+    App\Twig\Extension\IsAdminExtension:
+        tags: ['twig.extension']
+
+    App\Security\LoginSuccessHandler:
+        arguments:
+            $router: '@router'
+

@@ -19,7 +19,7 @@ class Cart {
 
     retrieve() {
         const context = this;
-        const session = new ServerSession();
+        const session = new ServerSession('/cart');
         session.retrieve(
             {
                 type: "Cart",
@@ -32,7 +32,7 @@ class Cart {
 
     store(productId, quantity) {
         const context = this;
-        const session = new ServerSession();
+        const session = new ServerSession('/cart');
         session.store(
             {
                 type: "Cart",

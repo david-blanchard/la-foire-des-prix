@@ -1,58 +1,63 @@
 <?php
 
-namespace Tests\Unit;
+namespace App\Tests\Unit;
 
-use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
+use App\DataFixtures\Fixture\ProductsFixture;
+use App\Entity\Product;
+use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class ProductOneTest extends TestCase
+class ProductOneTest extends KernelTestCase
 {
+    private ProductRepository $productRepository;
 
-    /**
-     * Test if a product with ID 1 exists
-     *
-     * @return void
-     */
-    public function test_productOneExists()
+
+    protected function setUp(): void
     {
-        $row = DB::table('products')->select('id')->get()->first();
-
-        $this->assertEquals($row->id, 1);
+        self::bootKernel();
+        $entityManager = self::getContainer()->get(EntityManagerInterface::class);
+        $this->productRepository = $entityManager->getRepository(Product::class);
     }
 
     /**
-     * Test if product one name is Veste en jean
-     *
-     * @return void
+     * Test si un produit avec l'ID 1 existe
      */
-    public function test_productOneIsVesteEnJean()
+    public function test_productOneExists(): void
     {
-        $row = DB::table('products')->select('name')->get()->first();
 
-        $this->assertStringContainsString('Veste en jean', $row->name);
+        $product1 = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
+
+        $this->assertNotNull($product1);
     }
 
     /**
-     * Test if product one name contains robe
-     *
-     * @return void
+     * Test si le nom du produit 1 est "Veste en jean"
      */
-    public function test_productOneIsNotRobe()
+    public function test_productOneIsVesteEnJean(): void
     {
-        $row = DB::table('products')->select('name')->get()->first();
+        $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
-        $this->assertStringNotContainsString('Robe', $row->name);
+        $this->assertStringContainsString('Veste en jean', $product?->getName());
     }
 
     /**
-     * Test if Veste en jean is 37.99 euros
-     *
-     * @return void
+     * Test si le nom du produit 1 ne contient pas "Robe"
      */
-    public function test_productOnePriceIs_38_euros()
+    public function test_productOneIsNotRobe(): void
     {
-        $row = DB::table('products')->select('price')->get()->first();
+        $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
-        $this->assertEquals($row->price, 37.99);
+        $this->assertStringNotContainsString('Robe', $product?->getName());
+    }
+
+    /**
+     * Test si le prix de "Veste en jean" est de 37.99 euros
+     */
+    public function test_productOnePriceIs_38_euros(): void
+    {
+        $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
+
+        $this->assertEquals(37.99, $product?->getPrice());
     }
 }

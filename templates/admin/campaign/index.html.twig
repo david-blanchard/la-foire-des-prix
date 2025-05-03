@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<title>Campaign index</title>
+
+{% block body %}
+    <h1>Campaign index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Discount</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for campaign in campaigns %}
+            <tr>
+                <td>{{ campaign.id }}</td>
+                <td>{{ campaign.name }}</td>
+                <td>{{ campaign.start ? campaign.start|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ campaign.end ? campaign.end|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ campaign.discount }}</td>
+                <td>
+                    <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}">show</a>
+                    <a href="{{ path('app_campaign_edit', {'id': campaign.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_campaign_new') }}">Create new</a>
+{% endblock %}

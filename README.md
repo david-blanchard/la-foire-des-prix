@@ -12,7 +12,7 @@ Vous avez **PHP** en version **8.3** minimum ainsi que **Composer**.
 
 Votre environnement de développement est sous **Linux**, **MacOS** ou **Windows WSL 2**.
 
-Le projet est développé à l'aide de **Laravel 12.9**.
+Le projet est développé à l'aide de **Symfony 7.2**.
 
 Le cache applicatif est géré par **Memcached**. Le serveur Memcached doit être installé et mis en service. L'extension **php-memcached** doit être installée.
 
@@ -29,7 +29,7 @@ Si vous utilisez Docker, toutes les commandes `arisan` et `composer` doivent êt
 Clonez le repo :
 
 ```zsh
-git clone https://github.com/david-blanchard/les-prix-bas.git
+git clone https://github.com/david-blanchard/la-foire-des-prix.git
 ```
 
 Installez les dépendances :
@@ -39,12 +39,6 @@ composer u
 ```
 
 ## 2 - Phase de test
-
-Passez en mode test
-
-```zsh
-php artisan config:cache --env=testing
-```
 
 ### 2.1 - Migration des données
 
@@ -57,27 +51,29 @@ Dans le fichier .env.testing, modifiez les accès **MySQL** pour refléter vos p
 
 Créez la base de données de test
 
+NOTE : cette étape n'est pas nécessaire si vous utilisez Docker, car l'instance est créée au montage de l'image.
+
 ```zsh
-php artisan db:create
+symfony console doctrine:database:create --env=test
 ```
 
 Créez la structure de la base de données de test
 
 ```zsh
-php artisan migrate
+symfony console doctrine:migrations:migrate --env=test
 ```
 
 Injectez les données de test
 
 ```zsh
-php artisan db:seed
+symfony console doctrine:fixtures:load
 ```
 ### 2.2 - Test
 
 Lancez le test
 
 ```zsh
-php artisan test
+symfony console phpunit
 ```
 
 Résultat attendu :
@@ -144,7 +140,7 @@ Editez le fichier .env pour changer quelques valeurs qui caractérisent l'enviro
 Quittez le mode test
 
 ```zsh
-php artisan config:cache
+symfony config:cache
 ```
 
 ### 3.1 - Migration des données
@@ -153,25 +149,25 @@ php artisan config:cache
 Créez la base de données lesprixbas
 
 ```zsh
-php artisan db:create
+symfony db:create
 ```
 
 Créez la structure de la base de données
 
 ```zsh
-php artisan migrate
+symfony migrate
 ```
 
 Injectez les données
 
 ```zsh
-php artisan db:seed
+symfony db:seed
 ```
 
 ### 3.2 - Lancement du projet
 
 ```zsh
-php artisan serve
+symfony serve
 ```
 ## 4 - LesPrixBas côté visiteur
 

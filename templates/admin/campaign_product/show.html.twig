@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<title>CampaignProduct</title>
+
+{% block body %}
+    <h1>CampaignProduct</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ campaign_product.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_campaign_product_index') }}">back to list</a>
+
+    <a href="{{ path('app_campaign_product_edit', {'id': campaign_product.id}) }}">edit</a>
+
+    {{ include('campaign_product/_delete_form.html.twig') }}
+{% endblock %}

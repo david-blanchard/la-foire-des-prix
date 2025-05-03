@@ -1,34 +1,39 @@
 <?php
 
-namespace Tests\Unit;
+namespace App\Tests\Unit;
 
-use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
+use App\DataFixtures\Fixture\CampaignsFixture;
+use App\Entity\Campaign;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class CampaignOneTest extends TestCase
+class CampaignOneTest extends KernelTestCase
 {
-    /**
-     * Test if a campaign with ID 1 exists
-     *
-     * @return void
-     */
-    public function test_campaignOneExists()
-    {
-        $row = DB::table('campaigns')->select('id')->get()->first();
+    private EntityManagerInterface $entityManager;
 
-        $this->assertEquals($row->id, 1);
+    protected function setUp(): void
+    {
+        self::bootKernel();
+        $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
     }
 
     /**
-     * Test if spring discount campaign is 15 percent off
-     *
-     * @return void
+     * Test si une campagne avec l'ID 1 existe
      */
-    public function test_campaignOneDiscountRateIs_15_percents()
+    public function test_campaignOneExists(): void
     {
-        $row = DB::table('campaigns')->select('discount')->get()->first();
+        $campaign = $this->entityManager->getRepository(Campaign::class)->findOneBy(['name' => CampaignsFixture::CAMPAIGN_LABEL_1]);
 
-        $this->assertEquals($row->discount, 15);
+        $this->assertNotNull($campaign);
     }
 
+    /**
+     * Test si la campagne de réduction de printemps est de 15%
+     */
+    public function test_campaignOneDiscountRateIs_15_percents(): void
+    {
+        $campaign = $this->entityManager->getRepository(Campaign::class)->findOneBy(['name' => CampaignsFixture::CAMPAIGN_LABEL_1]);
+
+        $this->assertEquals(15, $campaign->getDiscount());
+    }
 }

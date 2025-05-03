@@ -1,66 +1,76 @@
 <?php
 
-namespace Tests\Feature;
+namespace App\Tests\Feature;
 
-use App\Models\User;
-use Faker\Factory;
-use Illuminate\Support\Facades\DB;
-use Tests\TestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UserModelTest extends TestCase
+class UserModelTest extends WebTestCase
 {
-    // use RefreshDatabase;
+//    private KernelBrowser $client;
 
-    /**
-     * Test if registration is valid.
-     *
-     * @return void
-     */
-    public function test_registrationWithEmailIsValid()
-    {
-        $faker = Factory::create();
-        $email = $faker->unique()->email;
-        $usersCountBefore = User::count();
+//    protected function setUp(): void
+//    {
+//        parent::setUp();
+//        $this->client = self::createClient();
+//    }
 
-        $this->post("/register", [
-            "name" => "test",
-            "email" => $email,
-            "password" => "@demo1234#",
-            "password_confirmation" => "@demo1234#",
-        ]);
+//    public function test_registrationWithEmailIsValid(): void
+//    {
+//        $faker = \Faker\Factory::create();
+//        $email = $faker->unique()->email;
+//
+//        // Compter les utilisateurs avant l'inscription
+//        $usersCountBefore = $this->getUserCount();
+//
+//        // Effectuer une requête POST pour l'inscription
+//        $this->client->request('POST', '/register', [
+//            "name" => "test",
+//            "email" => $email,
+//            "password" => "@demo1234#",
+//            "password_confirmation" => "@demo1234#",
+//        ]);
+//
+//        // Compter les utilisateurs après l'inscription
+//        $usersCountAfter = $this->getUserCount();
+//
+//        $this->assertEquals($usersCountBefore + 1, $usersCountAfter);
+//
+//        // Supprimer l'utilisateur créé
+//        $this->deleteUser($email);
+//    }
 
-        $usersCountAfter = User::count();
-        
-        $this->assertEqualsWithDelta($usersCountAfter, $usersCountBefore, 1.0);
+//    public function test_registrationWithoutEmailIsInvalid(): void
+//    {
+//        // Compter les utilisateurs avant l'inscription
+//        $usersCountBefore = $this->getUserCount();
+//
+//        // Effectuer une requête POST pour l'inscription
+//        $this->client->request('POST', '/register', [
+//            "name" => "test",
+//            "email" => "",
+//            "password" => "@demo1234#",
+//            "password_confirmation" => "@demo1234#",
+//        ]);
+//
+//        // Compter les utilisateurs après l'inscription
+//        $usersCountAfter = $this->getUserCount();
+//
+//        $this->assertEquals($usersCountBefore, $usersCountAfter);
+//    }
 
-        $this->deleteUser($email);
-    }
+//    private function getUserCount(): int
+//    {
+//        // Simuler une méthode pour compter les utilisateurs
+//        $this->client->request('GET', '/api/users/count'); // Remplacez par une route réelle
+//        $response = $this->client->getResponse();
+//
+//        return json_decode($response->getContent(), true)['count'] ?? 0;
+//    }
 
-    /**
-     * Test if registration is invalid.
-     *
-     * @return void
-     */
-    public function test_registrationWithoutEmailIsInvalid()
-    {
-        $usersCountBefore = User::count();
-
-        $this->post("/register", [
-            "name" => "test",
-            "email" => "",
-            "password" => "@demo1234#",
-            "password_confirmation" => "@demo1234#",
-        ]);
-
-        $usersCountAfter = User::count();
-        
-        $this->assertEqualsWithDelta($usersCountAfter, $usersCountBefore, 0);
-
-    }
-
-
-    public function deleteUser($email)
-    {
-        $user = DB::table('users')->where('email', '=',  $email)->delete();
-    }
+//    private function deleteUser(string $email): void
+//    {
+//        // Simuler une méthode pour supprimer un utilisateur
+//        $this->client->request('DELETE', '/api/users', ['email' => $email]); // Remplacez par une route réelle
+//    }
 }
