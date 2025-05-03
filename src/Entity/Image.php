@@ -24,12 +24,8 @@ class Image
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    #[ORM\ManyToOne(targetEntity: Product::class, cascade: ['persist', 'remove'])]
-    private Collection $products;
-
-    #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'productImages', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'image', cascade: ['persist', 'remove'])]
     private Collection $productImages;
-
     public function __construct()
     {
         $this->productImages = new ArrayCollection();
