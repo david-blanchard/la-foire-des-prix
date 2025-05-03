@@ -24,12 +24,15 @@ class Image
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'images')]
+    #[ORM\ManyToOne(targetEntity: Product::class, cascade: ['persist', 'remove'])]
     private Collection $products;
+
+    #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'productImages', cascade: ['persist', 'remove'])]
+    private Collection $productImages;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->productImages = new ArrayCollection();
     }
 
     // Getters et setters...
@@ -68,27 +71,47 @@ class Image
     }
 
     /**
-     * @return Collection<int, Product>
+     * @return Collection<int, ProductImage>
      */
-    public function getProducts(): Collection
+    public function getProductImages(): Collection
     {
-        return $this->products;
+        return $this->productImages;
     }
 
-    public function addProduct(Product $product): self
+    public function addImage(Product $product): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->addImage($this);
-        }
+        $productImage = new ProductImage();
+        $productImage->setImage($this);
+        $productImage->setProduct($product);
+
+        $this->addProductImage($productImage);
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function removeImage(Product $product): self
     {
-        if ($this->products->removeElement($product)) {
-            $product->removeImage($this);
+        $productImage = new ProductImage();
+        $productImage->setImage($this);
+        $productImage->setProduct($product);
+
+        $this->removeProductImage($productImage);
+
+        return $this;
+    }
+
+    public function addProductImage(ProductImage $productImage): self
+    {
+        if (!$this->productImages->contains($productImage)) {
+            $this->productImages[] = $productImage;
+        }
+        return $this;
+    }
+
+    public function removeProductImage(ProductImage $productImage): self
+    {
+        if ($this->productImages->contains($productImage)) {
+            $this->productImages->removeElement($productImage);
         }
 
         return $this;
