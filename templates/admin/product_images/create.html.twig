@@ -22,11 +22,11 @@
             <tr>
                 <th>
                     <span class="btn btn-outline-warning">
-                        {{ productId }}
+                        {{ product.id }}
                     </span>
                 </th>
-                <td>{{ productName }}</td>
-                <td>{{ brand }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ brand.name }}</td>
                 <td>
                     {% set size = 50 %}
                     {% for image in assocImages %}
@@ -36,9 +36,9 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <form method="POST" action="{{ path('admin_product_images_create') }}">
+                    <form method="POST" action="{{ path('admin_product_images_create', { 'id': product.id } ) }}">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('product_images') }}">
-                        <input type="hidden" name="product" value="{{ productId }}" />
+                        <input type="hidden" name="product" value="{{ product.id }}" />
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Image</label>

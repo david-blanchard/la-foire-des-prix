@@ -42,14 +42,16 @@ class ProductsController extends AbstractController
             $product = new Product();
             $product->setName($request->request->get('name'));
             $product->setDescription($request->request->get('description'));
-            $product->setMoreInfo($request->request->get('more_infos'));
+            $product->setMoreInfo($request->request->get('more_info'));
             $product->setPrice($request->request->get('price'));
             $product->setBrand($this->brandRepository->find($request->request->get('brand')));
 
             $entityManager->persist($product);
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_products_index')->with('success', "Le produit a bien été enregistré");
+            return $this->redirectToRoute('admin_products_index', [
+                'success' => "Le produit a bien été enregistré !",
+            ]);
         }
 
         $brands = $this->brandRepository->findAll();
@@ -59,19 +61,26 @@ class ProductsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/products/{id}/edit', name: 'admin_products_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Product $product, EntityManagerInterface $entityManager): Response
-    {
+    #[Route('/admin/products/{id}/edit', name: 'admin_products_edit', methods: ['GET', 'POST', 'PUT'])]
+    public function edit(
+        Request $request,
+        Product $product,
+        EntityManagerInterface $entityManager,
+    ): Response {
+
         if ($request->isMethod('POST')) {
             $product->setName($request->request->get('name'));
             $product->setDescription($request->request->get('description'));
-            $product->setMoreInfo($request->request->get('more_infos'));
+            $product->setMoreInfo($request->request->get('more_info'));
             $product->setPrice($request->request->get('price'));
             $product->setBrand($this->brandRepository->find($request->request->get('brand')));
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('admin_products_index')->with('success', "Le produit a bien été mis à jour");
+            return $this->redirectToRoute('admin_products_index', [
+                'success' => "Le produit a bien été mis à jour !",
+                'id' => $product->getId(),
+            ]);
         }
 
         $brands = $this->brandRepository->findAll();

@@ -6,66 +6,66 @@
         Ajouter un produit
     </h2>
     <form method="POST" action="{{ path('admin_products_create') }}">
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('products') }}">
         <div class="col-12">
             <div class="form-group">
-                <label>Nom</label>
-                <input type="text" name="name" class="form-control {{ errors.name ? 'is-invalid' : '' }}" placeholder="Nom du produit" />
-                {% if errors.name %}
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ errors.name }}</strong>
-                    </span>
-                {% endif %}
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Nom du produit" />
+{#                {% if errors.name %}#}
+{#                    <span class="invalid-feedback" role="alert">#}
+{#                        <strong>{{ errors.name }}</strong>#}
+{#                    </span>#}
+{#                {% endif %}#}
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
-                <label>Description</label>
-                <textarea name="description" class="form-control w-100 {{ errors.description ? 'is-invalid' : '' }}" placeholder="Décrivez le produit en un paragraphe de 1000 caractères maximum"></textarea>
-                {% if errors.description %}
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ errors.description }}</strong>
-                    </span>
-                {% endif %}
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control w-100" placeholder="Décrivez le produit en un paragraphe de 1000 caractères maximum"></textarea>
+{#                {% if errors.description %}#}
+{#                    <span class="invalid-feedback" role="alert">#}
+{#                        <strong>{{ errors.description }}</strong>#}
+{#                    </span>#}
+{#                {% endif %}#}
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
-                <label>Compléments d'information (liste énumérée)</label>
-                <textarea name="more_infos" class="form-control w-100" placeholder="Entrez de petites phrases séparées par des point-virgules"></textarea>
-                {% if errors.more_infos %}
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ errors.more_infos }}</strong>
-                    </span>
-                {% endif %}
+                <label for="more_info">Compléments d'information (liste énumérée)</label>
+                <textarea id="more_info" name="more_info" class="form-control w-100" placeholder="Entrez de petites phrases séparées par des point-virgules"></textarea>
+{#                {% if errors.more_infos %}#}
+{#                    <span class="invalid-feedback" role="alert">#}
+{#                        <strong>{{ errors.more_infos }}</strong>#}
+{#                    </span>#}
+{#                {% endif %}#}
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
-                <label>Prix</label>
-                <input type="text" name="price" class="form-control {{ errors.price ? 'is-invalid' : '' }}" placeholder="0,00" />
-                {% if errors.price %}
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ errors.price }}</strong>
-                    </span>
-                {% endif %}
+                <label for="price">Prix</label>
+                <input type="text" id="price" name="price" class="form-control" placeholder="0,00" />
+{#                {% if errors.price %}#}
+{#                    <span class="invalid-feedback" role="alert">#}
+{#                        <strong>{{ errors.price }}</strong>#}
+{#                    </span>#}
+{#                {% endif %}#}
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
-                <label>Marque</label>
-                <select name="brand" class="form-control">
+                <label for="brand">Marque</label>
+                <select id="brand" name="brand" class="form-control">
                 {% for brand in brands %}
                     <option value="{{ brand.id }}">
                         {{ brand.name }}
                     </option>
                 {% endfor %}
                 </select>
-                {% if errors.brand %}
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ errors.brand }}</strong>
-                    </span>
-                {% endif %}
+{#                {% if errors.brand %}#}
+{#                    <span class="invalid-feedback" role="alert">#}
+{#                        <strong>{{ errors.brand }}</strong>#}
+{#                    </span>#}
+{#                {% endif %}#}
             </div>
         </div>
         <div class="col-12">
