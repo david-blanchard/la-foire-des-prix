@@ -97,12 +97,8 @@ final class Version20250501121038 extends AbstractMigration
         $this->addSql(<<<'SQL'
             CREATE TABLE `user` (
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-              name VARCHAR(255) NOT NULL,
               email VARCHAR(180) NOT NULL,
               password VARCHAR(255) NOT NULL,
-              role VARCHAR(50) NOT NULL,
-              email_verified_at DATETIME DEFAULT NULL,
-              remember_token VARCHAR(100) DEFAULT NULL,
               roles JSON NOT NULL,
               is_verified TINYINT(1) NOT NULL,
               UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email),
