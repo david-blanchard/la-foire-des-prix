@@ -1,4 +1,6 @@
-class ProductPage {
+import Cart from "./cart.js"
+
+export default class ProductPage {
     constructor() {
         this.quantityComponent = document.querySelector(
             'span[id="quantity"][name="count"]'
@@ -68,11 +70,3 @@ class ProductPage {
 
 }
 
-(() => {
-    let page = new ProductPage();
-    page.bindImages();
-    page.attachImageEvents();
-    page.attachQuantityEvents();
-    page.attachAddToCartEvent();
-
-})();

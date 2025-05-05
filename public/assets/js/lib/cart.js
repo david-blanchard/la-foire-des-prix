@@ -1,4 +1,6 @@
-class Cart {
+import ServerSession from "./server-session.js"
+
+export default class Cart {
     constructor() {
         this.cartSumComponent = document.querySelector(
             'span[id="cart-cta"] span[id="cart-total"][name="price"]'
@@ -49,8 +51,3 @@ class Cart {
         )
     }
 }
-
-(() => {
-    const cart = new Cart()
-    cart.retrieve()
-})()

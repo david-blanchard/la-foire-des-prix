@@ -1,4 +1,4 @@
-class Search {
+export default class Search {
     constructor() {
         this.searchButton = document.querySelector(
             'form[id="form0"] button[id="submit-search-cta"]'
@@ -15,8 +15,3 @@ class Search {
         };
     }
 }
-
-(() => {
-    const search = new Search()
-    search.attachSearchEvent()
-})()
