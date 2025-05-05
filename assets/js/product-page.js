@@ -1,3 +1,5 @@
+import Cart from "./cart.js"
+
 export default class ProductPage {
     constructor() {
         this.quantityComponent = document.querySelector(

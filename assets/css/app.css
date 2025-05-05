@@ -1,11 +1,11 @@
 @font-face {
     font-family: "Montserrat";
-    src: url("/fonts/montserrat-regular.woff2") format("woff");
+    src: url("../fonts/montserrat-regular.woff2") format("woff");
 }
 
 @font-face {
     font-family: "Turbinado";
-    src: url("/fonts/turbinado-light.woff2") format("woff");
+    src: url("../fonts/turbinado-light.woff2") format("woff");
 }
 
 * {

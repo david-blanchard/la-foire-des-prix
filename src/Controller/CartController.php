@@ -29,7 +29,9 @@ final class CartController extends AbstractController
     #[Route('/store', name: 'cart_store', methods: ['POST'])]
     public function store(Request $request): JsonResponse
     {
-        $input = $request->request->all();
+        $json = $request->getContent();
+        $input = json_decode($json, true);
+
         $this->cartService->store($input);
         $data = $this->cartService->prepareViewFields();
 

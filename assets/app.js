@@ -1,7 +1,9 @@
 import "./styles/app.css";
-import Cart from "./lib/cart";
-import ProductPage from "./lib/product-page";
-import Search from "./lib/search";
+import "./js/vendor/bootstrap.bundle.min.js";
+import "./js/vendor/jquery.min.js";
+import Cart from "./js/cart.js";
+import ProductPage from "./js/product-page.js";
+import Search from "./js/search.js";
 
 const page = new ProductPage();
 page.bindImages();

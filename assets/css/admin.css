@@ -1,11 +1,11 @@
 @font-face {
     font-family: "Montserrat";
-    src: url("/fonts/montserrat-regular.woff2") format("woff");
+    src: url("../fonts/montserrat-regular.woff2") format("woff");
 }
 
 @font-face {
     font-family: "Turbinado";
-    src: url("/fonts/turbinado-light.woff2") format("woff");
+    src: url("../fonts/turbinado-light.woff2") format("woff");
 }
 
 * {
@@ -15,7 +15,7 @@
     font-family: "Montserrat", "Helvetica Neue", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
   }
-  
+
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
