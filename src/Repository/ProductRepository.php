@@ -19,7 +19,6 @@ class ProductRepository extends ServiceEntityRepository
         ManagerRegistry $registry,
         private EntityManagerInterface $em,
         private readonly CustomCacheInterface $cache,
-        private readonly ImageRepository $imagesRepository
     ) {
         parent::__construct($registry, Product::class);
     }
