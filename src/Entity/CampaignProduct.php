@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use App\Entity\Traits\Identifier;
+use App\Repository\CampaignProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
 #[ORM\Table(name: 'campaign_products')]
 class CampaignProduct
 {

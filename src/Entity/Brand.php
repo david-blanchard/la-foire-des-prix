@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
+use App\Repository\BrandRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: BrandRepository::class)]
 #[ORM\Table(name: 'brands')]
 class Brand
 {

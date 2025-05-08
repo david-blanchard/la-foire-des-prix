@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\Table(name: 'products')]
 class Product
 {
