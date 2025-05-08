@@ -9,7 +9,7 @@
         {% block title %}{% endblock %}
     </title>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
+    {{ vite_entry_link_tags('style') }}
     {% block stylesheets %}{% endblock %}
 
     {% block head_javascripts %}{% endblock %}
@@ -20,7 +20,7 @@
     {{ include('header/auth.html.twig') }}
     {% block children %}{% endblock %}
     {{ include('footer/app.html.twig') }}
-    <script type="module" src="{{ asset('assets/js/app.js') }}"></script>
+    {{ vite_entry_script_tags('app') }}
     {% block javascripts %}{% endblock %}
 </body>
 

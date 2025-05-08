@@ -1,6 +1,5 @@
 // import "./styles/app.css";
-import "./vendor/jquery.min.js";
-import "./vendor/bootstrap.bundle.min.js";
+import * as bootstrap from "bootstrap";
 import Cart from "./lib/cart.js";
 import ProductPage from "./lib/product-page.js";
 import Search from "./lib/search.js";

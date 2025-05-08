@@ -10,7 +10,7 @@
 
     {% block stylesheets %}{% endblock %}
 
-    <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
+    {{ vite_entry_link_tags('style') }}
     {% block head_javascripts %}{% endblock %}
 
     {% if app.session.flashbag.peekAll|length > 0 %}
@@ -25,7 +25,7 @@
     {{ include('header/admin.html.twig') }}
     {% block children %}{% endblock %}
     {{ include('footer/admin.html.twig') }}
-    <script type="module" src="{{ asset('assets/js/app.js') }}"></script>
+    {{ vite_entry_script_tags('app') }}
     {% block javascripts %}{% endblock %}
 </body>
 </html>
