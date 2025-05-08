@@ -9,17 +9,9 @@
         {% block title %}{% endblock %}
     </title>
 
-    <link rel="preload" as="font" type="font/woff2" href="{{ asset('assets/fonts/turbinado-light.woff2') }}" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="{{ asset('assets/fonts/montserrat-regular.woff2') }}" crossorigin>
-
-    <link rel="stylesheet" href="{{ asset('assets/css/vendor/font-awesome.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/vendor/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/footer.css') }}" />
     {% block stylesheets %}{% endblock %}
 
-    <script src="{{ asset('assets/js/vendor/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendor/bootstrap.bundle.min.js') }}"></script>
     {% block head_javascripts %}{% endblock %}
 
 </head>
