@@ -11,6 +11,10 @@
     src: url("../fonts/turbinado-light.woff2") format("woff");
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
     font-size: 14px;
 }

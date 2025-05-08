@@ -17,62 +17,62 @@ class ImagesFixture implements CustomFixtureInterface
     {
         $images = [
             [
-                'url' => "/assets/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-1.webp",
+                'url' => "/build/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-1.webp",
                 'alt' => self::IMAGE_LABEL_1,
                 'title' => "Veste en jean bleu cintrée manches longues pour femme, pas chère",
             ],
             [
-                'url' => "/assets/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-2.webp",
+                'url' => "/build/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-2.webp",
                 'alt' => self::IMAGE_LABEL_2,
                 'title' => "Veste en jean bleu cintrée manches longues pour femme, pas chère",
             ],
             [
-                'url' => "/assets/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-3.webp",
+                'url' => "/build/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-3.webp",
                 'alt' => self::IMAGE_LABEL_3,
                 'title' => "Veste en jean bleu cintrée manches longues pour femme, pas chère",
             ],
             [
-                'url' => "/assets/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-4.webp",
+                'url' => "/build/images/articles/veste-en-jean-cintree-manches-longues-femme-bleu-4.webp",
                 'alt' => self::IMAGE_LABEL_4,
                 'title' => "Veste en jean bleu cintrée manches longues pour femme, pas chère",
             ],
             [
-                'url' => "/assets/images/articles/robe-courte-eponge-jodie-reedition-1.webp",
+                'url' => "/build/images/articles/robe-courte-eponge-jodie-reedition-1.webp",
                 'alt' => "Robe courte éponge Jodie Réédition 1/5",
                 'title' => "Robe éponge courte pas chère Jodie Réédition",
             ],
             [
-                'url' => "/assets/images/articles/robe-courte-eponge-jodie-reedition-2.webp",
+                'url' => "/build/images/articles/robe-courte-eponge-jodie-reedition-2.webp",
                 'alt' => "Robe courte éponge Jodie Réédition 2/5",
                 'title' => "Robe éponge courte pas chère Jodie Réédition",
             ],
             [
-                'url' => "/assets/images/articles/robe-courte-eponge-jodie-reedition-3.webp",
+                'url' => "/build/images/articles/robe-courte-eponge-jodie-reedition-3.webp",
                 'alt' => "Robe courte éponge Jodie Réédition 3/5",
                 'title' => "Robe éponge courte pas chère Jodie Réédition",
             ],
             [
-                'url' => "/assets/images/articles/robe-courte-eponge-jodie-reedition-4.webp",
+                'url' => "/build/images/articles/robe-courte-eponge-jodie-reedition-4.webp",
                 'alt' => "Robe courte éponge Jodie Réédition 4/5",
                 'title' => "Robe éponge courte pas chère Jodie Réédition",
             ],
             [
-                'url' => "/assets/images/articles/robe-courte-eponge-jodie-reedition-5.webp",
+                'url' => "/build/images/articles/robe-courte-eponge-jodie-reedition-5.webp",
                 'alt' => "Robe courte éponge Jodie Réédition 5/5",
                 'title' => "Robe éponge courte pas chère Jodie Réédition",
             ],
             [
-                'url' => "/assets/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-1.webp",
+                'url' => "/build/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-1.webp",
                 'alt' => "T-shirt uni à bretelles noir maille élastique pour femme 1/3",
                 'title' => "T-shirt uni à bretelles noir pas cher maille élastique ",
             ],
             [
-                'url' => "/assets/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-2.webp",
+                'url' => "/build/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-2.webp",
                 'alt' => "T-shirt uni à bretelles noir maille élastique pour femme 2/3",
                 'title' => "T-shirt uni à bretelles noir pas cher maille élastique ",
             ],
             [
-                'url' => "/assets/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-3.webp",
+                'url' => "/build/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-3.webp",
                 'alt' => "T-shirt uni à bretelles noir maille élastique pour femme 3/3",
                 'title' => "T-shirt uni à bretelles noir pas cher maille élastique ",
             ],

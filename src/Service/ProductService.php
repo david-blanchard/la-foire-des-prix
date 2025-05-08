@@ -23,6 +23,7 @@ class ProductService implements ViewServiceInterface
      */
     public function prepareViewFields(?object $data = null): array
     {
+
         $discount = $this->productRepository->getProductDiscountById($data->getId());
         $props = [];
         $props['name'] = $data->getName();

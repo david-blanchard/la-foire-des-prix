@@ -32,7 +32,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findById(?int $productId = null): ?Product
     {
         if ($productId === null) {
-            $product = $this->findOneBy([]);
+            $product = $this->findAll()[0] ?? null;
         } else {
             $product = $this->find($productId);
         }
