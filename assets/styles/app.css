@@ -1,9 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@import "../css/vendor/bootstrap.min.css";
-@import "../css/vendor/font-awesome.min.css";
-@import "../css/app.css";
-@import "../css/footer.css";
-@import "../css/popin.css";
