@@ -16,8 +16,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use Identifier;
-    public const USER_ROLE = 'ROLE_USER';
-    public const ADMIN_ROLE = 'ROLE_ADMIN';
+    public const string USER_ROLE = 'ROLE_USER';
+    public const string ADMIN_ROLE = 'ROLE_ADMIN';
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;

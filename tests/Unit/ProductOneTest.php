@@ -54,7 +54,7 @@ class ProductOneTest extends KernelTestCase
     /**
      * Test si le prix de "Veste en jean" est de 37.99 euros
      */
-    public function test_productOnePriceIs_38_euros(): void
+    public function test_productOnePriceIs38Euros(): void
     {
         $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 

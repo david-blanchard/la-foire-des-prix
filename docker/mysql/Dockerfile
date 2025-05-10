@@ -1,4 +1,4 @@
-FROM mysql:8.0
+FROM mysql:8.0.42
 
 #COPY ./data/aydo_sandbox_2.sql /docker-entrypoint-initdb.d/01_aydo.sql
 COPY ./docker/mysql/etc/my.cnf /etc/my.cnf

@@ -30,7 +30,7 @@ class CampaignOneTest extends KernelTestCase
     /**
      * Test si la campagne de réduction de printemps est de 15%
      */
-    public function test_campaignOneDiscountRateIs_15_percents(): void
+    public function test_campaignOneDiscountRateIs15Percents(): void
     {
         $campaign = $this->entityManager->getRepository(Campaign::class)->findOneBy(['name' => CampaignsFixture::CAMPAIGN_LABEL_1]);
 

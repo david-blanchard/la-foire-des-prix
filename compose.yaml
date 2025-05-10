@@ -3,6 +3,12 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_SERVER_VERSION: ${MYSQL_SERVER_VERSION}
     volumes:
       - .:/var/www/html
     networks:
@@ -41,6 +47,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USERNAME}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_SERVER_VERSION: ${MYSQL_SERVER_VERSION}
     ports:
       - "3306:3306"
     volumes:
