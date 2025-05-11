@@ -72,8 +72,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(?array $roles): static
     {
+        if (null === $roles) {
+            $roles = [];
+        }
         // guarantee every user at least has ROLE_USER
         $roles[] = self::USER_ROLE;
 

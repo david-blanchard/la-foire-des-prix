@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250501121038 extends AbstractMigration
+final class Version20250511142207 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,8 +23,8 @@ final class Version20250501121038 extends AbstractMigration
         $this->addSql(<<<'SQL'
             CREATE TABLE brands (
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-              created_at DATETIME DEFAULT NULL,
-              updated_at DATETIME DEFAULT NULL,
+              created_at DATETIME NOT NULL,
+              updated_at DATETIME NOT NULL,
               name VARCHAR(255) NOT NULL,
               slug VARCHAR(255) DEFAULT NULL,
               UNIQUE INDEX UNIQ_7EA24434989D9B62 (slug),
@@ -49,8 +49,8 @@ final class Version20250501121038 extends AbstractMigration
               discount SMALLINT NOT NULL,
               name VARCHAR(255) NOT NULL,
               slug VARCHAR(255) DEFAULT NULL,
-              created_at DATETIME DEFAULT NULL,
-              updated_at DATETIME DEFAULT NULL,
+              created_at DATETIME NOT NULL,
+              updated_at DATETIME NOT NULL,
               UNIQUE INDEX UNIQ_E3737470989D9B62 (slug),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
@@ -61,8 +61,8 @@ final class Version20250501121038 extends AbstractMigration
               url VARCHAR(255) NOT NULL,
               alt VARCHAR(255) NOT NULL,
               title VARCHAR(255) NOT NULL,
-              created_at DATETIME DEFAULT NULL,
-              updated_at DATETIME DEFAULT NULL,
+              created_at DATETIME NOT NULL,
+              updated_at DATETIME NOT NULL,
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -71,8 +71,8 @@ final class Version20250501121038 extends AbstractMigration
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
               product_id BIGINT UNSIGNED NOT NULL,
               image_id BIGINT UNSIGNED NOT NULL,
-              created_at DATETIME DEFAULT NULL,
-              updated_at DATETIME DEFAULT NULL,
+              created_at DATETIME NOT NULL,
+              updated_at DATETIME NOT NULL,
               INDEX IDX_8263FFCE4584665A (product_id),
               INDEX IDX_8263FFCE3DA5256D (image_id),
               PRIMARY KEY(id)
@@ -87,8 +87,8 @@ final class Version20250501121038 extends AbstractMigration
               price DOUBLE PRECISION NOT NULL,
               name VARCHAR(255) NOT NULL,
               slug VARCHAR(255) DEFAULT NULL,
-              created_at DATETIME DEFAULT NULL,
-              updated_at DATETIME DEFAULT NULL,
+              created_at DATETIME NOT NULL,
+              updated_at DATETIME NOT NULL,
               UNIQUE INDEX UNIQ_B3BA5A5A989D9B62 (slug),
               INDEX IDX_B3BA5A5A44F5D008 (brand_id),
               PRIMARY KEY(id)
@@ -98,10 +98,25 @@ final class Version20250501121038 extends AbstractMigration
             CREATE TABLE `user` (
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
               email VARCHAR(180) NOT NULL,
-              password VARCHAR(255) NOT NULL,
               roles JSON NOT NULL,
+              password VARCHAR(255) NOT NULL,
               is_verified TINYINT(1) NOT NULL,
               UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email),
+              PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE messenger_messages (
+              id BIGINT AUTO_INCREMENT NOT NULL,
+              body LONGTEXT NOT NULL,
+              headers LONGTEXT NOT NULL,
+              queue_name VARCHAR(190) NOT NULL,
+              created_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+              available_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+              delivered_at DATETIME DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
+              INDEX IDX_75EA56E0FB7336F0 (queue_name),
+              INDEX IDX_75EA56E0E3BD61CE (available_at),
+              INDEX IDX_75EA56E016BA31DB (delivered_at),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -175,6 +190,9 @@ final class Version20250501121038 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE `user`
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP TABLE messenger_messages
         SQL);
     }
 }

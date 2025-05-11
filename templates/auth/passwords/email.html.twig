@@ -15,7 +15,7 @@
                     {% endif %}
 
                     <form method="POST" action="{{ path('password_email') }}">
-                        {{ csrf_token() }}
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('email') }}">
 
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ 'E-Mail Address'|trans }}</label>
