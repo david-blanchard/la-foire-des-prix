@@ -43,19 +43,19 @@ class ProductModelTest extends KernelTestCase
         $this->assertStringContainsString("toile", $product?->getName());
     }
 
-//    public function test_productPantalonWithoutImageIsDeleted(): void
-//    {
-//        $repository = $this->entityManager->getRepository(Product::class);
-//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
-//
-//        if ($product) {
-//            $this->entityManager->remove($product);
-//            $this->entityManager->flush();
-//        }
-//
-//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
-//        $this->assertNull($product);
-//    }
+    public function test_productPantalonWithoutImageIsDeleted(): void
+    {
+        $repository = $this->entityManager->getRepository(Product::class);
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+
+        if ($product) {
+            $this->entityManager->remove($product);
+            $this->entityManager->flush();
+        }
+
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+        $this->assertNull($product);
+    }
 
     public function test_productPantalonIsCreatedWithImages(): void
     {
@@ -97,17 +97,17 @@ class ProductModelTest extends KernelTestCase
         $this->assertCount(3, $images);
     }
 
-//    public function test_productPantalonWithImagesIsDeleted(): void
-//    {
-//        $repository = $this->entityManager->getRepository(Product::class);
-//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
-//
-//        if ($product) {
-//            $this->entityManager->remove($product);
-//            $this->entityManager->flush();
-//        }
-//
-//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
-//        $this->assertNull($product);
-//    }
+    public function test_productPantalonWithImagesIsDeleted(): void
+    {
+        $repository = $this->entityManager->getRepository(Product::class);
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+
+        if ($product) {
+            $this->entityManager->remove($product);
+            $this->entityManager->flush();
+        }
+
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+        $this->assertNull($product);
+    }
 }
