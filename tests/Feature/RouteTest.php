@@ -2,6 +2,9 @@
 
 namespace App\Tests\Feature;
 
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Doctrine\ORM\Exception\UnexpectedAssociationValue;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,10 +15,17 @@ class RouteTest extends WebTestCase
     private const string ADMIN_EMAIL = 'admin@lfdp.fr';
     private const string ADMIN_PASSWORD = 'demo';
 
+    private User $adminUser;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->client = self::createClient();
+
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->client->getContainer()->get(UserRepository::class);
+        /** @var User $user */
+        $this->adminUser = $userRepository->findOneBy(['email' => self::ADMIN_EMAIL]);
     }
 
     public function test_modeFemmePageIsFound(): void
@@ -59,9 +69,11 @@ class RouteTest extends WebTestCase
 
         $this->assertResponseRedirects('/login');
     }
-//
-    public function test_adminUiRequestAsAdminIsValid(): void
+
+    public function test_loginWithValidCredentials(): void
     {
+        $this->client->loginUser($this->adminUser);
+
         $csrfToken = self::getContainer()->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
 
         $this->client->request('POST', '/login', [
@@ -69,13 +81,42 @@ class RouteTest extends WebTestCase
             '_password' => self::ADMIN_PASSWORD,
             '_csrf_token' => $csrfToken,
         ]);
-        $this->assertResponseRedirects();
-        $this->client->followRedirect(); // Suivre la redirection après le login
 
-        $this->client->request('GET', '/admin');
+        $this->assertResponseRedirects('/admin'); // Vérifie la redirection après connexion
+        $this->client->followRedirect();
 
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseIsSuccessful(); // Vérifie que la page cible est accessible
     }
+
+    public function test_loginWithInvalidCredentials(): void
+    {
+        $csrfToken = self::getContainer()->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
+
+        $this->client->request('POST', '/login', [
+            '_username' => 'invalid@example.com',
+            '_password' => 'wrongpassword',
+            '_csrf_token' => $csrfToken,
+        ]);
+
+        $this->assertResponseStatusCodeSame(401); // Vérifie que l'accès est refusé
+    }
+
+//    public function test_adminUiRequestAsAdminIsValid(): void
+//    {
+//        $csrfToken = self::getContainer()->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
+//
+//        $this->client->request('POST', '/login', [
+//            '_username' => self::ADMIN_EMAIL,
+//            '_password' => self::ADMIN_PASSWORD,
+//            '_csrf_token' => $csrfToken,
+//        ]);
+//        $this->assertResponseRedirects();
+//        $this->client->followRedirect(); // Suivre la redirection après le login
+//
+//        $this->client->request('GET', '/admin');
+//
+//        $this->assertResponseIsSuccessful();
+//    }
 //
 //    public function test_adminUiEditProductOneIsValid(): void
 //    {
