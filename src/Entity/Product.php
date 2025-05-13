@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ORM\Table(name: 'products')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
 class Product
 {
 
@@ -37,6 +37,9 @@ class Product
 
     #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
     private Collection $productImages;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?BillLine $category = null;
 
     public function __construct()
     {
@@ -151,6 +154,18 @@ class Product
         if ($this->productImages->contains($productImage)) {
             $this->productImages->removeElement($productImage);
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?BillLine
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?BillLine $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

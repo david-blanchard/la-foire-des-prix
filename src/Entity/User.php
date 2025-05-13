@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Traits\Identifier;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -36,6 +38,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    /**
+     * @var Collection<int, Bill>
+     */
+    #[ORM\OneToMany(targetEntity: Bill::class, mappedBy: 'user')]
+    private Collection $bills;
+
+    public function __construct()
+    {
+        $this->bills = new ArrayCollection();
+    }
 
     public function getEmail(): ?string
     {
@@ -117,6 +130,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Bill>
+     */
+    public function getBills(): Collection
+    {
+        return $this->bills;
+    }
+
+    public function addBill(Bill $bill): static
+    {
+        if (!$this->bills->contains($bill)) {
+            $this->bills->add($bill);
+            $bill->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBill(Bill $bill): static
+    {
+        if ($this->bills->removeElement($bill)) {
+            // set the owning side to null (unless already changed)
+            if ($bill->getUser() === $this) {
+                $bill->setUser(null);
+            }
+        }
 
         return $this;
     }
