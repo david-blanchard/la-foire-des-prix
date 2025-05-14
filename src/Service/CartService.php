@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Repository\HomeProductRepository;
+use App\Repository\ClothProductRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface
@@ -10,7 +10,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     private Session $session;
 
     public function __construct(
-        private readonly HomeProductRepository $productRepository,
+        private readonly ClothProductRepository $productRepository,
         private readonly ProductService        $productService,
     ) {
         $this->session = new Session();
@@ -83,9 +83,9 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      */
     public function store(array $input): array
     {
-        $sessioncData = $this->retrieve();
+        $sessionData = $this->retrieve();
 
-        $this->reduce($sessioncData, $input);
+        $this->reduce($sessionData, $input);
         $sessionCart = $this->makeSessionObject();
         $this->session->set('cart', $sessionCart);
 
@@ -107,13 +107,13 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      * This allows computing the exact sum of a given product
      * accordingly to its actual quantity
      *
-     * @param array $sessioncData state of the cart in session
+     * @param array $sessionData state of the cart in session
      * @param array $input data to update the cart with
      */
-    public function reduce(array $sessioncData, ?array $input = null): void
+    public function reduce(array $sessionData, ?array $input = null): void
     {
 
-        $sessionContent = $sessioncData['content'];
+        $sessionContent = $sessionData['content'];
 
         foreach ($sessionContent as $key => $item) {
             if (is_array($item)) {

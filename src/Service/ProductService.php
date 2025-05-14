@@ -2,14 +2,14 @@
 
 namespace App\Service;
 
-use App\Repository\HomeProductRepository;
+use App\Repository\ClothProductRepository;
 use App\Repository\ImageRepository;
 
 class ProductService implements ViewServiceInterface
 {
     public function __construct(
         private readonly CustomCacheInterface  $cache,
-        private readonly HomeProductRepository $productRepository,
+        private readonly ClothProductRepository $productRepository,
         private readonly ImageRepository       $imagesRepository,
     ) {
     }
