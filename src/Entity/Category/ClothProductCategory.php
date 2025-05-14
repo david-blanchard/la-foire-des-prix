@@ -2,25 +2,25 @@
 
 namespace App\Entity\Category;
 
-use App\Entity\BillLine;
+use App\Entity\BillLineProduct;
 use App\Entity\Product\ClothProduct;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class ClothProductCategory extends BillLine implements ProductCategoryInterface
+class ClothProductCategory extends BillLineProduct implements ProductCategoryInterface
 {
 
-    private ClothProduct $product;
+    private ClothProduct $category;
 
-    public function getClothProduct(): ClothProduct
+    public function getCategory(): ClothProduct
     {
-        return $this->product;
+        return $this->category;
     }
 
-    public function setClothProduct(ClothProduct $product): static
+    public function setCategory(ClothProduct $category): static
     {
-        $this->product = $product;
+        $this->category = $category;
         return $this;
     }
 

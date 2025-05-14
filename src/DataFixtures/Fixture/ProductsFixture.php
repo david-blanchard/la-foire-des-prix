@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\Fixture;
 
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use Doctrine\Persistence\ObjectManager;
 
 class ProductsFixture implements CustomFixtureInterface
@@ -44,7 +44,7 @@ class ProductsFixture implements CustomFixtureInterface
         ];
 
         foreach ($products as $key => $data) {
-            $product = new Product();
+            $product = new ClothProduct();
             $product->setName($data['name']);
             $product->setDescription($data['description']);
             $product->setMoreInfo($data['more_infos']);

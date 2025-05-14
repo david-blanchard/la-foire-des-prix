@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Repository\ProductRepository;
+use App\Repository\HomeProductRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface
@@ -10,8 +10,8 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     private Session $session;
 
     public function __construct(
-        private readonly ProductRepository $productRepository,
-        private readonly ProductService    $productService,
+        private readonly HomeProductRepository $productRepository,
+        private readonly ProductService        $productService,
     ) {
         $this->session = new Session();
     }

@@ -3,21 +3,21 @@
 namespace App\Tests\Unit;
 
 use App\DataFixtures\Fixture\ProductsFixture;
-use App\Entity\Product;
-use App\Repository\ProductRepository;
+use App\Entity\Product\ClothProduct;
+use App\Repository\ClothProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ProductOneTest extends KernelTestCase
 {
-    private ProductRepository $productRepository;
+    private ClothProductRepository $productRepository;
 
 
     protected function setUp(): void
     {
         self::bootKernel();
         $entityManager = self::getContainer()->get(EntityManagerInterface::class);
-        $this->productRepository = $entityManager->getRepository(Product::class);
+        $this->productRepository = $entityManager->getRepository(ClothProduct::class);
     }
 
     /**

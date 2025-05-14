@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\Fixture\AdminFixture;
+use App\DataFixtures\Fixture\BillFixture;
 use App\DataFixtures\Fixture\BrandsFixture;
 use App\DataFixtures\Fixture\CampaignProductsFixture;
 use App\DataFixtures\Fixture\CampaignsFixture;
@@ -46,5 +47,8 @@ class DatabaseFixture extends Fixture
 
         $campaignProductsFixture = new CampaignProductsFixture();
         $campaignProductsFixture->execute($manager);
+
+        $billFixture = new BillFixture();
+        $billFixture->execute($manager);
     }
 }

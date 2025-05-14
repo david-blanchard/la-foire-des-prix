@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Product\ClothProduct;
 use App\Entity\Traits\Identifier;
 use App\Repository\ProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,18 +17,18 @@ class ProductImage
 
     #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private Product $product;
+    private ClothProduct $product;
 
     #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Image $image;
 
-    public function getProduct(): Product
+    public function getProduct(): ClothProduct
     {
         return $this->product;
     }
 
-    public function setProduct(Product $product): self
+    public function setProduct(ClothProduct $product): self
     {
         $this->product = $product;
         return $this;

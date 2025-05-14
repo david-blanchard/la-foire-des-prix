@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use App\Repository\BrandRepository;
-use App\Repository\ProductRepository;
+use App\Repository\ClothProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,8 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProductsController extends AbstractController
 {
     public function __construct(
-        private readonly ProductRepository $productRepository,
-        private readonly BrandRepository $brandRepository
+        private readonly ClothProductRepository $productRepository,
+        private readonly BrandRepository       $brandRepository
     ) {
     }
 
@@ -39,7 +39,7 @@ class ProductsController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
-            $product = new Product();
+            $product = new ClothProduct();
             $product->setName($request->request->get('name'));
             $product->setDescription($request->request->get('description'));
             $product->setMoreInfo($request->request->get('more_info'));
@@ -64,7 +64,7 @@ class ProductsController extends AbstractController
     #[Route('/admin/products/{id}/edit', name: 'admin_products_edit', methods: ['GET', 'POST', 'PUT'])]
     public function edit(
         Request $request,
-        Product $product,
+        ClothProduct $product,
         EntityManagerInterface $entityManager,
     ): Response {
 
@@ -92,7 +92,7 @@ class ProductsController extends AbstractController
     }
 
     #[Route('/admin/products/{id}/delete', name: 'admin_products_delete', methods: ['POST'])]
-    public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, ClothProduct $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
             $entityManager->remove($product);

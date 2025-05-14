@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Traits;
 
-use App\Entity\Traits\Classifier;
-use App\Entity\Traits\Identifier;
-use App\Repository\ProductRepository;
-use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Brand;
+use App\Entity\CampaignProduct;
+use App\Entity\Image;
+use App\Entity\ProductImage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-class Product
+trait Product
 {
-
     use Identifier;
     use Classifier;
     use TimestampableEntity;
@@ -37,9 +35,6 @@ class Product
 
     #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
     private Collection $productImages;
-
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?BillLine $category = null;
 
     public function __construct()
     {
@@ -154,18 +149,6 @@ class Product
         if ($this->productImages->contains($productImage)) {
             $this->productImages->removeElement($productImage);
         }
-
-        return $this;
-    }
-
-    public function getCategory(): ?BillLine
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?BillLine $category): static
-    {
-        $this->category = $category;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Product\ClothProduct;
 use App\Entity\Traits\Identifier;
 use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -75,7 +76,7 @@ class Image
         return $this->productImages;
     }
 
-    public function addImage(Product $product): self
+    public function addImage(ClothProduct $product): self
     {
         $productImage = new ProductImage();
         $productImage->setImage($this);
@@ -86,7 +87,7 @@ class Image
         return $this;
     }
 
-    public function removeImage(Product $product): self
+    public function removeImage(ClothProduct $product): self
     {
         $productImage = new ProductImage();
         $productImage->setImage($this);

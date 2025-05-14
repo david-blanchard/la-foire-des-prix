@@ -5,7 +5,7 @@ namespace App\Tests\Feature;
 use App\DataFixtures\Fixture\BrandsFixture;
 use App\DataFixtures\Fixture\ImagesFixture;
 use App\Entity\Image;
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -27,7 +27,7 @@ class ProductModelTest extends KernelTestCase
         $brandRepository = $this->entityManager->getRepository(\App\Entity\Brand::class);
         $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
 
-        $product = new Product();
+        $product = new ClothProduct();
         $product->setName(self::PRODUCT_NAME)
             ->setDescription("Pantalon été toile légère Blanc. Petites poches pratiques. Fermeture à boutons simili ivoire.")
             ->setMoreInfo("Lavage à 30°;100% coton")
@@ -37,7 +37,7 @@ class ProductModelTest extends KernelTestCase
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        $repository = $this->entityManager->getRepository(Product::class);
+        $repository = $this->entityManager->getRepository(ClothProduct::class);
         $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
 
         $this->assertStringContainsString("toile", $product?->getName());
@@ -62,7 +62,7 @@ class ProductModelTest extends KernelTestCase
         $brandRepository = $this->entityManager->getRepository(\App\Entity\Brand::class);
         $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
 
-        $product = new Product();
+        $product = new ClothProduct();
         $product->setName(self::PRODUCT_NAME)
             ->setDescription("Pantalon été toile légère Blanc. Petites poches pratiques. Fermeture à boutons simili ivoire.")
             ->setMoreInfo("Lavage à 30°;100% coton")
@@ -99,7 +99,7 @@ class ProductModelTest extends KernelTestCase
 
     public function test_productPantalonWithImagesIsDeleted(): void
     {
-        $repository = $this->entityManager->getRepository(Product::class);
+        $repository = $this->entityManager->getRepository(ClothProduct::class);
         $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
 
         if ($product) {

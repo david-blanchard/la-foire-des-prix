@@ -2,53 +2,45 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\Identifier;
 use App\Repository\BillRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: BillRepository::class)]
 class Bill
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use Identifier;
+    use TimestampableEntity;
 
     /**
-     * @var Collection<int, BillLine>
+     * @var Collection<int, BillLineProduct>
      */
-    #[ORM\ManyToMany(targetEntity: BillLine::class)]
+    #[ORM\OneToMany(mappedBy: 'bill', targetEntity: BillLineProduct::class, cascade: ['persist', 'remove'])]
     private Collection $billLines;
 
     #[ORM\Column]
     private ?float $vat = null;
-
-    #[ORM\Column]
-    private ?float $total = null;
 
     #[ORM\ManyToOne(inversedBy: 'bills')]
     private ?User $user = null;
 
     public function __construct()
     {
-        $this->billLine = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->billLines = new ArrayCollection();
     }
 
     /**
-     * @return Collection<int, BillLine>
+     * @return Collection<int, BillLineProduct>
      */
     public function getBillLines(): Collection
     {
         return $this->billLines;
     }
 
-    public function addBillLine(BillLine $product): static
+    public function addBillLine(BillLineProduct $product): static
     {
         if (!$this->billLines->contains($product)) {
             $this->billLines->add($product);
@@ -57,7 +49,7 @@ class Bill
         return $this;
     }
 
-    public function removeBillLine(BillLine $product): static
+    public function removeBillLine(BillLineProduct $product): static
     {
         $this->billLines->removeElement($product);
 
@@ -72,18 +64,6 @@ class Bill
     public function setVat(float $vat): static
     {
         $this->vat = $vat;
-
-        return $this;
-    }
-
-    public function getTotal(): ?float
-    {
-        return $this->total;
-    }
-
-    public function setTotal(float $total): static
-    {
-        $this->total = $total;
 
         return $this;
     }

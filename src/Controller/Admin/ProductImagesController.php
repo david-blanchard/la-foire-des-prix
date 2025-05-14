@@ -3,7 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Image;
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;
 use App\Repository\BrandRepository;
 use App\Repository\ImageRepository;
@@ -32,7 +32,7 @@ class ProductImagesController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $query = $entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery();
+        $query = $entityManager->getRepository(ClothProduct::class)->createQueryBuilder('p')->getQuery();
         $products = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
@@ -45,7 +45,7 @@ class ProductImagesController extends AbstractController
     }
 
     #[Route('/create/{id}', name: 'admin_product_images_create', methods: ['GET', 'POST'])]
-    public function create(Product $product, Request $request, EntityManagerInterface $entityManager): Response
+    public function create(ClothProduct $product, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
             $imageId = $request->request->get('image');

@@ -3,7 +3,7 @@
 namespace App\DataFixtures\Fixture;
 
 use App\Entity\Image;
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;
 use Doctrine\Persistence\ObjectManager;
 
@@ -19,7 +19,7 @@ class ProductImagesFixture implements CustomFixtureInterface
         ];
 
         $imageRepository = $manager->getRepository(Image::class);
-        $productRepository = $manager->getRepository(Product::class);
+        $productRepository = $manager->getRepository(ClothProduct::class);
 
         foreach ($productImages as $key => $data) {
             $product = $productRepository->findOneBy(['name' => $data['product']]) ?? null;

@@ -3,16 +3,16 @@
 namespace App\Repository;
 
 use App\Entity\CampaignProduct;
-use App\Entity\Product;
+use App\Entity\Product\HomeProduct;
 use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Product>
+ * @extends ServiceEntityRepository<HomeProduct>
  */
-class ProductRepository extends ServiceEntityRepository
+class HomeProductRepository extends ServiceEntityRepository
 {
 
     public function __construct(
@@ -20,7 +20,7 @@ class ProductRepository extends ServiceEntityRepository
         private EntityManagerInterface $em,
         private readonly CustomCacheInterface $cache,
     ) {
-        parent::__construct($registry, Product::class);
+        parent::__construct($registry, HomeProduct::class);
     }
 
     /**
@@ -29,7 +29,7 @@ class ProductRepository extends ServiceEntityRepository
      * @param integer|null $productId
      * @return array
      */
-    public function findById(?int $productId = null): ?Product
+    public function findById(?int $productId = null): ?HomeProduct
     {
         if ($productId === null) {
             $product = $this->findAll()[0] ?? null;
@@ -43,7 +43,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findBySlug(string $slug): array
     {
         return $this->em->createQueryBuilder()
-            ->from(Product::class, 'p')
+            ->from(HomeProduct::class, 'p')
             ->Where('p.slug LIKE :slugLike')
             ->setParameter('slugLike', '%' . $slug . '%')
             ->select('p')
@@ -51,7 +51,7 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findOneBySlug(string $slug): ?Product
+    public function findOneBySlug(string $slug): ?HomeProduct
     {
         $array = $this->findBySlug($slug);
 
@@ -95,7 +95,7 @@ class ProductRepository extends ServiceEntityRepository
         $this->cache->delete("product$productId");
     }
 
-    public function deletePropertiesFromCache(Product $product) : void
+    public function deletePropertiesFromCache(HomeProduct $product) : void
     {
         self::deletePropertiesFromCacheById($product->getId());
     }

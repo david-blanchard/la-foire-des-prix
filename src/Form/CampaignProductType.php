@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campaign;
 use App\Entity\CampaignProduct;
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +16,7 @@ class CampaignProductType extends AbstractType
     {
         $builder
             ->add('product', EntityType::class, [
-                'class' => Product::class,
+                'class' => ClothProduct::class,
                 'choice_label' => 'id',
             ])
             ->add('campaign', EntityType::class, [

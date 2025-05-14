@@ -2,23 +2,23 @@
 
 namespace App\Entity\Category;
 
-use App\Entity\BillLine;
+use App\Entity\BillLineProduct;
 use App\Entity\Product\FoodProduct;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class FoodProductCategory extends BillLine implements ProductCategoryInterface
+class FoodProductCategory extends BillLineProduct implements ProductCategoryInterface
 {
-    private FoodProduct $product;
+    private FoodProduct $category;
 
-    public function getFoodProduct(): FoodProduct
+    public function getCategory(): FoodProduct
     {
-        return $this->product;
+        return $this->category;
     }
-    public function setFoodProduct(FoodProduct $product): static
+    public function setCategory(FoodProduct $category): static
     {
-        $this->product = $product;
+        $this->category = $category;
         return $this;
     }
 

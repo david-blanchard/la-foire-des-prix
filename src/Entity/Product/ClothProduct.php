@@ -2,15 +2,18 @@
 
 namespace App\Entity\Product;
 
-use App\Entity\Category\ProductCategoryInterface;
-use App\Entity\Product;
-use App\Repository\ProductRepository;
+use App\Entity\ProductInterface;
+use App\Entity\Traits\Product;
+use App\Repository\ClothProductRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\Entity(repositoryClass: ClothProductRepository::class)]
 #[ORM\Table(name: 'cloth_products')]
-class ClothProduct extends Product implements ProductCategoryInterface
+class ClothProduct implements ProductInterface
 {
+    use Product;
+
     public function getCategoryName(): string
     {
         return 'Clothes';
