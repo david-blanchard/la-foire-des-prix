@@ -16,7 +16,7 @@ class ProductsController extends AbstractController
 {
     public function __construct(
         private readonly ClothProductRepository $productRepository,
-        private readonly BrandRepository       $brandRepository
+        private readonly BrandRepository $brandRepository,
     ) {
     }
 
@@ -50,7 +50,7 @@ class ProductsController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_products_index', [
-                'success' => "Le produit a bien été enregistré !",
+                'success' => 'Le produit a bien été enregistré !',
             ]);
         }
 
@@ -67,7 +67,6 @@ class ProductsController extends AbstractController
         ClothProduct $product,
         EntityManagerInterface $entityManager,
     ): Response {
-
         if ($request->isMethod('POST')) {
             $product->setName($request->request->get('name'));
             $product->setDescription($request->request->get('description'));
@@ -78,7 +77,7 @@ class ProductsController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_products_index', [
-                'success' => "Le produit a bien été mis à jour !",
+                'success' => 'Le produit a bien été mis à jour !',
                 'id' => $product->getId(),
             ]);
         }
@@ -94,11 +93,13 @@ class ProductsController extends AbstractController
     #[Route('/admin/products/{id}/delete', name: 'admin_products_delete', methods: ['POST'])]
     public function delete(Request $request, ClothProduct $product, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager->remove($product);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('admin_products_index')->with('success', "Le produit a bien été supprimé");
+        return $this->redirectToRoute('admin_products_index', [
+            'success' => 'Le produit a bien été supprimé !',
+        ]);
     }
 }

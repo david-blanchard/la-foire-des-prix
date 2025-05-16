@@ -12,7 +12,6 @@ class ProductOneTest extends KernelTestCase
 {
     private ClothProductRepository $productRepository;
 
-
     protected function setUp(): void
     {
         self::bootKernel();
@@ -21,20 +20,19 @@ class ProductOneTest extends KernelTestCase
     }
 
     /**
-     * Test si un produit avec l'ID 1 existe
+     * Test si un produit avec l'ID 1 existe.
      */
-    public function test_productOneExists(): void
+    public function testProductOneExists(): void
     {
-
         $product1 = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
         $this->assertNotNull($product1);
     }
 
     /**
-     * Test si le nom du produit 1 est "Veste en jean"
+     * Test si le nom du produit 1 est "Veste en jean".
      */
-    public function test_productOneIsVesteEnJean(): void
+    public function testProductOneIsVesteEnJean(): void
     {
         $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
@@ -42,9 +40,9 @@ class ProductOneTest extends KernelTestCase
     }
 
     /**
-     * Test si le nom du produit 1 ne contient pas "Robe"
+     * Test si le nom du produit 1 ne contient pas "Robe".
      */
-    public function test_productOneIsNotRobe(): void
+    public function testProductOneIsNotRobe(): void
     {
         $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
@@ -52,9 +50,9 @@ class ProductOneTest extends KernelTestCase
     }
 
     /**
-     * Test si le prix de "Veste en jean" est de 37.99 euros
+     * Test si le prix de "Veste en jean" est de 37.99 euros.
      */
-    public function test_productOnePriceIs38Euros(): void
+    public function testProductOnePriceIs38Euros(): void
     {
         $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 

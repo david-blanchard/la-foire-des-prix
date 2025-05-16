@@ -11,13 +11,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CampaignProductsRepository extends ServiceEntityRepository
 {
-
     public function __construct(
         ManagerRegistry $registry,
     ) {
         parent::__construct($registry, CampaignProduct::class);
     }
 
+    /**
+     * @return CampaignProduct[]
+     */
     public function getAll(): array
     {
         return $this->findAll();
@@ -27,5 +29,4 @@ class CampaignProductsRepository extends ServiceEntityRepository
     {
         return $this->find($id);
     }
-
 }

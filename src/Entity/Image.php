@@ -26,8 +26,12 @@ class Image
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
+    /**
+     * @var Collection<int, ProductImage> $productImages
+     */
     #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'image', cascade: ['persist', 'remove'])]
     private Collection $productImages;
+
     public function __construct()
     {
         $this->productImages = new ArrayCollection();
@@ -43,6 +47,7 @@ class Image
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -54,6 +59,7 @@ class Image
     public function setAlt(string $alt): self
     {
         $this->alt = $alt;
+
         return $this;
     }
 
@@ -65,6 +71,7 @@ class Image
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -103,6 +110,7 @@ class Image
         if (!$this->productImages->contains($productImage)) {
             $this->productImages[] = $productImage;
         }
+
         return $this;
     }
 

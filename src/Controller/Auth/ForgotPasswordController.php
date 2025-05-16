@@ -2,16 +2,24 @@
 
 namespace App\Controller\Auth;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ForgotPasswordController extends AbstractController
 {
+    /**
+     * @param UserProviderInterface<User> $userProvider
+     *
+     * @throws \Random\RandomException
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     */
     #[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET', 'POST'])]
     public function forgotPassword(Request $request, MailerInterface $mailer, UserProviderInterface $userProvider): Response
     {
@@ -20,16 +28,19 @@ class ForgotPasswordController extends AbstractController
 
             // Find the user by email
             $user = $userProvider->loadUserByIdentifier($email);
-            if (!$user) {
-                $this->addFlash('error', 'No user found with this email address.');
-                return $this->redirectToRoute('app_forgot_password');
-            }
+            /**
+             * if ($user !== null) {
+             * $this->addFlash('error', 'No user found with this email address.');.
+             *
+             * return $this->redirectToRoute('app_forgot_password');
+             * }
+             */
 
             // Generate a password reset token (you can use a service for this)
             $resetToken = bin2hex(random_bytes(32));
 
             // Send the reset email
-            $resetUrl = $this->generateUrl('app_reset_password', ['token' => $resetToken], true);
+            $resetUrl = $this->generateUrl('app_reset_password', ['token' => $resetToken], UrlGeneratorInterface::ABSOLUTE_URL);
             $emailMessage = (new Email())
                 ->from('no-reply@example.com')
                 ->to($email)
@@ -39,6 +50,7 @@ class ForgotPasswordController extends AbstractController
             $mailer->send($emailMessage);
 
             $this->addFlash('success', 'A password reset link has been sent to your email address.');
+
             return $this->redirectToRoute('app_forgot_password');
         }
 

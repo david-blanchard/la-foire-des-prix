@@ -31,7 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
@@ -44,6 +44,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Bill::class, mappedBy: 'user')]
     private Collection $bills;
+
+    private ?string $verificationToken = null;
 
     public function __construct()
     {
@@ -85,7 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(?array $roles): static
+    public function setRoles(?array $roles = []): static
     {
         if (null === $roles) {
             $roles = [];
@@ -162,5 +164,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function setVerificationToken(?string $token): void
+    {
+        $this->verificationToken = $token;
+    }
+
+    public function getVerificationToken(): ?string
+    {
+        return $this->verificationToken;
     }
 }

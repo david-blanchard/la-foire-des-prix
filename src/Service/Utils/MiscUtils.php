@@ -10,10 +10,9 @@ final class MiscUtils
 
     public static function formatPrice(float|int $price): string
     {
-
-        $result = str_replace(".", ",", "" . round($price, 2) . "");
-        if($result === "0") {
-            $result = "0,00";
+        $result = str_replace('.', ',', ''.round($price, 2));
+        if ('0' === $result) {
+            $result = '0,00';
         }
 
         return $result;

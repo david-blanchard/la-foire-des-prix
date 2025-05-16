@@ -3,7 +3,6 @@
 namespace App\DataFixtures\Fixture;
 
 use App\Entity\Brand;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 class BrandsFixture implements CustomFixtureInterface

@@ -16,6 +16,17 @@ class BillRepository extends ServiceEntityRepository
         parent::__construct($registry, Bill::class);
     }
 
+    #[\Override]
+    public function findOneBy(array $criteria, ?array $orderBy = null): Bill
+    {
+        $bill = parent::findOneBy($criteria, $orderBy);
+        if (null === $bill) {
+            throw new \RuntimeException('Bill not found');
+        }
+
+        return $bill;
+    }
+
     //    /**
     //     * @return Bill[] Returns an array of Bill objects
     //     */

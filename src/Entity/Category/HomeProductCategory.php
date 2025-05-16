@@ -20,6 +20,7 @@ class HomeProductCategory extends BillLineProduct implements ProductCategoryInte
     public function setCategory(HomeProduct $category): static
     {
         $this->category = $category;
+
         return $this;
     }
 
@@ -27,5 +28,4 @@ class HomeProductCategory extends BillLineProduct implements ProductCategoryInte
     {
         return 'Home';
     }
-
 }

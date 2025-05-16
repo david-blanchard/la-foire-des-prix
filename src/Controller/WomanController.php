@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Product\ClothProduct;
 use App\Repository\ClothProductRepository;
 use App\Service\CartService;
 use App\Service\ProductService;
@@ -15,8 +14,8 @@ class WomanController extends AbstractController
 {
     public function __construct(
         private readonly ClothProductRepository $productRepository,
-        private readonly CartService           $cartService,
-        private readonly ProductService        $productService,
+        private readonly CartService $cartService,
+        private readonly ProductService $productService,
     ) {
     }
 
@@ -25,8 +24,8 @@ class WomanController extends AbstractController
     {
         // Attempt to fetch properties from a cache by ID
         $props = $this->productRepository->getPropertiesFromCacheById(-1);
-        if ($props !== null) {
-            return $this->render('home/index.html.twig', $props);
+        if (null !== $props) {
+            return $this->render('woman/index.html.twig', $props);
         }
 
         // Fetch attributes and convert them to properties
@@ -49,14 +48,14 @@ class WomanController extends AbstractController
     {
         // Attempt to fetch properties from a cache by slug
         $props = $this->productRepository->getPropertiesFromCacheBySlug($slug);
-        if ($props !== null) {
+        if (null !== $props) {
             return $this->render('woman/index.html.twig', $props);
         }
 
         // Fetch the product by slug
         $product = $this->productRepository->findOneBySlug($slug);
 
-        if ($product === null) {
+        if (null === $product) {
             throw $this->createNotFoundException('Product not found.');
         }
 

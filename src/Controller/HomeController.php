@@ -13,7 +13,6 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home', methods: ['GET'])]
     public function index(): Response
     {
-        return new RedirectResponse('/mode-femme/' );
+        return new RedirectResponse('/mode-femme/');
     }
-
 }

@@ -7,10 +7,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class VerificationController extends AbstractController
 {
@@ -28,6 +28,7 @@ class VerificationController extends AbstractController
         // Check if the token matches the user's verification token
         if ($user->getVerificationToken() !== $verificationToken) {
             $this->addFlash('error', 'Invalid verification token.');
+
             return $this->redirectToRoute('home');
         }
 
@@ -37,6 +38,7 @@ class VerificationController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Your email has been successfully verified.');
+
         return $this->redirectToRoute('home');
     }
 
@@ -55,7 +57,7 @@ class VerificationController extends AbstractController
         $entityManager->flush();
 
         // Send the verification email
-        $verificationUrl = $this->generateUrl('app_verify_email', ['token' => $verificationToken], true);
+        $verificationUrl = $this->generateUrl('app_verify_email', ['token' => $verificationToken], UrlGeneratorInterface::ABSOLUTE_URL);
         $email = (new Email())
             ->from('no-reply@example.com')
             ->to($user->getEmail())
@@ -65,6 +67,7 @@ class VerificationController extends AbstractController
         $mailer->send($email);
 
         $this->addFlash('success', 'A new verification email has been sent to your email address.');
+
         return $this->redirectToRoute('home');
     }
 }

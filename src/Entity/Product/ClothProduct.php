@@ -7,7 +7,6 @@ use App\Entity\Traits\Product;
 use App\Repository\ClothProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-
 #[ORM\Entity(repositoryClass: ClothProductRepository::class)]
 #[ORM\Table(name: 'cloth_products')]
 class ClothProduct implements ProductInterface

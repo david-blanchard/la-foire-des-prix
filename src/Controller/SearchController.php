@@ -15,8 +15,8 @@ class SearchController extends AbstractController
 {
     public function __construct(
         private readonly HomeProductRepository $productRepository,
-        private readonly CartService           $cartService,
-        private readonly ProductService        $productService,
+        private readonly CartService $cartService,
+        private readonly ProductService $productService,
     ) {
     }
 
@@ -24,18 +24,16 @@ class SearchController extends AbstractController
     public function index(string $slug): Response
     {
         try {
-
-
             // Attempt to fetch properties from a cache by slug
             $props = $this->productRepository->getPropertiesFromCacheBySlug($slug);
-            if ($props !== null) {
+            if (null !== $props) {
                 return $this->render('search/index.html.twig', $props);
             }
 
             // Fetch the product by slug
             $product = $this->productRepository->findOneBySlug($slug);
 
-            if ($product === null) {
+            if (null === $product) {
                 throw $this->createNotFoundException('Product not found.');
             }
 
@@ -52,19 +50,21 @@ class SearchController extends AbstractController
                 ...$props,
                 ...$cartFields,
             ]);
-
-        } catch(NotFoundHttpException $notFoundHttpException) {
+        } catch (NotFoundHttpException $notFoundHttpException) {
             // Handle the exception if needed
             $cartFields = $this->cartService->prepareViewFields();
 
             return $this->render('errors/404.html.twig', [
                 ...$cartFields,
             ]);
-        } catch(\Throwable $throwable) {
+        } catch (\Throwable $throwable) {
+            // Handle the exception if needed
+            $cartFields = $this->cartService->prepareViewFields();
 
+            return $this->render('errors/500.html.twig', [
+                ...$cartFields,
+                'error' => $throwable->getMessage(),
+            ]);
         }
-
-
-
     }
 }

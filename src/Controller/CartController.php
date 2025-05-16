@@ -16,7 +16,7 @@ final class CartController extends AbstractController
     ) {
     }
 
-    #[Route('/retrieve', name: 'cart_retrieve', methods: ['POST'] )]
+    #[Route('/retrieve', name: 'cart_retrieve', methods: ['POST'])]
     public function retrieve(): JsonResponse
     {
         $sessionData = $this->cartService->retrieve();

@@ -3,9 +3,7 @@
 namespace App\Twig\Runtime;
 
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionFactory;
 use Twig\Extension\RuntimeExtensionInterface;
-
 
 class IsAdminRuntime implements RuntimeExtensionInterface
 {

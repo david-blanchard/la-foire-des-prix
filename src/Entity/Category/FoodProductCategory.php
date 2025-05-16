@@ -16,9 +16,11 @@ class FoodProductCategory extends BillLineProduct implements ProductCategoryInte
     {
         return $this->category;
     }
+
     public function setCategory(FoodProduct $category): static
     {
         $this->category = $category;
+
         return $this;
     }
 
@@ -26,5 +28,4 @@ class FoodProductCategory extends BillLineProduct implements ProductCategoryInte
     {
         return 'Food';
     }
-
 }

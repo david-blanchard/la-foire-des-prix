@@ -18,12 +18,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProductImagesController extends AbstractController
 {
     public function __construct(
-        private BrandRepository $brandRepository,
-        private ImageRepository $imageRepository
+        private readonly BrandRepository $brandRepository,
+        private readonly ImageRepository $imageRepository,
     ) {
     }
 
-    #[Route( name: 'admin_product_images_index', methods: ['GET'])]
+    #[Route(name: 'admin_product_images_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -75,7 +75,7 @@ class ProductImagesController extends AbstractController
     #[Route('/{id}/delete', name: 'admin_product_images_delete', methods: ['POST'])]
     public function delete(ProductImage $productImage, Request $request, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $productImage->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$productImage->getId(), $request->request->get('_token'))) {
             $entityManager->remove($productImage);
             $entityManager->flush();
         }

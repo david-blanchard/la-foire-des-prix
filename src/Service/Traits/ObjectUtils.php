@@ -4,21 +4,23 @@ namespace App\Service\Traits;
 
 trait ObjectUtils
 {
+    /**
+     * @param array<int|string, mixed> $data
+     */
     public static function toObject(array $data): object
     {
-        $result = null;
-
         $json = json_encode($data);
-        $result = json_decode($json);
 
-        return $result;
+        return json_decode($json);
     }
 
+    /**
+     * @return array<int|string, mixed>
+     */
     public static function toArray(object $data): array
     {
         $json = json_encode($data);
-        $result = json_decode($json, JSON_OBJECT_AS_ARRAY);
 
-        return $result;
+        return json_decode($json, true);
     }
 }

@@ -30,9 +30,15 @@ trait Product
     #[ORM\JoinColumn(nullable: false)]
     private Brand $brand;
 
+    /**
+     * @var Collection<int, CampaignProduct> $campaignProducts
+     */
     #[ORM\OneToMany(targetEntity: CampaignProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
     private Collection $campaignProducts;
 
+    /**
+     * @var Collection<int, ProductImage> $productImages
+     */
     #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
     private Collection $productImages;
 
@@ -50,6 +56,7 @@ trait Product
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -61,6 +68,7 @@ trait Product
     public function setMoreInfo(?string $moreInfo): self
     {
         $this->moreInfo = $moreInfo;
+
         return $this;
     }
 
@@ -72,6 +80,7 @@ trait Product
     public function setPrice(float $price): self
     {
         $this->price = $price;
+
         return $this;
     }
 
@@ -83,6 +92,7 @@ trait Product
     public function setBrand(Brand $brand): self
     {
         $this->brand = $brand;
+
         return $this;
     }
 
@@ -97,6 +107,7 @@ trait Product
             $this->campaignProducts[] = $campaignProduct;
             $campaignProduct->setProduct($this);
         }
+
         return $this;
     }
 
@@ -141,6 +152,7 @@ trait Product
         if (!$this->productImages->contains($productImage)) {
             $this->productImages[] = $productImage;
         }
+
         return $this;
     }
 

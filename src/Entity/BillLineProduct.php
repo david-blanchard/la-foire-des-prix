@@ -24,10 +24,10 @@ class BillLineProduct
     use Classifier;
 
     #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
-    private string $productId;
+    private int $productId;
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    private string $quantity;
+    private int $quantity;
 
     #[ORM\ManyToOne(inversedBy: 'billLines')]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,9 +41,11 @@ class BillLineProduct
     {
         return $this->productId;
     }
+
     public function setProductId(int $productId): self
     {
         $this->productId = $productId;
+
         return $this;
     }
 
@@ -51,9 +53,11 @@ class BillLineProduct
     {
         return $this->quantity;
     }
+
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
+
         return $this;
     }
 
@@ -61,9 +65,11 @@ class BillLineProduct
     {
         return $this->bill;
     }
+
     public function setBill(Bill $bill): self
     {
         $this->bill = $bill;
+
         return $this;
     }
 }

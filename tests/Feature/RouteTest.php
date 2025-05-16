@@ -4,7 +4,6 @@ namespace App\Tests\Feature;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\Exception\UnexpectedAssociationValue;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -24,53 +23,53 @@ class RouteTest extends WebTestCase
 
         /** @var UserRepository $userRepository */
         $userRepository = $this->client->getContainer()->get(UserRepository::class);
-        /** @var User $user */
+        /* @var User $user */
         $this->adminUser = $userRepository->findOneBy(['email' => self::ADMIN_EMAIL]);
     }
 
-    public function test_modeFemmePageIsFound(): void
+    public function testModeFemmePageIsFound(): void
     {
         $this->client->request('GET', '/mode-femme/');
 
         $this->assertResponseIsSuccessful();
     }
 
-    public function test_modeFemmePageWithValidSlugVesteIsFound(): void
+    public function testModeFemmePageWithValidSlugVesteIsFound(): void
     {
         $this->client->request('GET', '/mode-femme/veste');
 
         $this->assertResponseIsSuccessful();
     }
 
-    public function test_modeFemmePageWithValidSlugRobeIsFound(): void
+    public function testModeFemmePageWithValidSlugRobeIsFound(): void
     {
         $this->client->request('GET', '/mode-femme/robe');
 
         $this->assertResponseIsSuccessful();
     }
 
-    public function test_modeFemmePageWithValidSlugMailleIsFound(): void
+    public function testModeFemmePageWithValidSlugMailleIsFound(): void
     {
         $this->client->request('GET', '/mode-femme/maille');
 
         $this->assertResponseIsSuccessful();
     }
 
-    public function test_modeFemmePageWithInvalidSlugPantalonIs404(): void
+    public function testModeFemmePageWithInvalidSlugPantalonIs404(): void
     {
         $this->client->request('GET', '/mode-femme/pantalon');
 
         $this->assertResponseStatusCodeSame(404);
     }
-//
-    public function test_adminUiRedirectToLoginAsGuest(): void
+
+    public function testAdminUiRedirectToLoginAsGuest(): void
     {
         $this->client->request('GET', '/admin');
 
         $this->assertResponseRedirects('/login');
     }
 
-    public function test_loginWithValidCredentials(): void
+    public function testLoginWithValidCredentials(): void
     {
         $this->client->loginUser($this->adminUser);
 
@@ -88,7 +87,7 @@ class RouteTest extends WebTestCase
         $this->assertResponseIsSuccessful(); // Vérifie que la page cible est accessible
     }
 
-    public function test_loginWithInvalidCredentials(): void
+    public function testLoginWithInvalidCredentials(): void
     {
         $csrfToken = self::getContainer()->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
 
@@ -101,42 +100,42 @@ class RouteTest extends WebTestCase
         $this->assertResponseStatusCodeSame(401); // Vérifie que l'accès est refusé
     }
 
-//    public function test_adminUiRequestAsAdminIsValid(): void
-//    {
-//        $csrfToken = self::getContainer()->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
-//
-//        $this->client->request('POST', '/login', [
-//            '_username' => self::ADMIN_EMAIL,
-//            '_password' => self::ADMIN_PASSWORD,
-//            '_csrf_token' => $csrfToken,
-//        ]);
-//        $this->assertResponseRedirects();
-//        $this->client->followRedirect(); // Suivre la redirection après le login
-//
-//        $this->client->request('GET', '/admin');
-//
-//        $this->assertResponseIsSuccessful();
-//    }
-//
-//    public function test_adminUiEditProductOneIsValid(): void
-//    {
-//        $this->client = self::createClient([], [
-//            'email' => self::ADMIN_EMAIL,
-//            'password'   => self::ADMIN_PASSWORD,
-//        ]);
-//        $this->client->request('POST', '/admin/products/1/edit');
-//
-//        $this->assertResponseIsSuccessful();
-//    }
-//
-//    public function test_adminUiInvalidCredentials(): void
-//    {
-//        $this->client = self::createClient([], [
-//            'email' => 'invalid@example.com',
-//            'password'   => 'wrongpassword',
-//        ]);
-//        $this->client->request('POST', '/admin/');
-//
-//        $this->assertResponseStatusCodeSame(401);
-//    }
+    //    public function test_adminUiRequestAsAdminIsValid(): void
+    //    {
+    //        $csrfToken = self::getContainer()->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
+    //
+    //        $this->client->request('POST', '/login', [
+    //            '_username' => self::ADMIN_EMAIL,
+    //            '_password' => self::ADMIN_PASSWORD,
+    //            '_csrf_token' => $csrfToken,
+    //        ]);
+    //        $this->assertResponseRedirects();
+    //        $this->client->followRedirect(); // Suivre la redirection après le login
+    //
+    //        $this->client->request('GET', '/admin');
+    //
+    //        $this->assertResponseIsSuccessful();
+    //    }
+    //
+    //    public function test_adminUiEditProductOneIsValid(): void
+    //    {
+    //        $this->client = self::createClient([], [
+    //            'email' => self::ADMIN_EMAIL,
+    //            'password'   => self::ADMIN_PASSWORD,
+    //        ]);
+    //        $this->client->request('POST', '/admin/products/1/edit');
+    //
+    //        $this->assertResponseIsSuccessful();
+    //    }
+    //
+    //    public function test_adminUiInvalidCredentials(): void
+    //    {
+    //        $this->client = self::createClient([], [
+    //            'email' => 'invalid@example.com',
+    //            'password'   => 'wrongpassword',
+    //        ]);
+    //        $this->client->request('POST', '/admin/');
+    //
+    //        $this->assertResponseStatusCodeSame(401);
+    //    }
 }

@@ -5,10 +5,9 @@ namespace App\Entity;
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
 use App\Repository\CampaignRepository;
-use DateTimeImmutable;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: CampaignRepository::class)]
@@ -20,15 +19,18 @@ class Campaign
     use TimestampableEntity;
 
     #[ORM\Column(type: 'date_immutable')]
-    private DateTimeImmutable $startsAt;
+    private \DateTimeImmutable $startsAt;
 
     #[ORM\Column(type: 'date_immutable')]
-    private DateTimeImmutable $endsAt;
+    private \DateTimeImmutable $endsAt;
 
     #[ORM\Column(type: 'smallint')]
     private int $discount;
 
-    #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: CampaignProduct::class, cascade: ['persist', 'remove'])]
+    /**
+     * @var Collection<int, CampaignProduct> $campaignProducts
+     */
+    #[ORM\OneToMany(targetEntity: CampaignProduct::class, mappedBy: 'campaign', cascade: ['persist', 'remove'])]
     private Collection $campaignProducts;
 
     public function __construct()
@@ -36,25 +38,27 @@ class Campaign
         $this->campaignProducts = new ArrayCollection();
     }
 
-    public function getStartsAt(): DateTimeImmutable
+    public function getStartsAt(): \DateTimeImmutable
     {
         return $this->startsAt;
     }
 
-    public function setStartsAt(DateTimeImmutable $start): self
+    public function setStartsAt(\DateTimeImmutable $start): self
     {
         $this->startsAt = $start;
+
         return $this;
     }
 
-    public function getEndsAt(): DateTimeImmutable
+    public function getEndsAt(): \DateTimeImmutable
     {
         return $this->endsAt;
     }
 
-    public function setEndsAt(DateTimeImmutable $end): self
+    public function setEndsAt(\DateTimeImmutable $end): self
     {
         $this->endsAt = $end;
+
         return $this;
     }
 
@@ -66,9 +70,13 @@ class Campaign
     public function setDiscount(int $discount): self
     {
         $this->discount = $discount;
+
         return $this;
     }
 
+    /**
+     * @return Collection<int, CampaignProduct>
+     */
     public function getCampaignProducts(): Collection
     {
         return $this->campaignProducts;
@@ -80,6 +88,7 @@ class Campaign
             $this->campaignProducts[] = $campaignProduct;
             $campaignProduct->setCampaign($this);
         }
+
         return $this;
     }
 

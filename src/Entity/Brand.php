@@ -15,12 +15,14 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Table(name: 'brands')]
 class Brand
 {
-
     use Identifier;
     use TimestampableEntity;
     use Classifier;
 
-    #[ORM\OneToMany(mappedBy: 'brand', targetEntity: ClothProduct::class, cascade: ['persist', 'remove'])]
+    /**
+     * @var Collection<int, ClothProduct> $products
+     */
+    #[ORM\OneToMany(targetEntity: ClothProduct::class, mappedBy: 'brand', cascade: ['persist', 'remove'])]
     private Collection $products;
 
     public function __construct()
@@ -36,6 +38,9 @@ class Brand
         return $this->products;
     }
 
+    /**
+     * @return $this
+     */
     public function addProduct(ClothProduct $product): self
     {
         if (!$this->products->contains($product)) {

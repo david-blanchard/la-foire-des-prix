@@ -20,5 +20,4 @@ return [
         'path' => './assets/css/app.cc',
         'entrypoint' => true,
     ],
-
 ];

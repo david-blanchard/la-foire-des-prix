@@ -7,7 +7,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class CampaignsFixture implements CustomFixtureInterface
 {
-    public const string CAMPAIGN_LABEL_1 = "Les Promos Printanières";
+    public const string CAMPAIGN_LABEL_1 = 'Les Promos Printanières';
     public const string CAMPAIGN_LABEL_2 = "C'est l'Été sur les Prix !";
 
     public function execute(ObjectManager $manager): void
@@ -15,14 +15,14 @@ class CampaignsFixture implements CustomFixtureInterface
         $campaigns = [
             [
                 'name' => self::CAMPAIGN_LABEL_1,
-                'start' => new \DateTimeImmutable("2021-03-21"),
-                'end' => new \DateTimeImmutable("2021-06-20"),
+                'start' => new \DateTimeImmutable('2021-03-21'),
+                'end' => new \DateTimeImmutable('2021-06-20'),
                 'discount' => 15,
             ],
             [
                 'name' => self::CAMPAIGN_LABEL_2,
-                'start' => new \DateTimeImmutable("2021-06-21"),
-                'end' => new \DateTimeImmutable("2021-09-20"),
+                'start' => new \DateTimeImmutable('2021-06-21'),
+                'end' => new \DateTimeImmutable('2021-09-20'),
                 'discount' => 25,
             ],
         ];

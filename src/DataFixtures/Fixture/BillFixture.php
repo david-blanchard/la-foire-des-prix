@@ -10,7 +10,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class BillFixture implements CustomFixtureInterface
 {
-
     public function execute(ObjectManager $manager): void
     {
         // TODO: Implement execute() method.
@@ -59,6 +58,5 @@ class BillFixture implements CustomFixtureInterface
         $manager->persist($bill);
 
         $manager->flush();
-
     }
 }

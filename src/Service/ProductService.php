@@ -5,24 +5,23 @@ namespace App\Service;
 use App\Repository\ClothProductRepository;
 use App\Repository\ImageRepository;
 
-class ProductService implements ViewServiceInterface
+readonly class ProductService implements ViewServiceInterface
 {
     public function __construct(
-        private readonly CustomCacheInterface  $cache,
-        private readonly ClothProductRepository $productRepository,
-        private readonly ImageRepository       $imagesRepository,
+        private ClothProductRepository $productRepository,
+        private ImageRepository $imagesRepository,
     ) {
     }
 
     /**
-     * Transform ProductInfo attributes in properties usable in views
+     * Transform ProductInfo attributes in properties usable in views.
      *
-     * @param array $props
-     * @return array
+     * @param object|null $data ProductInfo object
+     *
+     * @return array<string, mixed> Array of properties
      */
     public function prepareViewFields(?object $data = null): array
     {
-
         $discount = $this->productRepository->getProductDiscountById($data->getId());
         $props = [];
         $props['name'] = $data->getName();
@@ -44,10 +43,11 @@ class ProductService implements ViewServiceInterface
     }
 
     /**
-     * Compute the discounted price of a product
+     * Compute the discounted price of a product.
      *
-     * @param float|string $price Original price
-     * @param int $percent Discount percentage
+     * @param float|string $price   Original price
+     * @param int          $percent Discount percentage
+     *
      * @return float Discounted price
      */
     public function computeDiscount(float|string $price, int $percent): float
@@ -59,10 +59,11 @@ class ProductService implements ViewServiceInterface
     }
 
     /**
-     * Transform a string of more info into an array
+     * Transform a string of more info into an array.
      *
-     * @param string|null $phrase
-     * @return array
+     * @param string|null $phrase String of more info
+     *
+     * @return array<string> Array of more info
      */
     public function grabMoreInfo(?string $phrase): array
     {

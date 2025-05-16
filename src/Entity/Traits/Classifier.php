@@ -35,5 +35,4 @@ trait Classifier
     {
         $this->slug = $slug;
     }
-
 }
