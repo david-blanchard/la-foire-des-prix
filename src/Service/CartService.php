@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Repository\ProductRepository;
+use App\Repository\ClothProductRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface
@@ -10,8 +10,8 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     private Session $session;
 
     public function __construct(
-        private readonly ProductRepository $productRepository,
-        private readonly ProductService    $productService,
+        private readonly ClothProductRepository $productRepository,
+        private readonly ProductService $productService,
     ) {
         $this->session = new Session();
     }
@@ -23,9 +23,9 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
 
     /**
      * Compute the total sum of the cart
-     * accordingly to the product prices and quantities
+     * accordingly to the product prices and quantities.
      *
-     * @return array optimized cart form
+     * @return array<string, int|float> optimized cart form
      */
     public function computeCart(): array
     {
@@ -38,7 +38,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
             if (is_array($quantity)) {
                 continue;
             }
-            $product = $this->productRepository->findById($productId);
+            $product = $this->productRepository->findById((int) $productId);
             $props = $this->productService->prepareViewFields($product);
             $price = $props['discount'] ?: floatval($props['price']);
 
@@ -46,29 +46,32 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
             $total += $price * $quantity;
         }
 
-        $result = [
-            "quantity" => $numberOfProducts,
-            "total" => $total,
+        return [
+            'quantity' => $numberOfProducts,
+            'total' => $total,
         ];
-
-        return $result;
     }
 
+    /**
+     * Add a product to the cart.
+     *
+     * @param array<string, mixed> $data
+     */
     public function prepare(?array $data = null): void
     {
         $this->reduce($data);
     }
 
     /**
-     * Retrieve the cart state from the given session data
+     * Retrieve the cart state from the given session data.
      *
-     * @return array a state of the cart in session
+     * @return array<string, mixed> a state of the cart in session
      */
     public function retrieve(): array
     {
         $result = $this->makeEmptySessionObject();
 
-        $result = $this->session->get('cart') ?: $result;
+        $result = $this->session->get('cart') ?? $result;
         if (is_object($result)) {
             $result = self::toArray($result);
         }
@@ -77,25 +80,23 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     }
 
     /**
-     * Store the cart in session
+     * Store the cart in session.
      *
-     * @return array an optimized session object
+     * @param array<mixed> $input data to update the cart with
      */
-    public function store(array $input): array
+    public function store(array $input): void
     {
-        $sessioncData = $this->retrieve();
+        $sessionData = $this->retrieve();
 
-        $this->reduce($sessioncData, $input);
+        $this->reduce($sessionData, $input);
         $sessionCart = $this->makeSessionObject();
         $this->session->set('cart', $sessionCart);
-
-        return $sessionCart;
     }
 
     /**
-     * Make the Cart object ready to dipslay
+     * Make the Cart object ready to dipslay.
      *
-     * @return array a simplified form of the Cart
+     * @return array<string, mixed> a simplified form of the Cart
      */
     public function prepareViewFields(?object $data = null): array
     {
@@ -105,15 +106,18 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     /**
      * Optimize the cart so that there's no duplicate key
      * This allows computing the exact sum of a given product
-     * accordingly to its actual quantity
+     * accordingly to its actual quantity.
      *
-     * @param array $sessioncData state of the cart in session
-     * @param array $input data to update the cart with
+     * @param array<string, mixed>      $sessionData state of the cart in session
+     * @param array<string, mixed>|null $input       data to update the cart with
      */
-    public function reduce(array $sessioncData, ?array $input = null): void
+    public function reduce(?array $sessionData, ?array $input = null): void
     {
+        if (null === $sessionData) {
+            return;
+        }
 
-        $sessionContent = $sessioncData['content'];
+        $sessionContent = $sessionData['content'];
 
         foreach ($sessionContent as $key => $item) {
             if (is_array($item)) {
@@ -122,13 +126,12 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
             $this->add(["$key" => $item]);
         }
 
-        if ($input === null) {
+        if (null === $input) {
             return;
         }
 
-        $content = $input["type"] === "Cart" && isset($input["content"]) ?  $input["content"] : null;
-        if ($content !== null) {
-
+        $content = 'Cart' === $input['type'] && isset($input['content']) ? $input['content'] : null;
+        if (null !== $content) {
             foreach ($content as $item) {
                 $this->add(["{$item['productId']}" => $item['quantity']]);
             }
@@ -136,9 +139,9 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     }
 
     /**
-     * Used to make a default object
+     * Used to make a default object.
      *
-     * @return array
+     * @return array<string, mixed> a default object
      */
     public function makeEmptySessionObject(): array
     {
@@ -148,9 +151,8 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
                 [
                     'productId' => 0,
                     'quantity' => 0,
-                ]
-            ]
+                ],
+            ],
         ];
     }
-
 }

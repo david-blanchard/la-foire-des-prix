@@ -2,39 +2,37 @@
 
 namespace App\Tests\Unit;
 
-use App\DataFixtures\Fixture\ProductsFixture;
-use App\Entity\Product;
-use App\Repository\ProductRepository;
+use App\DataFixtures\ProductsFixture;
+use App\Entity\Product\ClothProduct;
+use App\Repository\ClothProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ProductOneTest extends KernelTestCase
 {
-    private ProductRepository $productRepository;
-
+    private ClothProductRepository $productRepository;
 
     protected function setUp(): void
     {
         self::bootKernel();
         $entityManager = self::getContainer()->get(EntityManagerInterface::class);
-        $this->productRepository = $entityManager->getRepository(Product::class);
+        $this->productRepository = $entityManager->getRepository(ClothProduct::class);
     }
 
     /**
-     * Test si un produit avec l'ID 1 existe
+     * Test si un produit avec l'ID 1 existe.
      */
-    public function test_productOneExists(): void
+    public function testProductOneExists(): void
     {
-
         $product1 = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
         $this->assertNotNull($product1);
     }
 
     /**
-     * Test si le nom du produit 1 est "Veste en jean"
+     * Test si le nom du produit 1 est "Veste en jean".
      */
-    public function test_productOneIsVesteEnJean(): void
+    public function testProductOneIsVesteEnJean(): void
     {
         $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
@@ -42,9 +40,9 @@ class ProductOneTest extends KernelTestCase
     }
 
     /**
-     * Test si le nom du produit 1 ne contient pas "Robe"
+     * Test si le nom du produit 1 ne contient pas "Robe".
      */
-    public function test_productOneIsNotRobe(): void
+    public function testProductOneIsNotRobe(): void
     {
         $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 
@@ -52,9 +50,9 @@ class ProductOneTest extends KernelTestCase
     }
 
     /**
-     * Test si le prix de "Veste en jean" est de 37.99 euros
+     * Test si le prix de "Veste en jean" est de 37.99 euros.
      */
-    public function test_productOnePriceIs_38_euros(): void
+    public function testProductOnePriceIs38Euros(): void
     {
         $product = $this->productRepository->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
 

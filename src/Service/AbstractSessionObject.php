@@ -8,33 +8,51 @@ abstract class AbstractSessionObject implements SessionObjectInterface
 {
     use ObjectUtils;
 
-    private $list = [];
+    /**
+     * @var array<int|string, mixed>
+     */
+    private array $list = [];
 
+    /**
+     * @return array<string, mixed>
+     */
     abstract public function prepareViewFields(): array;
 
-    abstract static public function type(): string;
+    abstract public static function type(): string;
 
+    /**
+     * @param array<int|string, mixed>|null $data
+     */
     abstract public function prepare(?array $data = null): void;
 
+    /**
+     * @return array<int|string, mixed>
+     */
     public function items(): array
     {
         return $this->list;
     }
 
+    /**
+     * @param array<int|string, mixed> $item
+     */
     public function add(array $item): void
     {
         $key = key($item);
         $value = $item[$key];
 
-        $oldValue = isset($this->list[$key]) ? $this->list[$key] : null;
+        $oldValue = $this->list[$key] ?? null;
 
-        if ($oldValue !== null && is_numeric($oldValue) && is_numeric($value)) {
+        if (is_numeric($oldValue) && is_numeric($value)) {
             $value = $oldValue + $value;
         }
 
         $this->list[$key] = $value;
     }
 
+    /**
+     * @param array<int|string, mixed> $item
+     */
     public function update(array $item): void
     {
         [$key, $value] = $item;
@@ -59,22 +77,22 @@ abstract class AbstractSessionObject implements SessionObjectInterface
     }
 
     /**
-     * Convert a session object to its session form
+     * Convert a session object to its session form.
      *
-     * @return array session data
+     * @return array<string, mixed> session data
      */
     public function makeSessionObject(): array
     {
         return [
-            "type" => $this->type(),
-            "content" => $this->items(),
+            'type' => $this->type(),
+            'content' => $this->items(),
         ];
     }
 
     /**
-     * Used to make a default object
+     * Used to make a default object.
      *
-     * @return array
+     * @return array<string, mixed> session data
      */
     abstract public function makeEmptySessionObject(): array;
 }

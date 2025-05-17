@@ -9,7 +9,7 @@
 
                 <div class="card-body">
                     <form method="POST" action="{{ path('password_update') }}">
-                        {{ csrf_token() }}
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('reset') }}">
 
                         <input type="hidden" name="token" value="{{ token }}">
 

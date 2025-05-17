@@ -1,18 +1,29 @@
+@import "font-awesome";
+@import "bootstrap";
+
 @font-face {
     font-family: "Montserrat";
-    src: url("/fonts/montserrat-regular.woff2") format("woff");
+    src: url("../fonts/montserrat-regular.woff2") format("woff");
 }
 
 @font-face {
     font-family: "Turbinado";
-    src: url("/fonts/turbinado-light.woff2") format("woff");
+    src: url("../fonts/turbinado-light.woff2") format("woff");
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    font-size: 14px;
 }
 
 * {
     -webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
     border-radius: 0 !important;
-    font-family: "Montserrat", "Times";
+    font-family: "Montserrat", "Times", serif;
 }
 
 .bd-placeholder-img {
@@ -29,6 +40,9 @@
     }
 }
 @media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
     .bd-placeholder-img-lg {
         font-size: 3.5rem;
     }
@@ -78,4 +92,16 @@
     #form0 {
         width: 100%;
     }
+}
+
+.container {
+    max-width: 960px;
+}
+
+.pricing-header {
+    max-width: 700px;
+}
+
+.card-deck .card {
+    min-width: 220px;
 }

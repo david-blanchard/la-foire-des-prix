@@ -11,7 +11,7 @@
                     {{ 'Please confirm your password before continuing.'|trans }}
 
                     <form method="POST" action="{{ path('password_confirm') }}">
-                        {{ csrf_token() }}
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('confirm_password') }}">
 
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ 'Password'|trans }}</label>

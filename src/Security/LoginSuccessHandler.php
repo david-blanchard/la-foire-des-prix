@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerI
 class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
     public function __construct(
-        private RouterInterface $router
+        private readonly RouterInterface $router,
     ) {
     }
 
@@ -20,7 +20,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
     {
         $user = $token->getUser();
 
-        if (in_array(User::ADMIN_ROLE, $user->getRoles(), true)) {
+        if (in_array(User::ADMIN_ROLE, $user?->getRoles() ?? [], true)) {
             return new RedirectResponse($this->router->generate('admin_dashboard'));
         }
 

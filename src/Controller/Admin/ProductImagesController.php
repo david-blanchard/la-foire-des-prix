@@ -3,9 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Image;
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;
 use App\Repository\BrandRepository;
+use App\Repository\ClothProductImageRepository;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -18,12 +19,13 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProductImagesController extends AbstractController
 {
     public function __construct(
-        private BrandRepository $brandRepository,
-        private ImageRepository $imageRepository
+        private readonly BrandRepository $brandRepository,
+        private readonly ClothProductImageRepository $productImageRepository,
+        private readonly ImageRepository $imageRepository,
     ) {
     }
 
-    #[Route( name: 'admin_product_images_index', methods: ['GET'])]
+    #[Route(name: 'admin_product_images_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -32,7 +34,7 @@ class ProductImagesController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $query = $entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery();
+        $query = $entityManager->getRepository(ClothProduct::class)->createQueryBuilder('p')->getQuery();
         $products = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
@@ -45,14 +47,15 @@ class ProductImagesController extends AbstractController
     }
 
     #[Route('/create/{id}', name: 'admin_product_images_create', methods: ['GET', 'POST'])]
-    public function create(Product $product, Request $request, EntityManagerInterface $entityManager): Response
+    public function create(ClothProduct $product, Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
             $imageId = $request->request->get('image');
             $image = $entityManager->getRepository(Image::class)->find($imageId);
 
-            $productImage = new ProductImage();
+            $productImage = new Image\ClothProductImage();
             $productImage->setProduct($product);
+            $productImage->setProductId($product->getId());
             $productImage->setImage($image);
 
             $entityManager->persist($productImage);
@@ -62,7 +65,7 @@ class ProductImagesController extends AbstractController
         }
 
         $brand = $this->brandRepository->find($product->getBrand());
-        $associatedImages = $this->imageRepository->findByProductId($product->getId());
+        $associatedImages = $this->productImageRepository->findByProductId((int) $product->getId());
 
         return $this->render('admin/product_images/create.html.twig', [
             'product' => $product,
@@ -75,7 +78,7 @@ class ProductImagesController extends AbstractController
     #[Route('/{id}/delete', name: 'admin_product_images_delete', methods: ['POST'])]
     public function delete(ProductImage $productImage, Request $request, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $productImage->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$productImage->getId(), (string) $request->request->get('_token'))) {
             $entityManager->remove($productImage);
             $entityManager->flush();
         }

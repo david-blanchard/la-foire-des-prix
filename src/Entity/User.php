@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\Identifier;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,16 +17,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    public const USER_ROLE = 'ROLE_USER';
-    public const ADMIN_ROLE = 'ROLE_ADMIN';
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use Identifier;
+    public const string USER_ROLE = 'ROLE_USER';
+    public const string ADMIN_ROLE = 'ROLE_ADMIN';
 
     #[ORM\Column(length: 180)]
-    private ?string $email = null;
+    private string $email = 'john.doe@example.com';
 
     /**
      * @var list<string> The user roles
@@ -32,7 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
@@ -40,12 +39,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
-    public function getId(): ?int
+    /**
+     * @var Collection<int, Bill>
+     */
+    #[ORM\OneToMany(targetEntity: Bill::class, mappedBy: 'user')]
+    private Collection $bills;
+
+    private ?string $verificationToken = null;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->bills = new ArrayCollection();
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -58,13 +65,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
      * @see UserInterface
+     *
+     * @return string
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -80,12 +87,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles = []): static
     {
-        // guarantee every user at least has ROLE_USER
         $roles[] = self::USER_ROLE;
-
-        $this->roles = array_unique($roles);
+        $unique = array_unique($roles);
+        $this->roles = array_values($unique);
 
         return $this;
     }
@@ -124,5 +130,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Bill>
+     */
+    public function getBills(): Collection
+    {
+        return $this->bills;
+    }
+
+    public function addBill(Bill $bill): static
+    {
+        if (!$this->bills->contains($bill)) {
+            $this->bills->add($bill);
+            $bill->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBill(Bill $bill): static
+    {
+        if ($this->bills->removeElement($bill)) {
+            // set the owning side to null (unless already changed)
+            if ($bill->getUser() === $this) {
+                $bill->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setVerificationToken(?string $token): void
+    {
+        $this->verificationToken = $token;
+    }
+
+    public function getVerificationToken(): ?string
+    {
+        return $this->verificationToken;
     }
 }

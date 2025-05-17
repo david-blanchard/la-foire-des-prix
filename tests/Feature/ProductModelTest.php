@@ -2,10 +2,10 @@
 
 namespace App\Tests\Feature;
 
-use App\DataFixtures\Fixture\BrandsFixture;
-use App\DataFixtures\Fixture\ImagesFixture;
+use App\DataFixtures\BrandsFixture;
+use App\DataFixtures\ImagesFixture;
 use App\Entity\Image;
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -22,50 +22,50 @@ class ProductModelTest extends KernelTestCase
         $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
     }
 
-    public function test_productPantalonIsCreatedWithoutImage(): void
+    public function testProductPantalonIsCreatedWithoutImage(): void
     {
         $brandRepository = $this->entityManager->getRepository(\App\Entity\Brand::class);
         $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
 
-        $product = new Product();
+        $product = new ClothProduct();
         $product->setName(self::PRODUCT_NAME)
-            ->setDescription("Pantalon été toile légère Blanc. Petites poches pratiques. Fermeture à boutons simili ivoire.")
-            ->setMoreInfo("Lavage à 30°;100% coton")
+            ->setDescription('Pantalon été toile légère Blanc. Petites poches pratiques. Fermeture à boutons simili ivoire.')
+            ->setMoreInfo('Lavage à 30°;100% coton')
             ->setPrice(29.9)
             ->setBrand($brand3);
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        $repository = $this->entityManager->getRepository(Product::class);
+        $repository = $this->entityManager->getRepository(ClothProduct::class);
         $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
 
-        $this->assertStringContainsString("toile", $product?->getName());
+        $this->assertStringContainsString('toile', $product?->getName());
     }
 
-//    public function test_productPantalonWithoutImageIsDeleted(): void
-//    {
-//        $repository = $this->entityManager->getRepository(Product::class);
-//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
-//
-//        if ($product) {
-//            $this->entityManager->remove($product);
-//            $this->entityManager->flush();
-//        }
-//
-//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
-//        $this->assertNull($product);
-//    }
+    public function testProductPantalonWithoutImageIsDeleted(): void
+    {
+        $repository = $this->entityManager->getRepository(ClothProduct::class);
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
 
-    public function test_productPantalonIsCreatedWithImages(): void
+        if ($product) {
+            $this->entityManager->remove($product);
+            $this->entityManager->flush();
+        }
+
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+        $this->assertNull($product);
+    }
+
+    public function testProductPantalonIsCreatedWithImages(): void
     {
         $brandRepository = $this->entityManager->getRepository(\App\Entity\Brand::class);
         $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
 
-        $product = new Product();
+        $product = new ClothProduct();
         $product->setName(self::PRODUCT_NAME)
-            ->setDescription("Pantalon été toile légère Blanc. Petites poches pratiques. Fermeture à boutons simili ivoire.")
-            ->setMoreInfo("Lavage à 30°;100% coton")
+            ->setDescription('Pantalon été toile légère Blanc. Petites poches pratiques. Fermeture à boutons simili ivoire.')
+            ->setMoreInfo('Lavage à 30°;100% coton')
             ->setPrice(29.9)
             ->setBrand($brand3);
 
@@ -97,17 +97,17 @@ class ProductModelTest extends KernelTestCase
         $this->assertCount(3, $images);
     }
 
-//    public function test_productPantalonWithImagesIsDeleted(): void
-//    {
-//        $repository = $this->entityManager->getRepository(Product::class);
-//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
-//
-//        if ($product) {
-//            $this->entityManager->remove($product);
-//            $this->entityManager->flush();
-//        }
-//
-//        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
-//        $this->assertNull($product);
-//    }
+    public function testProductPantalonWithImagesIsDeleted(): void
+    {
+        $repository = $this->entityManager->getRepository(ClothProduct::class);
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+
+        if ($product) {
+            $this->entityManager->remove($product);
+            $this->entityManager->flush();
+        }
+
+        $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
+        $this->assertNull($product);
+    }
 }

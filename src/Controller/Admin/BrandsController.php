@@ -39,7 +39,7 @@ class BrandsController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
-            $brandName = $request->request->get('name');
+            $brandName = (string) $request->request->get('name');
 
             $brand = new Brand();
             $brand->setName($brandName);
@@ -57,7 +57,7 @@ class BrandsController extends AbstractController
     public function edit(Request $request, Brand $brand, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
-            $brandName = $request->request->get('name');
+            $brandName = (string) $request->request->get('name');
             $brand->setName($brandName);
 
             $entityManager->flush();
@@ -73,7 +73,7 @@ class BrandsController extends AbstractController
     #[Route('/admin/brands/{id}/delete', name: 'admin_brands_delete', methods: ['POST'])]
     public function delete(Request $request, Brand $brand, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $brand->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$brand->getId(), (string) $request->request->get('_token'))) {
             $entityManager->remove($brand);
             $entityManager->flush();
         }
@@ -81,16 +81,16 @@ class BrandsController extends AbstractController
         return $this->redirectToRoute('admin_brands_index');
     }
 
-//    public function store(Request $request)
-//    {
-//        // Validation des données
-//        $validated = $request->validate([
-//            'name' => 'required|string|max:255|unique:brands,name',
-//        ]);
-//
-//        // Création de la marque
-//        Brands::create($validated);
-//
-//        return redirect()->route('brands.index');
-//    }
+    //    public function store(Request $request)
+    //    {
+    //        // Validation des données
+    //        $validated = $request->validate([
+    //            'name' => 'required|string|max:255|unique:brands,name',
+    //        ]);
+    //
+    //        // Création de la marque
+    //        Brands::create($validated);
+    //
+    //        return redirect()->route('brands.index');
+    //    }
 }

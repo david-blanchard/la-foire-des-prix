@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use App\Entity\Image\ClothProductImage;
+use App\Entity\Product\ClothProduct;
 use App\Entity\Traits\Identifier;
+use App\Repository\ImageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[ORM\Table(name: 'images')]
 class Image
 {
@@ -24,8 +27,12 @@ class Image
     #[ORM\Column(type: 'string', length: 255)]
     private string $title;
 
+    /**
+     * @var Collection<int, ProductImage> $productImages
+     */
     #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'image', cascade: ['persist', 'remove'])]
     private Collection $productImages;
+
     public function __construct()
     {
         $this->productImages = new ArrayCollection();
@@ -41,6 +48,7 @@ class Image
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -52,6 +60,7 @@ class Image
     public function setAlt(string $alt): self
     {
         $this->alt = $alt;
+
         return $this;
     }
 
@@ -63,6 +72,7 @@ class Image
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -74,22 +84,24 @@ class Image
         return $this->productImages;
     }
 
-    public function addImage(Product $product): self
+    public function addImage(ClothProduct $product): self
     {
-        $productImage = new ProductImage();
+        $productImage = new ClothProductImage();
         $productImage->setImage($this);
         $productImage->setProduct($product);
+        $productImage->setProductId($product->getId());
 
         $this->addProductImage($productImage);
 
         return $this;
     }
 
-    public function removeImage(Product $product): self
+    public function removeImage(ClothProduct $product): self
     {
-        $productImage = new ProductImage();
+        $productImage = new ClothProductImage();
         $productImage->setImage($this);
         $productImage->setProduct($product);
+        $productImage->setProductId($product->getId());
 
         $this->removeProductImage($productImage);
 
@@ -101,6 +113,7 @@ class Image
         if (!$this->productImages->contains($productImage)) {
             $this->productImages[] = $productImage;
         }
+
         return $this;
     }
 

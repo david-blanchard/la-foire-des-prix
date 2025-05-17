@@ -1,5 +1,7 @@
 doctrine:
     dbal:
+        driver: 'pdo_mysql'
+        server_version: '%env(resolve:MYSQL_SERVER_VERSION)%'
         url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,
@@ -9,7 +11,8 @@ doctrine:
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: true
+        controller_resolver:
+            auto_mapping: true
         mappings:
             App:
                 is_bundle: false
@@ -20,8 +23,15 @@ doctrine:
 when@test:
     doctrine:
         dbal:
+            driver: 'pdo_mysql'
+            server_version: '%env(resolve:MYSQL_SERVER_VERSION)%'
+            url: '%env(resolve:DATABASE_URL)%'
+
             # "TEST_TOKEN" is typically set by ParaTest
             dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+        orm:
+            controller_resolver:
+                auto_mapping: true
 
 when@prod:
     doctrine:

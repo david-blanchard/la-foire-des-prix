@@ -10,9 +10,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/admin')]
 final class AdminController extends AbstractController
 {
-
     #[Route(name: 'admin_dashboard')]
-//    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(): Response
     {
         return $this->render('admin/index.html.twig');

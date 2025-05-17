@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true" cacheDirectory=".phpunit.cache">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    cacheDirectory=".phpunit.cache"
+>
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
@@ -12,7 +17,7 @@
         <server name="APP_ENV" value="test"/>
         <server name="APP_SECRET" value="$ecretf0rt3st"/>
         <server name="KERNEL_CLASS" value="App\Kernel"/>
-        <server name="DATABASE_URL" value="mysql://mrdemo:demo@mysql:3306/lafoire?serverVersion=8&amp;charset=utf8mb4"/>
+        <server name="DATABASE_URL" value="mysql://mrdemo:demo@mysql:3306/lafoire?serverVersion=8.0.42&amp;charset=utf8mb4"/>
         <server name="MAILER_DSN" value="null://null"/>
         <server name="MESSENGER_TRANSPORT_DSN" value="doctrine://default?auto_setup=0"/>
     </php>

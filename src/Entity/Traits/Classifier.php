@@ -7,7 +7,6 @@ use Gedmo\Mapping\Annotation\Slug;
 
 trait Classifier
 {
-
     #[ORM\Column(length: 255)]
     protected ?string $name = null;
 
@@ -36,5 +35,4 @@ trait Classifier
     {
         $this->slug = $slug;
     }
-
 }

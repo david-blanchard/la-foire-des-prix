@@ -2,8 +2,12 @@
 
 namespace App\Service;
 
+use App\Entity\ProductInterface;
+
 interface ViewServiceInterface
 {
-    public function prepareViewFields(?object $data = null): array;
-
+    /**
+     * @return array<string, mixed>
+     */
+    public function prepareViewFields(?ProductInterface $data = null): array;
 }

@@ -5,12 +5,40 @@ namespace App\Service;
 interface SessionObjectInterface
 {
     public static function type(): string;
-    public function items() : array;
-    public function add(array $item);
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function items(): array;
+
+    /**
+     * @param array<string, mixed> $item
+     */
+    public function add(array $item): void;
+
     public function remove(int|string $key): bool;
+
+    /**
+     * @param array<string, mixed> $item
+     */
     public function update(array $item): void;
+
     public function clear(): void;
+
+    /**
+     * @return array<string, mixed>
+     */
     public function retrieve(): array;
+
+    /**
+     * @param array<string, mixed>|null $data
+     */
     public function prepare(?array $data = null): void;
-    public function store(array $input): array;
+
+    /**
+     * @param array<mixed> $input
+     *
+     * @return void
+     */
+    public function store(array $input): void;
 }

@@ -16,7 +16,7 @@ final class CartController extends AbstractController
     ) {
     }
 
-    #[Route('/retrieve', name: 'cart_retrieve', methods: ['POST'] )]
+    #[Route('/retrieve', name: 'cart_retrieve', methods: ['POST'])]
     public function retrieve(): JsonResponse
     {
         $sessionData = $this->cartService->retrieve();
@@ -29,7 +29,9 @@ final class CartController extends AbstractController
     #[Route('/store', name: 'cart_store', methods: ['POST'])]
     public function store(Request $request): JsonResponse
     {
-        $input = $request->request->all();
+        $json = $request->getContent();
+        $input = (array) json_decode($json, true);
+
         $this->cartService->store($input);
         $data = $this->cartService->prepareViewFields();
 

@@ -7,7 +7,9 @@ use Psr\Cache\InvalidArgumentException;
 
 readonly class CustomCache implements CustomCacheInterface
 {
-    public function __construct(private CacheItemPoolInterface $pool) {}
+    public function __construct(private CacheItemPoolInterface $pool)
+    {
+    }
 
     /**
      * @throws InvalidArgumentException
@@ -25,6 +27,7 @@ readonly class CustomCache implements CustomCacheInterface
     public function get(string $key): mixed
     {
         $item = $this->pool->getItem($key);
+
         return $item->isHit() ? $item->get() : null;
     }
 
