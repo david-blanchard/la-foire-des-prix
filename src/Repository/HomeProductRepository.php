@@ -83,7 +83,7 @@ class HomeProductRepository extends ServiceEntityRepository
 
     public function deletePropertiesFromCache(HomeProduct $product): void
     {
-        self::deletePropertiesFromCacheById($product->getId());
+        self::deletePropertiesFromCacheById((int) $product->getId());
     }
 
     /**

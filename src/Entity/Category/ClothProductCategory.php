@@ -10,14 +10,14 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class ClothProductCategory extends BillLineProduct implements ProductCategoryInterface
 {
-    private ClothProduct $category;
+    private ?ClothProduct $category;
 
-    public function getCategory(): ClothProduct
+    public function getCategory(): ?ClothProduct
     {
         return $this->category;
     }
 
-    public function setCategory(ClothProduct $category): static
+    public function setCategory(?ClothProduct $category): static
     {
         $this->category = $category;
 

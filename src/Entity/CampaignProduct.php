@@ -14,30 +14,30 @@ class CampaignProduct
 
     #[ORM\ManyToOne(inversedBy: 'campaignProducts')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private Campaign $campaign;
+    private ?Campaign $campaign;
 
     #[ORM\ManyToOne(inversedBy: 'campaignProducts')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ProductInterface $product;
+    private ?ProductInterface $product;
 
-    public function getCampaign(): Campaign
+    public function getCampaign(): ?Campaign
     {
         return $this->campaign;
     }
 
-    public function setCampaign(Campaign $campaign): self
+    public function setCampaign(?Campaign $campaign): self
     {
         $this->campaign = $campaign;
 
         return $this;
     }
 
-    public function getProduct(): ProductInterface
+    public function getProduct(): ?ProductInterface
     {
         return $this->product;
     }
 
-    public function setProduct(ProductInterface $product): self
+    public function setProduct(?ProductInterface $product): self
     {
         $this->product = $product;
 

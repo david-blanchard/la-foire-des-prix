@@ -16,30 +16,30 @@ class ProductImage
 
     #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ProductInterface $product;
+    private ?ProductInterface $product;
 
     #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private Image $image;
+    private ?Image $image;
 
-    public function getProduct(): ProductInterface
+    public function getProduct(): ?ProductInterface
     {
         return $this->product;
     }
 
-    public function setProduct(ProductInterface $product): self
+    public function setProduct(?ProductInterface $product): self
     {
         $this->product = $product;
 
         return $this;
     }
 
-    public function getImage(): Image
+    public function getImage(): ?Image
     {
         return $this->image;
     }
 
-    public function setImage(Image $image): self
+    public function setImage(?Image $image): self
     {
         $this->image = $image;
 

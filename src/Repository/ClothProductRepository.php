@@ -79,7 +79,7 @@ class ClothProductRepository extends ServiceEntityRepository
 
     public function deletePropertiesFromCache(ClothProduct $product): void
     {
-        self::deletePropertiesFromCacheById($product->getId());
+        self::deletePropertiesFromCacheById((int) $product->getId());
     }
 
     /**

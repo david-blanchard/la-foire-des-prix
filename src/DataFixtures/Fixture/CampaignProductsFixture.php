@@ -21,8 +21,8 @@ class CampaignProductsFixture implements CustomFixtureInterface
         ];
 
         foreach ($data as $item) {
-            $campaign = $campaignRepository->findOneBy(['name' => $item['campaign']]) ?? null;
-            $product = $productRepository->findOneBy(['name' => $item['product']]) ?? null;
+            $campaign = $campaignRepository->findOneBy(['name' => $item['campaign']]);
+            $product = $productRepository->findOneBy(['name' => $item['product']]);
             $campaignProduct = new CampaignProduct();
             $campaignProduct->setCampaign($campaign);
             $campaignProduct->setProduct($product);

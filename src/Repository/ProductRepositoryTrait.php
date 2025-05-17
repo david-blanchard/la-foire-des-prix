@@ -11,8 +11,12 @@ trait ProductRepositoryTrait
      *
      * @return int Discount percentage
      */
-    public function getProductDiscountById(int $productId): int
+    public function getProductDiscountById(?int $productId): int
     {
+        if (null === $productId) {
+            return 0;
+        }
+
         $today = new \DateTime();
         $qb = $this->em->createQueryBuilder();
 

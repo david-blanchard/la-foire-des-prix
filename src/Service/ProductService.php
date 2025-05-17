@@ -21,21 +21,25 @@ readonly class ProductService implements ViewServiceInterface
      */
     public function prepareViewFields(?ProductInterface $data = null): array
     {
-        $discount = $this->productRepository->getProductDiscountById($data->getId());
+        //        if (null === $data) {
+        //            return [];
+        //        }
+
+        $discount = $this->productRepository->getProductDiscountById($data?->getId());
         $props = [];
-        $props['name'] = $data->getName();
-        $props['id'] = $data->getId();
-        $props['description'] = $data->getDescription();
-        $props['moreInfo'] = $data->getMoreInfo();
-        $props['price'] = $data->getPrice();
-        $props['brand'] = $data->getBrand()->getName();
+        $props['name'] = $data?->getName();
+        $props['id'] = $data?->getId();
+        $props['description'] = $data?->getDescription();
+        $props['moreInfo'] = $data?->getMoreInfo();
+        $props['price'] = $data?->getPrice();
+        $props['brand'] = $data?->getBrand()?->getName();
         $props['discountRate'] = $discount;
-        $props['discount'] = $this->computeDiscount($data->getPrice(), $discount);
+        $props['discount'] = $this->computeDiscount((float) $data?->getPrice(), $discount);
 
         $props['featuresCaption'] = 'Information complémentaires';
-        $props['features'] = $this->grabMoreInfo($data->getMoreInfo());
+        $props['features'] = $this->grabMoreInfo($data?->getMoreInfo());
 
-        $images = $this->imagesRepository->findByProductId($data->getId());
+        $images = $this->imagesRepository->findByProductId((int) $data?->getId());
         $props['images'] = $images;
 
         return $props;

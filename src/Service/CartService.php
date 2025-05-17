@@ -115,8 +115,12 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      * @param array<string, mixed>      $sessionData state of the cart in session
      * @param array<string, mixed>|null $input       data to update the cart with
      */
-    public function reduce(array $sessionData, ?array $input = null): void
+    public function reduce(?array $sessionData, ?array $input = null): void
     {
+        if (null === $sessionData) {
+            return;
+        }
+
         $sessionContent = $sessionData['content'];
 
         foreach ($sessionContent as $key => $item) {

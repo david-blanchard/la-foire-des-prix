@@ -28,7 +28,7 @@ trait Product
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private Brand $brand;
+    private ?Brand $brand;
 
     /**
      * @var Collection<int, CampaignProduct> $campaignProducts
@@ -89,7 +89,7 @@ trait Product
         return $this->brand;
     }
 
-    public function setBrand(Brand $brand): self
+    public function setBrand(?Brand $brand): self
     {
         $this->brand = $brand;
 
