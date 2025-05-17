@@ -24,7 +24,7 @@ class ForgotPasswordController extends AbstractController
     public function forgotPassword(Request $request, MailerInterface $mailer, UserProviderInterface $userProvider): Response
     {
         if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
+            $email = (string) $request->request->get('email');
 
             // Find the user by email
             $user = $userProvider->loadUserByIdentifier($email);

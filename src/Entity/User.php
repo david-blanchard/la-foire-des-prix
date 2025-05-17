@@ -22,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const string ADMIN_ROLE = 'ROLE_ADMIN';
 
     #[ORM\Column(length: 180)]
-    private ?string $email = null;
+    private string $email = 'john.doe@example.com';
 
     /**
      * @var list<string> The user roles
@@ -52,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->bills = new ArrayCollection();
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -65,13 +65,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
      * @see UserInterface
+     *
+     * @return string
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -87,15 +87,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(?array $roles = []): static
+    public function setRoles(array $roles = []): static
     {
-        if (null === $roles) {
-            $roles = [];
-        }
-        // guarantee every user at least has ROLE_USER
         $roles[] = self::USER_ROLE;
-
-        $this->roles = array_unique($roles);
+        $unique = array_unique($roles);
+        $this->roles = array_values($unique);
 
         return $this;
     }

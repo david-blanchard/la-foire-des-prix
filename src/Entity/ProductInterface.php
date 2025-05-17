@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\Collection;
 
 interface ProductInterface extends ProductCategoryInterface
 {
+    public function getId(): ?int;
+
+    public function getName(): ?string;
+
     public function getDescription(): string;
 
     public function getMoreInfo(): ?string;

@@ -43,7 +43,7 @@ abstract class AbstractSessionObject implements SessionObjectInterface
 
         $oldValue = $this->list[$key] ?? null;
 
-        if (null !== $oldValue && is_numeric($oldValue) && is_numeric($value)) {
+        if (is_numeric($oldValue) && is_numeric($value)) {
             $value = $oldValue + $value;
         }
 

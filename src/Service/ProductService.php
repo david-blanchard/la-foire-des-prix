@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\ProductInterface;
 use App\Repository\ClothProductRepository;
 use App\Repository\ImageRepository;
 
@@ -16,11 +17,9 @@ readonly class ProductService implements ViewServiceInterface
     /**
      * Transform ProductInfo attributes in properties usable in views.
      *
-     * @param object|null $data ProductInfo object
-     *
      * @return array<string, mixed> Array of properties
      */
-    public function prepareViewFields(?object $data = null): array
+    public function prepareViewFields(?ProductInterface $data = null): array
     {
         $discount = $this->productRepository->getProductDiscountById($data->getId());
         $props = [];

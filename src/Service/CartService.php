@@ -38,7 +38,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
             if (is_array($quantity)) {
                 continue;
             }
-            $product = $this->productRepository->findById($productId);
+            $product = $this->productRepository->findById((int) $productId);
             $props = $this->productService->prepareViewFields($product);
             $price = $props['discount'] ?: floatval($props['price']);
 
@@ -71,7 +71,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     {
         $result = $this->makeEmptySessionObject();
 
-        $result = $this->session->get('cart') ?: $result;
+        $result = $this->session->get('cart') ?? $result;
         if (is_object($result)) {
             $result = self::toArray($result);
         }
