@@ -82,19 +82,17 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     /**
      * Store the cart in session.
      *
-     * @param array<string, mixed> $input data to update the cart with
+     * @param array<mixed> $input data to update the cart with
      *
-     * @return array<string, mixed> an optimized session object
+     * @return void
      */
-    public function store(array $input): array
+    public function store(array $input): void
     {
         $sessionData = $this->retrieve();
 
         $this->reduce($sessionData, $input);
         $sessionCart = $this->makeSessionObject();
         $this->session->set('cart', $sessionCart);
-
-        return $sessionCart;
     }
 
     /**

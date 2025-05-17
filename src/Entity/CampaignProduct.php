@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Product\ClothProduct;
 use App\Entity\Traits\Identifier;
 use App\Repository\CampaignProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +19,7 @@ class CampaignProduct
 
     #[ORM\ManyToOne(inversedBy: 'campaignProducts')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?ProductInterface $product;
+    private ?ClothProduct $product;
 
     public function getCampaign(): ?Campaign
     {
@@ -32,12 +33,12 @@ class CampaignProduct
         return $this;
     }
 
-    public function getProduct(): ?ProductInterface
+    public function getProduct(): ?ClothProduct
     {
         return $this->product;
     }
 
-    public function setProduct(?ProductInterface $product): self
+    public function setProduct(?ClothProduct $product): self
     {
         $this->product = $product;
 

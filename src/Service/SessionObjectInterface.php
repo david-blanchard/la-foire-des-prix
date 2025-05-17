@@ -36,9 +36,9 @@ interface SessionObjectInterface
     public function prepare(?array $data = null): void;
 
     /**
-     * @param array<string, mixed> $input
+     * @param array<mixed> $input
      *
      * @return array<string, mixed>
      */
-    public function store(array $input): array;
+    public function store(array $input): void;
 }

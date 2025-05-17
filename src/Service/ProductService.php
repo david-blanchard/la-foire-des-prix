@@ -21,10 +21,6 @@ readonly class ProductService implements ViewServiceInterface
      */
     public function prepareViewFields(?ProductInterface $data = null): array
     {
-        //        if (null === $data) {
-        //            return [];
-        //        }
-
         $discount = $this->productRepository->getProductDiscountById($data?->getId());
         $props = [];
         $props['name'] = $data?->getName();

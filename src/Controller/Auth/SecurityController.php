@@ -29,7 +29,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout', methods: ['GET'])]
+    #[Route('/logout', name: 'app_logout', methods: ['GET', 'POST'])]
     public function logout(): void
     {
         // Symfony handles the logout automatically via the firewall configuration.
