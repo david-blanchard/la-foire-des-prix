@@ -1,18 +1,19 @@
 <?php
 
-namespace App\DataFixtures\Fixture;
+namespace App\DataFixtures;
 
 use App\Entity\Image;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class ImagesFixture implements CustomFixtureInterface
+class ImagesFixture extends Fixture
 {
     public const string IMAGE_LABEL_1 = 'Veste en jean cintrée manches longues femme bleue 1/4';
     public const string IMAGE_LABEL_2 = 'Veste en jean cintrée manches longues femme bleue 2/4';
     public const string IMAGE_LABEL_3 = 'Veste en jean cintrée manches longues femme bleue 3/4';
     public const string IMAGE_LABEL_4 = 'Veste en jean cintrée manches longues femme bleue 4/4';
 
-    public function execute(ObjectManager $manager): void
+    public function load(ObjectManager $manager): void
     {
         $images = [
             [

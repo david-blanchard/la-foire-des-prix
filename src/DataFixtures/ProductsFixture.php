@@ -1,17 +1,19 @@
 <?php
 
-namespace App\DataFixtures\Fixture;
+namespace App\DataFixtures;
 
 use App\Entity\Product\ClothProduct;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductsFixture implements CustomFixtureInterface
+class ProductsFixture extends Fixture implements DependentFixtureInterface
 {
     public const string PRODUCT_LABEL_1 = 'Veste en jean cintrée manches longues';
     public const string PRODUCT_LABEL_2 = 'Robe courte éponge Jodie Réédition';
     public const string PRODUCT_LABEL_3 = 'Tee-shirt uni à bretelles maille élastique';
 
-    public function execute(ObjectManager $manager): void
+    public function load(ObjectManager $manager): void
     {
         $brandRepository = $manager->getRepository('App\Entity\Brand');
 
@@ -54,5 +56,12 @@ class ProductsFixture implements CustomFixtureInterface
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            BrandsFixture::class,
+        ];
     }
 }

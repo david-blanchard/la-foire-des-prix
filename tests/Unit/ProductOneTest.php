@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit;
 
-use App\DataFixtures\Fixture\ProductsFixture;
+use App\DataFixtures\ProductsFixture;
 use App\Entity\Product\ClothProduct;
 use App\Repository\ClothProductRepository;
 use Doctrine\ORM\EntityManagerInterface;

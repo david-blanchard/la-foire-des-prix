@@ -2,8 +2,8 @@
 
 namespace App\Tests\Feature;
 
-use App\DataFixtures\Fixture\BrandsFixture;
-use App\DataFixtures\Fixture\ImagesFixture;
+use App\DataFixtures\BrandsFixture;
+use App\DataFixtures\ImagesFixture;
 use App\Entity\Image;
 use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;

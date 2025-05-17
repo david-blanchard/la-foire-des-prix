@@ -1,16 +1,17 @@
 <?php
 
-namespace App\DataFixtures\Fixture;
+namespace App\DataFixtures;
 
 use App\Entity\Campaign;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class CampaignsFixture implements CustomFixtureInterface
+class CampaignsFixture extends Fixture
 {
     public const string CAMPAIGN_LABEL_1 = 'Les Promos Printanières';
     public const string CAMPAIGN_LABEL_2 = "C'est l'Été sur les Prix !";
 
-    public function execute(ObjectManager $manager): void
+    public function load(ObjectManager $manager): void
     {
         $campaigns = [
             [

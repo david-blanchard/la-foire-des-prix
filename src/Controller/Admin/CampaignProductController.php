@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Campaign\ClothProductCampaign;
 use App\Entity\CampaignProduct;
 use App\Form\CampaignProductType;
 use App\Repository\CampaignProductsRepository;
@@ -25,7 +26,7 @@ final class CampaignProductController extends AbstractController
     #[Route('/new', name: 'app_campaign_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $campaignProduct = new CampaignProduct();
+        $campaignProduct = new ClothProductCampaign();
         $form = $this->createForm(CampaignProductType::class, $campaignProduct);
         $form->handleRequest($request);
 

@@ -1,20 +1,21 @@
 <?php
 
-namespace App\DataFixtures\Fixture;
+namespace App\DataFixtures;
 
 use App\Entity\User;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixture implements CustomFixtureInterface
+class UserFixture extends Fixture
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
     ) {
     }
 
-    public function execute(ObjectManager $manager): void
+    public function load(ObjectManager $manager): void
     {
         $existingUser = $manager->getRepository(User::class)->findOneBy(['email' => 'dblanchard1@lfdp.fr']);
 
@@ -23,7 +24,7 @@ class UserFixture implements CustomFixtureInterface
             $user = new User();
             $user->setEmail('dblanchard1@lfdp.fr');
             $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles();
 
             $manager->persist($user);
             $manager->flush();
@@ -44,6 +45,7 @@ class UserFixture implements CustomFixtureInterface
                 $user->setPassword(
                     $this->passwordHasher->hashPassword($user, 'password')
                 );
+                $user->setRoles();
 
                 $manager->persist($user);
                 $manager->flush();

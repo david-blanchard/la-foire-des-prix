@@ -3,14 +3,15 @@
 namespace App\Service;
 
 use App\Entity\ProductInterface;
+use App\Repository\ClothProductCampaignRepository;
+use App\Repository\ClothProductImageRepository;
 use App\Repository\ClothProductRepository;
-use App\Repository\ImageRepository;
 
 readonly class ProductService implements ViewServiceInterface
 {
     public function __construct(
-        private ClothProductRepository $productRepository,
-        private ImageRepository $imagesRepository,
+        private ClothProductImageRepository $imagesRepository,
+        private ClothProductCampaignRepository $productCampaignRepository,
     ) {
     }
 
@@ -21,7 +22,7 @@ readonly class ProductService implements ViewServiceInterface
      */
     public function prepareViewFields(?ProductInterface $data = null): array
     {
-        $discount = $this->productRepository->getProductDiscountById($data?->getId());
+        $discount = $this->productCampaignRepository->getProductDiscountById($data?->getId());
         $props = [];
         $props['name'] = $data?->getName();
         $props['id'] = $data?->getId();

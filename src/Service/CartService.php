@@ -83,8 +83,6 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      * Store the cart in session.
      *
      * @param array<mixed> $input data to update the cart with
-     *
-     * @return void
      */
     public function store(array $input): void
     {

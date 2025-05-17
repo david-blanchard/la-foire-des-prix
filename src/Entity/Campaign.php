@@ -95,9 +95,7 @@ class Campaign
     public function removeCampaignProduct(CampaignProduct $campaignProduct): self
     {
         if ($this->campaignProducts->contains($campaignProduct)) {
-            if ($this->campaignProducts->removeElement($campaignProduct)) {
-                $campaignProduct = null;
-            }
+            $this->campaignProducts->removeElement($campaignProduct);
         }
 
         return $this;

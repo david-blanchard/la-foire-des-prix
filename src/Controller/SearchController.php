@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\HomeProductRepository;
+use App\Repository\ClothProductRepository;
 use App\Service\CartService;
 use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class SearchController extends AbstractController
 {
     public function __construct(
-        private readonly HomeProductRepository $productRepository,
+        private readonly ClothProductRepository $productRepository,
         private readonly CartService $cartService,
         private readonly ProductService $productService,
     ) {
