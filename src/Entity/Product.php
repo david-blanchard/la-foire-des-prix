@@ -28,29 +28,29 @@ abstract class Product
     use TimestampableEntity;
 
     #[ORM\Column(length: 1024)]
-    private string $description;
+    protected string $description;
 
     #[ORM\Column(length: 1024, nullable: true)]
-    private ?string $moreInfo = null;
+    protected ?string $moreInfo = null;
 
     #[ORM\Column(type: 'float')]
-    private float $price;
+    protected float $price;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Brand $brand;
+    protected ?Brand $brand;
 
     /**
      * @var Collection<int, CampaignProduct> $campaignProducts
      */
     #[ORM\OneToMany(targetEntity: CampaignProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
-    private Collection $campaignProducts;
+    protected Collection $campaignProducts;
 
     /**
      * @var Collection<int, ProductImage> $productImages
      */
     #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
-    private Collection $productImages;
+    protected Collection $productImages;
 
     public function __construct()
     {
@@ -106,12 +106,15 @@ abstract class Product
         return $this;
     }
 
+    /**
+     * @return Collection<int, CampaignProduct>
+     */
     public function getCampaignProducts(): Collection
     {
         return $this->campaignProducts;
     }
 
-    public abstract function addCampaignProduct(CampaignProduct $campaignProduct): self;
+//    abstract public function addCampaignProduct(CampaignProduct $campaignProduct): self;
 
     public function removeCampaignProduct(CampaignProduct $campaignProduct): self
     {
@@ -122,14 +125,17 @@ abstract class Product
         return $this;
     }
 
+    /**
+     * @return Collection<int, ProductImage>
+     */
     public function getProductImages(): Collection
     {
         return $this->productImages;
     }
 
-    public abstract function addImage(Image $image): self;
+    abstract public function addImage(Image $image): self;
 
-    public abstract function removeImage(Image $image): self;
+    abstract public function removeImage(Image $image): self;
 
     public function addProductImage(ProductImage $productImage): self
     {

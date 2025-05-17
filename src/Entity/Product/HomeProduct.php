@@ -2,6 +2,7 @@
 
 namespace App\Entity\Product;
 
+use App\Entity\Campaign\HomeProductCampaign;
 use App\Entity\CampaignProduct;
 use App\Entity\Image;
 use App\Entity\Product;
@@ -18,7 +19,7 @@ class HomeProduct extends Product implements ProductInterface
         return 'Home';
     }
 
-    public function addCampaignProduct(CampaignProduct $campaignProduct): self
+    public function addCampaignProduct(HomeProductCampaign $campaignProduct): self
     {
         if (!$this->campaignProducts->contains($campaignProduct)) {
             $this->campaignProducts[] = $campaignProduct;

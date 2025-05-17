@@ -27,7 +27,7 @@ class CampaignProductsFixture extends Fixture implements DependentFixtureInterfa
             $campaignProduct = new Campaign\ClothProductCampaign();
             $campaignProduct->setCampaign($campaign);
             $campaignProduct->setProduct($product);
-            $campaignProduct->setProductId($product->getId());
+            $campaignProduct->setProductId((int) $product?->getId());
             $manager->persist($campaignProduct);
         }
 

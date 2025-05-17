@@ -2,8 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\CampaignProduct;
-
 trait ProductRepositoryTrait
 {
     /**

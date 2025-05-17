@@ -3,8 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Image;
-use App\Entity\Product\ClothProduct;
-use App\Entity\ProductImage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

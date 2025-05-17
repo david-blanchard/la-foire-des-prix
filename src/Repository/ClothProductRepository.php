@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\CampaignProduct;
 use App\Entity\Product\ClothProduct;
 use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -14,7 +13,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ClothProductRepository extends ServiceEntityRepository
 {
-
     public function __construct(
         ManagerRegistry $registry,
         private readonly EntityManagerInterface $em,

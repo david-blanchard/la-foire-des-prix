@@ -4,6 +4,7 @@ namespace App\Entity\Image;
 
 use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;
+use App\Entity\ProductInterface;
 use App\Repository\ClothProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,7 +20,7 @@ class ClothProductImage extends ProductImage
         return $this->product;
     }
 
-    public function setProduct(?ClothProduct $product): static
+    public function setProduct(ClothProduct|null $product): static
     {
         $this->product = $product;
 

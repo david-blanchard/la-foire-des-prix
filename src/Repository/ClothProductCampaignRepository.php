@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Campaign;
-use App\Entity\CampaignProduct;
 use App\Entity\Product\ClothProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,18 +15,18 @@ class ClothProductCampaignRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
     ) {
-        parent::__construct($registry, Campaign::class);
+        parent::__construct($registry, Campaign\ClothProductCampaign::class);
     }
 
     /**
-     * @return Campaign[]
+     * @return Campaign\ClothProductCampaign[]
      */
     public function getAll(): array
     {
         return $this->findAll();
     }
 
-    public function getById(int $id): ?Campaign
+    public function getById(int $id): ?Campaign\ClothProductCampaign
     {
         return $this->find($id);
     }
@@ -42,23 +41,25 @@ class ClothProductCampaignRepository extends ServiceEntityRepository
         if (null === $productId) {
             return 0;
         }
-//
-//        $today = new \DateTime();
-//        $qb = $this->createQueryBuilder('cp');
-//
-//        $qb->join('cp.campaign', 'c')
-//            ->join(ClothProduct::class, 'p', 'WITH', 'cp.product = p.id')
-//            ->where('cp.product = :productId')
-//            ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
-//            ->setParameter('productId', $productId)
-//            ->setParameter('today', $today)
-//            ->select('c.discount');
-//
-//        $result = $qb->getQuery()->getOneOrNullResult();
+        /**
+        *         $today = new \DateTime();
+        *         $qb = $this->createQueryBuilder('cp');
+        *
+        *         $qb->join('cp.campaign', 'c')
+        *             ->join(ClothProduct::class, 'p', 'WITH', 'cp.product = p.id')
+        *             ->where('cp.product = :productId')
+        *             ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
+        *             ->setParameter('productId', $productId)
+        *             ->setParameter('today', $today)
+        *             ->select('c.discount');
+        *
+        *         $result = $qb->getQuery()->getOneOrNullResult();
+        */
 
-        $result = [];
-        $result['discount'] = null;
+        /**
+         *  return $result['discount'] ?? 0;
+         */
 
-        return $result['discount'] ?? 0;
+        return 0;
     }
 }

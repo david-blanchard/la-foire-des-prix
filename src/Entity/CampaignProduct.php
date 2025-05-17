@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
     'food' => FoodProductCampaign::class,
     'home' => HomeProductCampaign::class,
 ])]
-class CampaignProduct
+abstract class CampaignProduct
 {
     use Identifier;
 
@@ -40,6 +40,8 @@ class CampaignProduct
 
         return $this;
     }
+
+//    public abstract function setProduct(ProductInterface|null $product): self;
 
     public function getProductId(): ?int
     {

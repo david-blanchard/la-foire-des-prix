@@ -38,7 +38,7 @@ interface SessionObjectInterface
     /**
      * @param array<mixed> $input
      *
-     * @return array<string, mixed>
+     * @return void
      */
     public function store(array $input): void;
 }

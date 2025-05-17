@@ -2,6 +2,7 @@
 
 namespace App\Entity\Product;
 
+use App\Entity\Campaign\FoodProductCampaign;
 use App\Entity\CampaignProduct;
 use App\Entity\Image;
 use App\Entity\Product;
@@ -18,7 +19,7 @@ class FoodProduct extends Product implements ProductInterface
         return 'Food';
     }
 
-    public function addCampaignProduct(CampaignProduct $campaignProduct): self
+    public function addCampaignProduct(FoodProductCampaign $campaignProduct): self
     {
         if (!$this->campaignProducts->contains($campaignProduct)) {
             $this->campaignProducts[] = $campaignProduct;

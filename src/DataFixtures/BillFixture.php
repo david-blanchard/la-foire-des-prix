@@ -8,7 +8,6 @@ use App\Entity\Product\ClothProduct;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class BillFixture extends Fixture implements DependentFixtureInterface

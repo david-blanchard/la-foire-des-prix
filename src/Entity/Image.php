@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Image\ClothProductImage;
 use App\Entity\Product\ClothProduct;
 use App\Entity\Traits\Identifier;
 use App\Repository\ImageRepository;
@@ -85,9 +86,10 @@ class Image
 
     public function addImage(ClothProduct $product): self
     {
-        $productImage = new ProductImage();
+        $productImage = new ClothProductImage();
         $productImage->setImage($this);
         $productImage->setProduct($product);
+        $productImage->setProductId($product->getId());
 
         $this->addProductImage($productImage);
 
@@ -96,9 +98,10 @@ class Image
 
     public function removeImage(ClothProduct $product): self
     {
-        $productImage = new ProductImage();
+        $productImage = new ClothProductImage();
         $productImage->setImage($this);
         $productImage->setProduct($product);
+        $productImage->setProductId($product->getId());
 
         $this->removeProductImage($productImage);
 

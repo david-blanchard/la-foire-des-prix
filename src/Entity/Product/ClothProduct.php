@@ -2,10 +2,10 @@
 
 namespace App\Entity\Product;
 
+use App\Entity\Campaign\ClothProductCampaign;
 use App\Entity\CampaignProduct;
 use App\Entity\Image;
 use App\Entity\Product;
-use App\Entity\ProductImage;
 use App\Entity\ProductInterface;
 use App\Repository\ClothProductRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,13 +14,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'cloth_products')]
 class ClothProduct extends Product implements ProductInterface
 {
-
     public function getCategoryName(): string
     {
         return 'Clothes';
     }
 
-    public function addCampaignProduct(CampaignProduct $campaignProduct): self
+    public function addCampaignProduct(ClothProductCampaign $campaignProduct): self
     {
         if (!$this->campaignProducts->contains($campaignProduct)) {
             $this->campaignProducts[] = $campaignProduct;
@@ -29,6 +28,7 @@ class ClothProduct extends Product implements ProductInterface
 
         return $this;
     }
+
     public function addImage(Image $image): self
     {
         $productImage = new Image\ClothProductImage();

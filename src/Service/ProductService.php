@@ -2,17 +2,14 @@
 
 namespace App\Service;
 
-use App\Entity\Image\ClothProductImage;
-use App\Entity\ProductImage;
 use App\Entity\ProductInterface;
 use App\Repository\ClothProductCampaignRepository;
-use App\Repository\ClothProductRepository;
 use App\Repository\ClothProductImageRepository;
+use App\Repository\ClothProductRepository;
 
 readonly class ProductService implements ViewServiceInterface
 {
     public function __construct(
-        private ClothProductRepository $productRepository,
         private ClothProductImageRepository $imagesRepository,
         private ClothProductCampaignRepository $productCampaignRepository,
     ) {
@@ -39,7 +36,7 @@ readonly class ProductService implements ViewServiceInterface
         $props['featuresCaption'] = 'Information complémentaires';
         $props['features'] = $this->grabMoreInfo($data?->getMoreInfo());
 
-        $images = $this->imagesRepository->findByProductId((int) $data?->getId(), 'cloths');
+        $images = $this->imagesRepository->findByProductId((int) $data?->getId());
         $props['images'] = $images;
 
         return $props;
