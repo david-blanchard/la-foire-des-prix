@@ -2,15 +2,19 @@
 
 namespace App\Service;
 
+use App\Entity\Image\ClothProductImage;
+use App\Entity\ProductImage;
 use App\Entity\ProductInterface;
+use App\Repository\ClothProductCampaignRepository;
 use App\Repository\ClothProductRepository;
-use App\Repository\ImageRepository;
+use App\Repository\ClothProductImageRepository;
 
 readonly class ProductService implements ViewServiceInterface
 {
     public function __construct(
         private ClothProductRepository $productRepository,
-        private ImageRepository $imagesRepository,
+        private ClothProductImageRepository $imagesRepository,
+        private ClothProductCampaignRepository $productCampaignRepository,
     ) {
     }
 
@@ -21,7 +25,7 @@ readonly class ProductService implements ViewServiceInterface
      */
     public function prepareViewFields(?ProductInterface $data = null): array
     {
-        $discount = $this->productRepository->getProductDiscountById($data?->getId());
+        $discount = $this->productCampaignRepository->getProductDiscountById($data?->getId());
         $props = [];
         $props['name'] = $data?->getName();
         $props['id'] = $data?->getId();
@@ -35,7 +39,7 @@ readonly class ProductService implements ViewServiceInterface
         $props['featuresCaption'] = 'Information complémentaires';
         $props['features'] = $this->grabMoreInfo($data?->getMoreInfo());
 
-        $images = $this->imagesRepository->findByProductId((int) $data?->getId());
+        $images = $this->imagesRepository->findByProductId((int) $data?->getId(), 'cloths');
         $props['images'] = $images;
 
         return $props;

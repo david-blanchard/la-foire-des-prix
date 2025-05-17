@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Entity\Category\ClothProductCategory;
-use App\Entity\Category\FoodProductCategory;
-use App\Entity\Category\HomeProductCategory;
+use App\Entity\BillLine\ClothProductBillLine;
+use App\Entity\BillLine\FoodProductBillLine;
+use App\Entity\BillLine\HomeProductBillLine;
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
 use App\Repository\CategoryRepository;
@@ -12,11 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'category', type: 'string')]
+#[ORM\DiscriminatorColumn(name: 'product', type: 'string')]
 #[ORM\DiscriminatorMap([
-    'cloths' => ClothProductCategory::class,
-    'food' => FoodProductCategory::class,
-    'home' => HomeProductCategory::class,
+    'cloths' => ClothProductBillLine::class,
+    'food' => FoodProductBillLine::class,
+    'home' => HomeProductBillLine::class,
 ])]
 class BillLineProduct
 {

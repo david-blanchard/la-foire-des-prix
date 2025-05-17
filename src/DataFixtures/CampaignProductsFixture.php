@@ -1,15 +1,16 @@
 <?php
 
-namespace App\DataFixtures\Fixture;
+namespace App\DataFixtures;
 
 use App\Entity\Campaign;
-use App\Entity\CampaignProduct;
 use App\Entity\Product\ClothProduct;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class CampaignProductsFixture implements CustomFixtureInterface
+class CampaignProductsFixture extends Fixture implements DependentFixtureInterface
 {
-    public function execute(ObjectManager $manager): void
+    public function load(ObjectManager $manager): void
     {
         $campaignRepository = $manager->getRepository(Campaign::class);
         $productRepository = $manager->getRepository(ClothProduct::class);
@@ -23,12 +24,21 @@ class CampaignProductsFixture implements CustomFixtureInterface
         foreach ($data as $item) {
             $campaign = $campaignRepository->findOneBy(['name' => $item['campaign']]);
             $product = $productRepository->findOneBy(['name' => $item['product']]);
-            $campaignProduct = new CampaignProduct();
+            $campaignProduct = new Campaign\ClothProductCampaign();
             $campaignProduct->setCampaign($campaign);
             $campaignProduct->setProduct($product);
+            $campaignProduct->setProductId($product->getId());
             $manager->persist($campaignProduct);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            CampaignsFixture::class,
+            ProductsFixture::class,
+        ];
     }
 }

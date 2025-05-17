@@ -1,15 +1,16 @@
 <?php
 
-namespace App\DataFixtures\Fixture;
+namespace App\DataFixtures;
 
 use App\Entity\Image;
 use App\Entity\Product\ClothProduct;
-use App\Entity\ProductImage;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductImagesFixture implements CustomFixtureInterface
+class ProductImagesFixture extends Fixture implements DependentFixtureInterface
 {
-    public function execute(ObjectManager $manager): void
+    public function load(ObjectManager $manager): void
     {
         $productImages = [
             ['product' => ProductsFixture::PRODUCT_LABEL_1, 'image' => ImagesFixture::IMAGE_LABEL_1],
@@ -25,12 +26,21 @@ class ProductImagesFixture implements CustomFixtureInterface
             $product = $productRepository->findOneBy(['name' => $data['product']]) ?? null;
             $image = $imageRepository->findOneBy(['alt' => $data['image']]) ?? null;
 
-            $productImage = new ProductImage();
+            $productImage = new Image\ClothProductImage();
             $productImage->setProduct($product);
+            $productImage->setProductId($product->getId());
             $productImage->setImage($image);
             $manager->persist($productImage);
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            ProductsFixture::class,
+            ImagesFixture::class,
+        ];
     }
 }

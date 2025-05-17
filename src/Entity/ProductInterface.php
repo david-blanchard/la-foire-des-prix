@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Entity\Category\ProductCategoryInterface;
+use App\Entity\BillLine\ProductBillLineInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface ProductInterface extends ProductCategoryInterface
+interface ProductInterface extends ProductBillLineInterface
 {
     public function getId(): ?int;
 
@@ -25,7 +25,18 @@ interface ProductInterface extends ProductCategoryInterface
     public function getCampaignProducts(): Collection;
 
     /**
+     * @param CampaignProduct $campaignProduct
+     * @return self
+     */
+    public function addCampaignProduct(CampaignProduct $campaignProduct): self;
+
+    /**
      * @return Collection<int, ProductImage>
      */
     public function getProductImages(): Collection;
+
+    public function addImage(Image $image): self;
+
+
+
 }

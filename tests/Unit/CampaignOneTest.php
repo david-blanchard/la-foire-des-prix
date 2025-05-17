@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit;
 
-use App\DataFixtures\Fixture\CampaignsFixture;
+use App\DataFixtures\CampaignsFixture;
 use App\Entity\Campaign;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

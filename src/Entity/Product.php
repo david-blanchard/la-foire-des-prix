@@ -1,17 +1,27 @@
 <?php
 
-namespace App\Entity\Traits;
+namespace App\Entity;
 
-use App\Entity\Brand;
-use App\Entity\CampaignProduct;
-use App\Entity\Image;
-use App\Entity\ProductImage;
+use App\Entity\Product\ClothProduct;
+use App\Entity\Product\FoodProduct;
+use App\Entity\Product\HomeProduct;
+use App\Entity\Traits\Classifier;
+use App\Entity\Traits\Identifier;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-trait Product
+#[ORM\Entity()]
+#[ORM\Table(name: 'products')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'product', type: 'string')]
+#[ORM\DiscriminatorMap([
+    'cloths' => ClothProduct::class,
+    'food' => FoodProduct::class,
+    'home' => HomeProduct::class,
+])]
+abstract class Product
 {
     use Identifier;
     use Classifier;
@@ -101,15 +111,7 @@ trait Product
         return $this->campaignProducts;
     }
 
-    public function addCampaignProduct(CampaignProduct $campaignProduct): self
-    {
-        if (!$this->campaignProducts->contains($campaignProduct)) {
-            $this->campaignProducts[] = $campaignProduct;
-            $campaignProduct->setProduct($this);
-        }
-
-        return $this;
-    }
+    public abstract function addCampaignProduct(CampaignProduct $campaignProduct): self;
 
     public function removeCampaignProduct(CampaignProduct $campaignProduct): self
     {
@@ -125,27 +127,9 @@ trait Product
         return $this->productImages;
     }
 
-    public function addImage(Image $image): self
-    {
-        $productImage = new ProductImage();
-        $productImage->setProduct($this);
-        $productImage->setImage($image);
+    public abstract function addImage(Image $image): self;
 
-        $this->addProductImage($productImage);
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): self
-    {
-        $productImage = new ProductImage();
-        $productImage->setProduct($this);
-        $productImage->setImage($image);
-
-        $this->removeProductImage($productImage);
-
-        return $this;
-    }
+    public abstract function removeImage(Image $image): self;
 
     public function addProductImage(ProductImage $productImage): self
     {

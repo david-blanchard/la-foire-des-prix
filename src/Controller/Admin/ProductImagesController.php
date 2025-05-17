@@ -6,6 +6,7 @@ use App\Entity\Image;
 use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;
 use App\Repository\BrandRepository;
+use App\Repository\ClothProductImageRepository;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -19,6 +20,7 @@ class ProductImagesController extends AbstractController
 {
     public function __construct(
         private readonly BrandRepository $brandRepository,
+        private readonly ClothProductImageRepository $productImageRepository,
         private readonly ImageRepository $imageRepository,
     ) {
     }
@@ -51,8 +53,9 @@ class ProductImagesController extends AbstractController
             $imageId = $request->request->get('image');
             $image = $entityManager->getRepository(Image::class)->find($imageId);
 
-            $productImage = new ProductImage();
+            $productImage = new Image\ClothProductImage();
             $productImage->setProduct($product);
+            $productImage->setProductId($product->getId());
             $productImage->setImage($image);
 
             $entityManager->persist($productImage);
@@ -62,7 +65,7 @@ class ProductImagesController extends AbstractController
         }
 
         $brand = $this->brandRepository->find($product->getBrand());
-        $associatedImages = $this->imageRepository->findByProductId((int) $product->getId());
+        $associatedImages = $this->productImageRepository->findByProductId((int) $product->getId());
 
         return $this->render('admin/product_images/create.html.twig', [
             'product' => $product,
