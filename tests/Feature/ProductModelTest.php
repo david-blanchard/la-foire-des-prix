@@ -22,7 +22,7 @@ class ProductModelTest extends KernelTestCase
         $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
     }
 
-    public function testProductPantalonIsCreatedWithoutImage(): void
+    public function test1ProductPantalonIsCreatedWithoutImage(): void
     {
         $brandRepository = $this->entityManager->getRepository(\App\Entity\Brand::class);
         $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
@@ -43,7 +43,7 @@ class ProductModelTest extends KernelTestCase
         $this->assertStringContainsString('toile', $product?->getName());
     }
 
-    public function testProductPantalonWithoutImageIsDeleted(): void
+    public function test2ProductPantalonWithoutImageIsDeleted(): void
     {
         $repository = $this->entityManager->getRepository(ClothProduct::class);
         $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);
@@ -57,7 +57,7 @@ class ProductModelTest extends KernelTestCase
         $this->assertNull($product);
     }
 
-    public function testProductPantalonIsCreatedWithImages(): void
+    public function test3ProductPantalonIsCreatedWithImages(): void
     {
         $brandRepository = $this->entityManager->getRepository(\App\Entity\Brand::class);
         $brand3 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_3]) ?? null;
@@ -97,7 +97,7 @@ class ProductModelTest extends KernelTestCase
         $this->assertCount(3, $images);
     }
 
-    public function testProductPantalonWithImagesIsDeleted(): void
+    public function test4ProductPantalonWithImagesIsDeleted(): void
     {
         $repository = $this->entityManager->getRepository(ClothProduct::class);
         $product = $repository->findOneBy(['name' => self::PRODUCT_NAME]);

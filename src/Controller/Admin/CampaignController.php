@@ -71,7 +71,7 @@ final class CampaignController extends AbstractController
     #[Route('/{id}', name: 'app_campaign_delete', methods: ['POST'])]
     public function delete(Request $request, Campaign $campaign, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$campaign->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $campaign->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($campaign);
             $entityManager->flush();
         }

@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use Identifier;
+
     public const string USER_ROLE = 'ROLE_USER';
     public const string ADMIN_ROLE = 'ROLE_ADMIN';
 

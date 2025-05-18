@@ -53,7 +53,7 @@ class HomeProductRepository extends ServiceEntityRepository
         return $this->em->createQueryBuilder()
             ->from(HomeProduct::class, 'p')
             ->Where('p.slug LIKE :slugLike')
-            ->setParameter('slugLike', '%'.$slug.'%')
+            ->setParameter('slugLike', '%' . $slug . '%')
             ->select('p')
             ->getQuery()
             ->getResult();
