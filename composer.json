@@ -104,10 +104,12 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "test": "php bin/phpunit --testsuite Unit,Application  --testdox",
-        "run-tests": "composer tests && composer run-phpstan && composer run-phpcs",
-        "run-phpstan": "vendor/bin/phpstan analyse",
-        "run-phpcs": "vendor/bin/phpcs"
+        "tests": "php bin/phpunit 1> var/log/testdox.log; tail -n 1 ./var/log/testdox.log >> ./var/log/testdox.txt; cat ./var/log/testdox.txt",
+        "cover": "composer tests && composer phpstan && composer phpcs && composer csfixer",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "phpcs": "vendor/bin/phpcs",
+        "csfixer": "vendor/bin/php-cs-fixer fix ./src"
+
     },
     "conflict": {
         "symfony/symfony": "*"
