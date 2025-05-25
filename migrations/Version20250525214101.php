@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250525202623 extends AbstractMigration
+final class Version20250525214101 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -22,8 +22,8 @@ final class Version20250525202623 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
             CREATE TABLE bill (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-              user_id BIGINT UNSIGNED DEFAULT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              user_id BINARY(16) DEFAULT NULL COMMENT '(DC2Type:uuid)',
               vat DOUBLE PRECISION NOT NULL,
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
@@ -33,10 +33,10 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE bill_line_product (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-              bill_id BIGINT UNSIGNED NOT NULL,
-              product_id BIGINT UNSIGNED NOT NULL,
-              product_class_id BIGINT UNSIGNED NOT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              bill_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              product_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              product_class_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               quantity SMALLINT UNSIGNED NOT NULL,
               name VARCHAR(255) NOT NULL,
               slug VARCHAR(255) DEFAULT NULL,
@@ -50,7 +50,7 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE brands (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
               name VARCHAR(255) NOT NULL,
@@ -61,9 +61,9 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE campaign_products (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-              campaign_id BIGINT UNSIGNED NOT NULL,
-              product_class_id BIGINT UNSIGNED NOT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              campaign_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              product_class_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               productClass VARCHAR(255) NOT NULL,
               INDEX IDX_81CA8C25F639F774 (campaign_id),
               INDEX IDX_81CA8C2521B06187 (product_class_id),
@@ -72,8 +72,8 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE campaign_product_product (
-              campaign_product_id BIGINT UNSIGNED NOT NULL,
-              product_id BIGINT UNSIGNED NOT NULL,
+              campaign_product_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              product_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               INDEX IDX_7F249008829346F2 (campaign_product_id),
               INDEX IDX_7F2490084584665A (product_id),
               PRIMARY KEY(campaign_product_id, product_id)
@@ -81,7 +81,7 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE campaigns (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               starts_at DATE NOT NULL COMMENT '(DC2Type:date_immutable)',
               ends_at DATE NOT NULL COMMENT '(DC2Type:date_immutable)',
               discount SMALLINT NOT NULL,
@@ -95,7 +95,7 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE images (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               url VARCHAR(255) NOT NULL,
               alt VARCHAR(255) NOT NULL,
               title VARCHAR(255) NOT NULL,
@@ -106,10 +106,10 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE product_images (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-              image_id BIGINT UNSIGNED NOT NULL,
-              product_id BIGINT UNSIGNED NOT NULL,
-              product_class_id BIGINT UNSIGNED NOT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              image_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              product_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              product_class_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
               productClass VARCHAR(255) NOT NULL,
@@ -121,8 +121,8 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE products (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-              brand_id BIGINT UNSIGNED NOT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
+              brand_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               description VARCHAR(1024) NOT NULL,
               more_info VARCHAR(1024) DEFAULT NULL,
               price DOUBLE PRECISION NOT NULL,
@@ -138,7 +138,7 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE `user` (
-              id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+              id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               email VARCHAR(180) NOT NULL,
               roles JSON NOT NULL,
               password VARCHAR(255) NOT NULL,

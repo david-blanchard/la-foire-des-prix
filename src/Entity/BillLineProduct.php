@@ -9,6 +9,7 @@ use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -33,10 +34,6 @@ class BillLineProduct
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
-
-    public function __construct()
-    {
-    }
 
     public function getQuantity(): int
     {

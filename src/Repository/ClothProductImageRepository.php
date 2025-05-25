@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Image;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Image\ClothProductImage>
@@ -20,11 +21,11 @@ class ClothProductImageRepository extends ServiceEntityRepository
     /**
      * Get the list of images associated with a given product.
      *
-     * @param int $productId The ID of the product
+     * @param Uuid $productId The ID of the product
      *
      * @return Image[] Returns an array of Image objects
      */
-    public function findByProductId(int $productId): array
+    public function findByProductId(Uuid $productId): array
     {
         $qb = $this->createQueryBuilder('pi')
             ->join(Image::class, 'i', 'WITH', 'pi.image = i.id')

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
 #[ORM\Table(name: 'product_images')]
@@ -30,7 +31,7 @@ class ProductImage
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Image $image;
 
-    #[ORM\ManyToOne(inversedBy: 'productImages')]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Product $product = null;
 

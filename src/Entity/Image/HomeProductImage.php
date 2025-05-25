@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ClothProductImageRepository::class)]
 class HomeProductImage extends ProductImage
 {
-    #[ORM\ManyToOne(targetEntity: HomeProduct::class, inversedBy: 'images')]
+    #[ORM\ManyToOne(targetEntity: HomeProduct::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?HomeProduct $productClass;
 

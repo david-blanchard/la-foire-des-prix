@@ -7,6 +7,7 @@ use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<FoodProduct>
@@ -30,7 +31,7 @@ class FoodProductRepository extends ServiceEntityRepository
      *
      * @return FoodProduct|null $product Product entity
      */
-    public function findById(?int $productId = null): ?FoodProduct
+    public function findById(?Uuid $productId = null): ?FoodProduct
     {
         if (null === $productId) {
             $product = $this->findAll()[0] ?? null;
@@ -76,24 +77,24 @@ class FoodProductRepository extends ServiceEntityRepository
     /**
      * Delete the product page properties from the cache by ID.
      */
-    public function deletePropertiesFromCacheById(int $productId): void
+    public function deletePropertiesFromCacheById(Uuid $productId): void
     {
         $this->cache->delete("product$productId");
     }
 
     public function deletePropertiesFromCache(FoodProduct $product): void
     {
-        self::deletePropertiesFromCacheById((int) $product->getId());
+        self::deletePropertiesFromCacheById($product->getId());
     }
 
     /**
      * Retrieve the product page properties from the cache by ID.
      *
-     * @param int $productId Product ID
+     * @param Uuid $productId Product ID
      *
      * @return array<mixed>|null $properties Values to be set in the product page view
      */
-    public function getPropertiesFromCacheById(int $productId): ?array
+    public function getPropertiesFromCacheById(Uuid $productId): ?array
     {
         return $this->cache->get("product$productId");
     }
@@ -104,7 +105,7 @@ class FoodProductRepository extends ServiceEntityRepository
      * @param int          $productId  Product ID
      * @param array<mixed> $properties Values to be set in the product page view
      */
-    public function putPropertiesInCacheById(int $productId, array $properties): void
+    public function putPropertiesInCacheById(Uuid $productId, array $properties): void
     {
         $this->cache->set("product$productId", $properties);
     }

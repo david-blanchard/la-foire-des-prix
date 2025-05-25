@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use Symfony\Component\Uid\Uuid;
+
 trait ProductRepositoryTrait
 {
     /**
@@ -9,7 +11,7 @@ trait ProductRepositoryTrait
      *
      * @return int Discount percentage
      */
-    public function getProductDiscountById(?int $productId): int
+    public function getProductDiscountById(?Uuid $productId): int
     {
         return 1;
     }

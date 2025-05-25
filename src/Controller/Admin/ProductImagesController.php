@@ -65,7 +65,7 @@ class ProductImagesController extends AbstractController
         }
 
         $brand = $this->brandRepository->find($product->getBrand());
-        $associatedImages = $this->productImageRepository->findByProductId((int) $product->getId());
+        $associatedImages = $this->productImageRepository->findByProductId($product->getId());
 
         return $this->render('admin/product_images/create.html.twig', [
             'product' => $product,

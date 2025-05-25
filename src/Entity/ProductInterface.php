@@ -4,10 +4,11 @@ namespace App\Entity;
 
 use App\Entity\BillLine\ProductBillLineInterface;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Uid\Uuid;
 
 interface ProductInterface extends ProductBillLineInterface
 {
-    public function getId(): ?int;
+    public function getId(): ?Uuid;
 
     public function getName(): ?string;
 

@@ -6,6 +6,7 @@ use App\Entity\Campaign;
 use App\Entity\Product\ClothProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Campaign\ClothProductCampaign>
@@ -36,7 +37,7 @@ class ClothProductCampaignRepository extends ServiceEntityRepository
      *
      * @return int Discount percentage
      */
-    public function getProductDiscountById(?int $productId): int
+    public function getProductDiscountById(?Uuid $productId): int
     {
         if (null === $productId) {
             return 0;

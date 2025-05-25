@@ -7,6 +7,7 @@ use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<ClothProduct>
@@ -24,7 +25,7 @@ class ClothProductRepository extends ServiceEntityRepository
     /**
      * Retrieve the values of a given product.
      */
-    public function findById(?int $productId = null): ?ClothProduct
+    public function findById(?Uuid $productId = null): ?ClothProduct
     {
         if (null === $productId) {
             $product = $this->findAll()[0] ?? null;
@@ -70,20 +71,20 @@ class ClothProductRepository extends ServiceEntityRepository
     /**
      * Delete the product page properties from the cache by ID.
      */
-    public function deletePropertiesFromCacheById(int $productId): void
+    public function deletePropertiesFromCacheById(Uuid $productId): void
     {
         $this->cache->delete("product$productId");
     }
 
     public function deletePropertiesFromCache(ClothProduct $product): void
     {
-        self::deletePropertiesFromCacheById((int) $product->getId());
+        self::deletePropertiesFromCacheById($product->getId());
     }
 
     /**
      * @return array<mixed>|null
      */
-    public function getPropertiesFromCacheById(int $productId): ?array
+    public function getPropertiesFromCacheById(Uuid $productId): ?array
     {
         return $this->cache->get("product$productId");
     }
@@ -93,7 +94,7 @@ class ClothProductRepository extends ServiceEntityRepository
      *
      * @param array<mixed> $properties Values to be set in product page view
      */
-    public function putPropertiesInCacheById(int $productId, array $properties): void
+    public function putPropertiesInCacheById(Uuid $productId, array $properties): void
     {
         $this->cache->set("product$productId", $properties); // Cache expiration: 1 heure
     }

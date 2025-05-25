@@ -36,7 +36,7 @@ readonly class ProductService implements ViewServiceInterface
         $props['featuresCaption'] = 'Information complémentaires';
         $props['features'] = $this->grabMoreInfo($data?->getMoreInfo());
 
-        $images = $this->imagesRepository->findByProductId((int) $data?->getId());
+        $images = $this->imagesRepository->findByProductId($data?->getId());
         $props['images'] = $images;
 
         return $props;

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Brand;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -21,7 +22,7 @@ class BrandRepository extends ServiceEntityRepository
         $this->cache = $cache;
     }
 
-    public function findNameById(int $brandId): ?string
+    public function findNameById(Uuid $brandId): ?string
     {
         $brand = $this->find($brandId);
 
