@@ -15,7 +15,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity()]
 #[ORM\Table(name: 'products')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'product', type: 'string')]
+#[ORM\DiscriminatorColumn(name: 'productClass', type: 'string')]
 #[ORM\DiscriminatorMap([
     'cloths' => ClothProduct::class,
     'food' => FoodProduct::class,
@@ -43,7 +43,7 @@ abstract class Product
     /**
      * @var Collection<int, CampaignProduct> $campaignProducts
      */
-    #[ORM\OneToMany(targetEntity: CampaignProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToMany(targetEntity: CampaignProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
     protected Collection $campaignProducts;
 
     /**

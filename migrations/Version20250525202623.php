@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250517154011 extends AbstractMigration
+final class Version20250525202623 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -36,12 +36,15 @@ final class Version20250517154011 extends AbstractMigration
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
               bill_id BIGINT UNSIGNED NOT NULL,
               product_id BIGINT UNSIGNED NOT NULL,
+              product_class_id BIGINT UNSIGNED NOT NULL,
               quantity SMALLINT UNSIGNED NOT NULL,
               name VARCHAR(255) NOT NULL,
               slug VARCHAR(255) DEFAULT NULL,
-              product VARCHAR(255) NOT NULL,
+              productClass VARCHAR(255) NOT NULL,
               UNIQUE INDEX UNIQ_182EE6CF989D9B62 (slug),
               INDEX IDX_182EE6CF1A8C12F5 (bill_id),
+              INDEX IDX_182EE6CF4584665A (product_id),
+              INDEX IDX_182EE6CF21B06187 (product_class_id),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -60,10 +63,20 @@ final class Version20250517154011 extends AbstractMigration
             CREATE TABLE campaign_products (
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
               campaign_id BIGINT UNSIGNED NOT NULL,
-              product_id BIGINT UNSIGNED NOT NULL,
-              product VARCHAR(255) NOT NULL,
+              product_class_id BIGINT UNSIGNED NOT NULL,
+              productClass VARCHAR(255) NOT NULL,
               INDEX IDX_81CA8C25F639F774 (campaign_id),
+              INDEX IDX_81CA8C2521B06187 (product_class_id),
               PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE campaign_product_product (
+              campaign_product_id BIGINT UNSIGNED NOT NULL,
+              product_id BIGINT UNSIGNED NOT NULL,
+              INDEX IDX_7F249008829346F2 (campaign_product_id),
+              INDEX IDX_7F2490084584665A (product_id),
+              PRIMARY KEY(campaign_product_id, product_id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
@@ -96,10 +109,13 @@ final class Version20250517154011 extends AbstractMigration
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
               image_id BIGINT UNSIGNED NOT NULL,
               product_id BIGINT UNSIGNED NOT NULL,
+              product_class_id BIGINT UNSIGNED NOT NULL,
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
-              product VARCHAR(255) NOT NULL,
+              productClass VARCHAR(255) NOT NULL,
               INDEX IDX_8263FFCE3DA5256D (image_id),
+              INDEX IDX_8263FFCE4584665A (product_id),
+              INDEX IDX_8263FFCE21B06187 (product_class_id),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -114,7 +130,7 @@ final class Version20250517154011 extends AbstractMigration
               slug VARCHAR(255) DEFAULT NULL,
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
-              product VARCHAR(255) NOT NULL,
+              productClass VARCHAR(255) NOT NULL,
               UNIQUE INDEX UNIQ_B3BA5A5A989D9B62 (slug),
               INDEX IDX_B3BA5A5A44F5D008 (brand_id),
               PRIMARY KEY(id)
@@ -160,15 +176,57 @@ final class Version20250517154011 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE
+              bill_line_product
+            ADD
+              CONSTRAINT FK_182EE6CF4584665A FOREIGN KEY (product_id) REFERENCES products (id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE
+              bill_line_product
+            ADD
+              CONSTRAINT FK_182EE6CF21B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE
               campaign_products
             ADD
               CONSTRAINT FK_81CA8C25F639F774 FOREIGN KEY (campaign_id) REFERENCES campaigns (id) ON DELETE CASCADE
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE
+              campaign_products
+            ADD
+              CONSTRAINT FK_81CA8C2521B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE
+              campaign_product_product
+            ADD
+              CONSTRAINT FK_7F249008829346F2 FOREIGN KEY (campaign_product_id) REFERENCES campaign_products (id) ON DELETE CASCADE
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE
+              campaign_product_product
+            ADD
+              CONSTRAINT FK_7F2490084584665A FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE
               product_images
             ADD
               CONSTRAINT FK_8263FFCE3DA5256D FOREIGN KEY (image_id) REFERENCES images (id) ON DELETE CASCADE
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE
+              product_images
+            ADD
+              CONSTRAINT FK_8263FFCE4584665A FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE
+              product_images
+            ADD
+              CONSTRAINT FK_8263FFCE21B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE
@@ -188,10 +246,31 @@ final class Version20250517154011 extends AbstractMigration
             ALTER TABLE bill_line_product DROP FOREIGN KEY FK_182EE6CF1A8C12F5
         SQL);
         $this->addSql(<<<'SQL'
+            ALTER TABLE bill_line_product DROP FOREIGN KEY FK_182EE6CF4584665A
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE bill_line_product DROP FOREIGN KEY FK_182EE6CF21B06187
+        SQL);
+        $this->addSql(<<<'SQL'
             ALTER TABLE campaign_products DROP FOREIGN KEY FK_81CA8C25F639F774
         SQL);
         $this->addSql(<<<'SQL'
+            ALTER TABLE campaign_products DROP FOREIGN KEY FK_81CA8C2521B06187
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE campaign_product_product DROP FOREIGN KEY FK_7F249008829346F2
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE campaign_product_product DROP FOREIGN KEY FK_7F2490084584665A
+        SQL);
+        $this->addSql(<<<'SQL'
             ALTER TABLE product_images DROP FOREIGN KEY FK_8263FFCE3DA5256D
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE product_images DROP FOREIGN KEY FK_8263FFCE4584665A
+        SQL);
+        $this->addSql(<<<'SQL'
+            ALTER TABLE product_images DROP FOREIGN KEY FK_8263FFCE21B06187
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE products DROP FOREIGN KEY FK_B3BA5A5A44F5D008
@@ -207,6 +286,9 @@ final class Version20250517154011 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE campaign_products
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP TABLE campaign_product_product
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE campaigns

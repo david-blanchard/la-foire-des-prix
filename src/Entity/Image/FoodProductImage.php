@@ -13,16 +13,16 @@ class FoodProductImage extends ProductImage
 {
     #[ORM\ManyToOne(targetEntity: FoodProduct::class, inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?FoodProduct $product;
+    private ?FoodProduct $productClass;
 
-    public function getProduct(): ?FoodProduct
+    public function getProductClass(): ?FoodProduct
     {
-        return $this->product;
+        return $this->productClass;
     }
 
-    public function setProduct(FoodProduct|null $product): static
+    public function setProductClass(FoodProduct|null $productClass): static
     {
-        $this->product = $product;
+        $this->productClass = $productClass;
 
         return $this;
     }

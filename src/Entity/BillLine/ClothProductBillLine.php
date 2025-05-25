@@ -13,16 +13,16 @@ class ClothProductBillLine extends BillLineProduct implements ProductBillLineInt
 {
     #[ORM\ManyToOne(targetEntity: ClothProduct::class, inversedBy: 'billLines')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?ClothProduct $product;
+    private ?ClothProduct $productClass;
 
-    public function getProduct(): ?ClothProduct
+    public function getProductClass(): ?ClothProduct
     {
-        return $this->product;
+        return $this->productClass;
     }
 
-    public function setProduct(?ClothProduct $product): static
+    public function setProductClass(?ClothProduct $productClass): static
     {
-        $this->product = $product;
+        $this->productClass = $productClass;
 
         return $this;
     }

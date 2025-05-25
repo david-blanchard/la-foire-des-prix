@@ -23,7 +23,7 @@ class FoodProduct extends Product implements ProductInterface
     {
         if (!$this->campaignProducts->contains($campaignProduct)) {
             $this->campaignProducts[] = $campaignProduct;
-            $campaignProduct->setProduct($this);
+            $campaignProduct->setProductClass($this);
         }
 
         return $this;
@@ -32,8 +32,8 @@ class FoodProduct extends Product implements ProductInterface
     public function addImage(Image $image): self
     {
         $productImage = new Image\FoodProductImage();
+        $productImage->setProductClass($this);
         $productImage->setProduct($this);
-        $productImage->setProductId($this->getId());
         $productImage->setImage($image);
 
         $this->addProductImage($productImage);
@@ -44,8 +44,8 @@ class FoodProduct extends Product implements ProductInterface
     public function removeImage(Image $image): self
     {
         $productImage = new Image\FoodProductImage();
+        $productImage->setProductClass($this);
         $productImage->setProduct($this);
-        $productImage->setProductId($this->getId());
         $productImage->setImage($image);
 
         $this->removeProductImage($productImage);
