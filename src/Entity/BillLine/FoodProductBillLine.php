@@ -4,12 +4,12 @@ namespace App\Entity\BillLine;
 
 use App\Entity\BillLineProduct;
 use App\Entity\Product\FoodProduct;
-use App\Entity\ProductInterface;
+use App\Entity\ProductCategoryInterface;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class FoodProductBillLine extends BillLineProduct implements ProductBillLineInterface
+class FoodProductBillLine extends BillLineProduct implements ProductCategoryInterface
 {
     #[ORM\ManyToOne(targetEntity: FoodProduct::class, inversedBy: 'billLines')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

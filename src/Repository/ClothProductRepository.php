@@ -84,7 +84,7 @@ class ClothProductRepository extends ServiceEntityRepository
     /**
      * @return array<mixed>|null
      */
-    public function getPropertiesFromCacheById(Uuid $productId): ?array
+    public function getPropertiesFromCacheById(Uuid|null $productId = null): ?array
     {
         return $this->cache->get("product$productId");
     }
@@ -94,7 +94,7 @@ class ClothProductRepository extends ServiceEntityRepository
      *
      * @param array<mixed> $properties Values to be set in product page view
      */
-    public function putPropertiesInCacheById(Uuid $productId, array $properties): void
+    public function putPropertiesInCacheById(Uuid|null $productId, array $properties): void
     {
         $this->cache->set("product$productId", $properties); // Cache expiration: 1 heure
     }

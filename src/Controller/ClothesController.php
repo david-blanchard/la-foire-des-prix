@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/mode-femme')]
-class WomanController extends AbstractController
+class ClothesController extends AbstractController
 {
     public function __construct(
         private readonly ClothProductRepository $productRepository,
@@ -23,7 +23,7 @@ class WomanController extends AbstractController
     public function index(): Response
     {
         // Attempt to fetch properties from a cache by ID
-        $props = $this->productRepository->getPropertiesFromCacheById(-1);
+        $props = $this->productRepository->getPropertiesFromCacheById();
         if (null !== $props) {
             return $this->render('woman/index.html.twig', $props);
         }
@@ -35,7 +35,7 @@ class WomanController extends AbstractController
         $cartFields = $this->cartService->prepareViewFields();
 
         // Store properties in a cache
-        $this->productRepository->putPropertiesInCacheById(-1, $props);
+        $this->productRepository->putPropertiesInCacheById(null, $props);
 
         return $this->render('woman/index.html.twig', [
             ...$props,

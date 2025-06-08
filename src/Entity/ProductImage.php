@@ -22,7 +22,7 @@ use Symfony\Component\Uid\Uuid;
     'food' => FoodProductImage::class,
     'home' => HomeProductImage::class,
 ])]
-class ProductImage
+abstract class ProductImage
 {
     use Identifier;
     use TimestampableEntity;
@@ -30,11 +30,6 @@ class ProductImage
     #[ORM\ManyToOne(targetEntity: Image::class, inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Image $image;
-
-    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'productImages')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?Product $product = null;
-
 
     public function getImage(): ?Image
     {
@@ -48,16 +43,8 @@ class ProductImage
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
+    public abstract function getProduct(): ?Product;
 
-    public function setProduct(?Product $product): static
-    {
-        $this->product = $product;
-
-        return $this;
-    }
+    public abstract function setProduct(?Product $product): static;
 
 }

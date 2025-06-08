@@ -47,16 +47,10 @@ abstract class Product
     #[ORM\ManyToMany(targetEntity: CampaignProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
     protected Collection $campaignProducts;
 
-    /**
-     * @var Collection<int, ProductImage> $productImages
-     */
-    #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
-    protected Collection $productImages;
-
     public function __construct()
     {
         $this->campaignProducts = new ArrayCollection();
-        $this->productImages = new ArrayCollection();
+//        $this->productImages = new ArrayCollection();
     }
 
     public function getDescription(): string
@@ -129,30 +123,14 @@ abstract class Product
     /**
      * @return Collection<int, ProductImage>
      */
-    public function getProductImages(): Collection
-    {
-        return $this->productImages;
-    }
+    public abstract function getProductImages(): Collection;
 
     abstract public function addImage(Image $image): self;
 
     abstract public function removeImage(Image $image): self;
 
-    public function addProductImage(ProductImage $productImage): self
-    {
-        if (!$this->productImages->contains($productImage)) {
-            $this->productImages[] = $productImage;
-        }
+    public abstract function addProductImage(ProductImage $productImage): self;
 
-        return $this;
-    }
+    public abstract function removeProductImage(ProductImage $productImage): self;
 
-    public function removeProductImage(ProductImage $productImage): self
-    {
-        if ($this->productImages->contains($productImage)) {
-            $this->productImages->removeElement($productImage);
-        }
-
-        return $this;
-    }
 }
