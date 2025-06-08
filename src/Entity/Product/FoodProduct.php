@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'food_products')]
 class FoodProduct extends Product implements ProductInterface
 {
-    #[ORM\OneToMany(targetEntity: Image\FoodProductImage::class, mappedBy: 'relation', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Image\FoodProductImage::class, mappedBy: 'product', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productImages;
 
     public function __construct()

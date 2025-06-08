@@ -12,7 +12,7 @@ class ClothProductImage extends ProductImage
 {
     private ?string $relation = ClothProduct::class;
 
-    #[ORM\ManyToOne(targetEntity: ClothProduct::class)]
+    #[ORM\ManyToOne(targetEntity: ClothProduct::class, inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ClothProduct $product;
 
