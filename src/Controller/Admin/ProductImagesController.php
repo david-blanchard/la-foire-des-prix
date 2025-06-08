@@ -55,7 +55,7 @@ class ProductImagesController extends AbstractController
 
             $productImage = new Image\ClothProductImage();
             $productImage->setProduct($product);
-            $productImage->setProductClass($product);
+            $productImage->setRelation($product->getCategoryName());
             $productImage->setImage($image);
 
             $entityManager->persist($productImage);

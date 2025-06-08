@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250525214101 extends AbstractMigration
+final class Version20250608141341 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -36,15 +36,13 @@ final class Version20250525214101 extends AbstractMigration
               id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               bill_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               product_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
-              product_class_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               quantity SMALLINT UNSIGNED NOT NULL,
               name VARCHAR(255) NOT NULL,
               slug VARCHAR(255) DEFAULT NULL,
-              productClass VARCHAR(255) NOT NULL,
+              relation VARCHAR(255) NOT NULL,
               UNIQUE INDEX UNIQ_182EE6CF989D9B62 (slug),
               INDEX IDX_182EE6CF1A8C12F5 (bill_id),
               INDEX IDX_182EE6CF4584665A (product_id),
-              INDEX IDX_182EE6CF21B06187 (product_class_id),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -63,10 +61,8 @@ final class Version20250525214101 extends AbstractMigration
             CREATE TABLE campaign_products (
               id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               campaign_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
-              product_class_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
-              productClass VARCHAR(255) NOT NULL,
+              relation VARCHAR(255) NOT NULL,
               INDEX IDX_81CA8C25F639F774 (campaign_id),
-              INDEX IDX_81CA8C2521B06187 (product_class_id),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -109,13 +105,11 @@ final class Version20250525214101 extends AbstractMigration
               id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               image_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               product_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
-              product_class_id BINARY(16) NOT NULL COMMENT '(DC2Type:uuid)',
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
-              productClass VARCHAR(255) NOT NULL,
+              relation VARCHAR(255) NOT NULL,
               INDEX IDX_8263FFCE3DA5256D (image_id),
               INDEX IDX_8263FFCE4584665A (product_id),
-              INDEX IDX_8263FFCE21B06187 (product_class_id),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -130,7 +124,7 @@ final class Version20250525214101 extends AbstractMigration
               slug VARCHAR(255) DEFAULT NULL,
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
-              productClass VARCHAR(255) NOT NULL,
+              relation VARCHAR(255) NOT NULL,
               UNIQUE INDEX UNIQ_B3BA5A5A989D9B62 (slug),
               INDEX IDX_B3BA5A5A44F5D008 (brand_id),
               PRIMARY KEY(id)
@@ -182,21 +176,9 @@ final class Version20250525214101 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE
-              bill_line_product
-            ADD
-              CONSTRAINT FK_182EE6CF21B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE
               campaign_products
             ADD
               CONSTRAINT FK_81CA8C25F639F774 FOREIGN KEY (campaign_id) REFERENCES campaigns (id) ON DELETE CASCADE
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE
-              campaign_products
-            ADD
-              CONSTRAINT FK_81CA8C2521B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE
@@ -220,13 +202,7 @@ final class Version20250525214101 extends AbstractMigration
             ALTER TABLE
               product_images
             ADD
-              CONSTRAINT FK_8263FFCE4584665A FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE
-              product_images
-            ADD
-              CONSTRAINT FK_8263FFCE21B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
+              CONSTRAINT FK_8263FFCE4584665A FOREIGN KEY (product_id) REFERENCES products (id)
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE
@@ -249,13 +225,7 @@ final class Version20250525214101 extends AbstractMigration
             ALTER TABLE bill_line_product DROP FOREIGN KEY FK_182EE6CF4584665A
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE bill_line_product DROP FOREIGN KEY FK_182EE6CF21B06187
-        SQL);
-        $this->addSql(<<<'SQL'
             ALTER TABLE campaign_products DROP FOREIGN KEY FK_81CA8C25F639F774
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE campaign_products DROP FOREIGN KEY FK_81CA8C2521B06187
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE campaign_product_product DROP FOREIGN KEY FK_7F249008829346F2
@@ -268,9 +238,6 @@ final class Version20250525214101 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE product_images DROP FOREIGN KEY FK_8263FFCE4584665A
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE product_images DROP FOREIGN KEY FK_8263FFCE21B06187
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE products DROP FOREIGN KEY FK_B3BA5A5A44F5D008

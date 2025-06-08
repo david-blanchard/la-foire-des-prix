@@ -26,7 +26,7 @@ class CampaignProductsFixture extends Fixture implements DependentFixtureInterfa
             $product = $productRepository->findOneBy(['name' => $item['product']]);
             $campaignProduct = new Campaign\ClothProductCampaign();
             $campaignProduct->setCampaign($campaign);
-            $campaignProduct->setProductClass($product);
+            $campaignProduct->setRelation($product->getCategoryName());
             $campaignProduct->addProduct($product);
             $manager->persist($campaignProduct);
         }

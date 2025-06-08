@@ -2,7 +2,6 @@
 
 namespace App\Entity\Image;
 
-use App\Entity\Product;
 use App\Entity\Product\FoodProduct;
 use App\Entity\ProductImage;
 use App\Repository\ClothProductImageRepository;
@@ -11,22 +10,20 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ClothProductImageRepository::class)]
 class FoodProductImage extends ProductImage
 {
-    #[ORM\ManyToOne(targetEntity: FoodProduct::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?FoodProduct $productClass;
+    private string $relation = FoodProduct::class;
 
-    #[ORM\ManyToOne(targetEntity: ClothProduct::class)]
+    #[ORM\ManyToOne(targetEntity: FoodProduct::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?FoodProduct $product;
 
-    public function getProductClass(): ?FoodProduct
+    public function getRelation(): string
     {
-        return $this->productClass;
+        return $this->relation;
     }
 
-    public function setProductClass(FoodProduct|null $productClass): static
+    public function setRelation(string $relation): static
     {
-        $this->productClass = $productClass;
+        $this->relation = $relation;
 
         return $this;
     }

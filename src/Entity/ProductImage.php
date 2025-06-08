@@ -16,7 +16,7 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
 #[ORM\Table(name: 'product_images')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'productClass', type: 'string')]
+#[ORM\DiscriminatorColumn(name: 'relation', type: 'string')]
 #[ORM\DiscriminatorMap([
     'cloths' => ClothProductImage::class,
     'food' => FoodProductImage::class,

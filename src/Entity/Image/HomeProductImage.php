@@ -10,22 +10,20 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ClothProductImageRepository::class)]
 class HomeProductImage extends ProductImage
 {
-    #[ORM\ManyToOne(targetEntity: HomeProduct::class)]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?HomeProduct $productClass;
+    private string $relation = HomeProduct::class;
 
     #[ORM\ManyToOne(targetEntity: HomeProduct::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?HomeProduct $product;
 
-    public function getProductClass(): ?HomeProduct
+    public function getRelation(): string
     {
-        return $this->productClass;
+        return $this->relation;
     }
 
-    public function setProductClass(HomeProduct|null $productClass): static
+    public function setRelation(string $relation): static
     {
-        $this->productClass = $productClass;
+        $this->relation = $relation;
 
         return $this;
     }

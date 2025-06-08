@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'home_products')]
 class HomeProduct extends Product implements ProductInterface
 {
-    #[ORM\OneToMany(targetEntity: Image\HomeProductImage::class, mappedBy: 'productClass', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Image\HomeProductImage::class, mappedBy: 'relation', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $productImages;
 
     public function __construct()
@@ -34,7 +34,7 @@ class HomeProduct extends Product implements ProductInterface
     {
         if (!$this->campaignProducts->contains($campaignProduct)) {
             $this->campaignProducts[] = $campaignProduct;
-            $campaignProduct->setProductClass($this);
+            $campaignProduct->setProduct($this);
         }
 
         return $this;
@@ -43,7 +43,7 @@ class HomeProduct extends Product implements ProductInterface
     public function addImage(Image $image): self
     {
         $productImage = new Image\HomeProductImage();
-        $productImage->setProductClass($this);
+        $productImage->setRelation($this->getCategoryName());
         $productImage->setProduct($this);
         $productImage->setImage($image);
 
@@ -55,7 +55,7 @@ class HomeProduct extends Product implements ProductInterface
     public function removeImage(Image $image): self
     {
         $productImage = new Image\HomeProductImage();
-        $productImage->setProductClass($this);
+        $productImage->setRelation($this->getCategoryName());
         $productImage->setProduct($this);
         $productImage->setImage($image);
 

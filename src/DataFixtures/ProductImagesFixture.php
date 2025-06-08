@@ -28,7 +28,6 @@ class ProductImagesFixture extends Fixture implements DependentFixtureInterface
 
             $productImage = new Image\ClothProductImage();
             $productImage->setProduct($product);
-            $productImage->setProductClass($product);
             $productImage->setImage($image);
             $manager->persist($productImage);
         }

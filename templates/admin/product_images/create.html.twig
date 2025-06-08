@@ -42,13 +42,15 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Image</label>
-                                <select name="image" class="form-control">
-                                    {% for image in images %}
-                                        <option value="{{ image.id }}">
-                                            {{ image.alt }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
+                                <label>
+                                    <select name="image" class="form-control">
+                                        {% for image in images %}
+                                            <option value="{{ image.id }}">
+                                                {{ image.alt }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
                             </div>
                         </div>
                         <div class="col-12">
@@ -62,8 +64,4 @@
         </tbody>
     </table>
 </div>
-{% endblock %}
-
-{% block javascripts %}
-    <script src="{{ asset('js/product-page.js') }}"></script>
 {% endblock %}
