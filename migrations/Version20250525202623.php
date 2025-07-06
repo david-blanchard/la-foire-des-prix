@@ -36,15 +36,13 @@ final class Version20250525202623 extends AbstractMigration
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
               bill_id BIGINT UNSIGNED NOT NULL,
               product_id BIGINT UNSIGNED NOT NULL,
-              product_class_id BIGINT UNSIGNED NOT NULL,
               quantity SMALLINT UNSIGNED NOT NULL,
               name VARCHAR(255) NOT NULL,
               slug VARCHAR(255) DEFAULT NULL,
-              productClass VARCHAR(255) NOT NULL,
+              relation VARCHAR(255) NOT NULL,
               UNIQUE INDEX UNIQ_182EE6CF989D9B62 (slug),
               INDEX IDX_182EE6CF1A8C12F5 (bill_id),
               INDEX IDX_182EE6CF4584665A (product_id),
-              INDEX IDX_182EE6CF21B06187 (product_class_id),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -63,10 +61,8 @@ final class Version20250525202623 extends AbstractMigration
             CREATE TABLE campaign_products (
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
               campaign_id BIGINT UNSIGNED NOT NULL,
-              product_class_id BIGINT UNSIGNED NOT NULL,
-              productClass VARCHAR(255) NOT NULL,
+              relation VARCHAR(255) NOT NULL,
               INDEX IDX_81CA8C25F639F774 (campaign_id),
-              INDEX IDX_81CA8C2521B06187 (product_class_id),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -109,13 +105,11 @@ final class Version20250525202623 extends AbstractMigration
               id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
               image_id BIGINT UNSIGNED NOT NULL,
               product_id BIGINT UNSIGNED NOT NULL,
-              product_class_id BIGINT UNSIGNED NOT NULL,
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
-              productClass VARCHAR(255) NOT NULL,
+              relation VARCHAR(255) NOT NULL,
               INDEX IDX_8263FFCE3DA5256D (image_id),
               INDEX IDX_8263FFCE4584665A (product_id),
-              INDEX IDX_8263FFCE21B06187 (product_class_id),
               PRIMARY KEY(id)
             ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
@@ -130,7 +124,7 @@ final class Version20250525202623 extends AbstractMigration
               slug VARCHAR(255) DEFAULT NULL,
               created_at DATETIME NOT NULL,
               updated_at DATETIME NOT NULL,
-              productClass VARCHAR(255) NOT NULL,
+              relation VARCHAR(255) NOT NULL,
               UNIQUE INDEX UNIQ_B3BA5A5A989D9B62 (slug),
               INDEX IDX_B3BA5A5A44F5D008 (brand_id),
               PRIMARY KEY(id)
@@ -182,21 +176,9 @@ final class Version20250525202623 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE
-              bill_line_product
-            ADD
-              CONSTRAINT FK_182EE6CF21B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE
               campaign_products
             ADD
               CONSTRAINT FK_81CA8C25F639F774 FOREIGN KEY (campaign_id) REFERENCES campaigns (id) ON DELETE CASCADE
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE
-              campaign_products
-            ADD
-              CONSTRAINT FK_81CA8C2521B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE
@@ -221,12 +203,6 @@ final class Version20250525202623 extends AbstractMigration
               product_images
             ADD
               CONSTRAINT FK_8263FFCE4584665A FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE
-              product_images
-            ADD
-              CONSTRAINT FK_8263FFCE21B06187 FOREIGN KEY (product_class_id) REFERENCES products (id) ON DELETE CASCADE
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE

@@ -15,7 +15,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
 #[ORM\Table(name: 'product_images')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'productClass', type: 'string')]
+#[ORM\DiscriminatorColumn(name: 'relation', type: 'string')]
 #[ORM\DiscriminatorMap([
     'cloths' => ClothProductImage::class,
     'food' => FoodProductImage::class,
@@ -28,11 +28,11 @@ class ProductImage
 
     #[ORM\ManyToOne(targetEntity: Image::class, inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?Image $image;
+    protected ?Image $image;
 
     #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?Product $product = null;
+    protected ?Product $product = null;
 
 
     public function getImage(): ?Image

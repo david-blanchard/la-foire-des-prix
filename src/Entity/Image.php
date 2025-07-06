@@ -89,7 +89,7 @@ class Image
         $productImage = new ClothProductImage();
         $productImage->setImage($this);
         $productImage->setProduct($product);
-        $productImage->setProductId($product->getId());
+        $productImage->setRelation($product->getCategoryName());
 
         $this->addProductImage($productImage);
 
@@ -101,7 +101,7 @@ class Image
         $productImage = new ClothProductImage();
         $productImage->setImage($this);
         $productImage->setProduct($product);
-        $productImage->setProductId($product->getId());
+        $productImage->setRelation($product->getCategoryName());
 
         $this->removeProductImage($productImage);
 

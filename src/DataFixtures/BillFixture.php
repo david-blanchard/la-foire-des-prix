@@ -31,7 +31,6 @@ class BillFixture extends Fixture implements DependentFixtureInterface
 
         $billLine1 = new ClothProductBillLine();
         $billLine1->setBill($bill);
-        $billLine1->setProductClass($product1);
         $billLine1->setName((string) $product1?->getName());
         $billLine1->setProduct($product1);
         $billLine1->setQuantity(1);
@@ -39,7 +38,6 @@ class BillFixture extends Fixture implements DependentFixtureInterface
 
         $billLine2 = new ClothProductBillLine();
         $billLine2->setBill($bill);
-        $billLine2->setProductClass($product2);
         $billLine2->setName((string) $product2?->getName());
         $billLine2->setProduct($product2);
         $billLine2->setQuantity(2);
@@ -47,7 +45,6 @@ class BillFixture extends Fixture implements DependentFixtureInterface
 
         $billLine3 = new ClothProductBillLine();
         $billLine3->setBill($bill);
-        $billLine3->setProductClass($product3);
         $billLine3->setName((string) $product3?->getName());
         $billLine3->setProduct($product3);
         $billLine3->setQuantity(1);

@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
 #[ORM\Table(name: 'campaign_products')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'productClass', type: 'string')]
+#[ORM\DiscriminatorColumn(name: 'relation', type: 'string')]
 #[ORM\DiscriminatorMap([
     'cloths' => ClothProductCampaign::class,
     'food' => FoodProductCampaign::class,

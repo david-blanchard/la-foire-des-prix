@@ -4,26 +4,29 @@ namespace App\Entity\Image;
 
 use App\Entity\Product\ClothProduct;
 use App\Entity\ProductImage;
-use App\Entity\ProductInterface;
 use App\Repository\ClothProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClothProductImageRepository::class)]
 class ClothProductImage extends ProductImage
 {
-    #[ORM\ManyToOne(targetEntity: ClothProduct::class, inversedBy: 'images')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?ClothProduct $productClass;
+    public readonly ?string $relation;
 
-    public function getProductClass(): ?ClothProduct
+    public function __construct()
     {
-        return $this->productClass;
+        $this->relation = ClothProduct::class;
     }
 
-    public function setProductClass(ClothProduct|null $productClass): static
+    public function getProduct(): ClothProduct|null|\App\Entity\Product
     {
-        $this->productClass = $productClass;
+        return $this->product;
+    }
+
+    public function setProduct(ClothProduct|null|\App\Entity\Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }
+
 }

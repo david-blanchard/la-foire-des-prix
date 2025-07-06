@@ -11,20 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class FoodProductBillLine extends BillLineProduct implements ProductBillLineInterface
 {
-    #[ORM\ManyToOne(targetEntity: FoodProduct::class, inversedBy: 'billLines')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?FoodProduct $productClass;
+    public readonly string $relation;
 
-    public function getProductClass(): ?FoodProduct
+    public function __construct()
     {
-        return $this->productClass;
-    }
-
-    public function setProductClass(?FoodProduct $productClass): static
-    {
-        $this->productClass = $productClass;
-
-        return $this;
+        parent::__construct();
+        $this->relation = FoodProduct::class;
     }
 
     public function getCategoryName(): string

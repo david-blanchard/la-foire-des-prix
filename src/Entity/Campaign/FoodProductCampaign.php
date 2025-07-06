@@ -10,19 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity()]
 class FoodProductCampaign extends CampaignProduct
 {
-    #[ORM\ManyToOne(targetEntity: FoodProduct::class, inversedBy: 'campaigns')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?FoodProduct $productClass;
+    public readonly string $relation;
 
-    public function getProductClass(): ?FoodProduct
+    public function __construct()
     {
-        return $this->productClass;
-    }
-
-    public function setProductClass(FoodProduct|null $productClass): static
-    {
-        $this->productClass = $productClass;
-
-        return $this;
+        parent::__construct();
+        $this->relation = FoodProduct::class;
     }
 }

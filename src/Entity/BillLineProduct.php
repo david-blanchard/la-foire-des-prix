@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'productClass', type: 'string')]
+#[ORM\DiscriminatorColumn(name: 'relation', type: 'string')]
 #[ORM\DiscriminatorMap([
     'cloths' => ClothProductBillLine::class,
     'food' => FoodProductBillLine::class,
