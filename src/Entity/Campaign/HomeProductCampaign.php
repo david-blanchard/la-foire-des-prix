@@ -11,12 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'home_campaign_product')]
 class HomeProductCampaign extends CampaignProduct
 {
-    public readonly string $relation;
+    public readonly string $campaign_type;
 
     public function __construct()
     {
         parent::__construct();
-        $this->relation = HomeProduct::class;
+        $this->campaign_type = HomeProduct::class;
     }
 
 }

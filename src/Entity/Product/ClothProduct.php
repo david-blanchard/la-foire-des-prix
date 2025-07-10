@@ -13,6 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'cloth_product')]
 class ClothProduct extends Product implements ProductInterface
 {
+    public readonly ?string $product_type;
+
+    public function __construct()
+    {
+        $this->product_type = ClothProduct::class;
+        parent::__construct();
+    }
+
     public function getCategoryName(): string
     {
         return 'Clothes';

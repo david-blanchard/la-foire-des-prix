@@ -11,11 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'food_product_image')]
 class FoodProductImage extends ProductImage
 {
-    public readonly string $relation;
+    public readonly ?string $image_type;
 
     public function __construct()
     {
-        $this->relation = FoodProduct::class;
+        $this->image_type = FoodProduct::class;
     }
 
     public function getProduct(): FoodProduct|null|\App\Entity\Product

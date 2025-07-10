@@ -12,12 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'home_product_bill_line')]
 class HomeProductBillLine extends BillLineProduct implements ProductBillLineInterface
 {
-    public readonly string $relation;
+    public readonly string $bill_type;
 
     public function __construct()
     {
         parent::__construct();
-        $this->relation = HomeProduct::class;
+        $this->bill_type = HomeProduct::class;
     }
 
     public function getCategoryName(): string
