@@ -13,8 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
 #[ORM\Table(name: 'campaign_products')]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'relation', type: 'string')]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'campaign_type', type: 'string')]
 #[ORM\DiscriminatorMap([
     'cloths' => ClothProductCampaign::class,
     'food' => FoodProductCampaign::class,

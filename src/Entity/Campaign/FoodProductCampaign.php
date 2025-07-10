@@ -8,6 +8,7 @@ use App\Entity\ProductInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]
+#[ORM\Table(name: 'food_campaign_product')]
 class FoodProductCampaign extends CampaignProduct
 {
     public readonly string $relation;

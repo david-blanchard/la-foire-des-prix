@@ -9,6 +9,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Table(name: 'cloth_product_bill_line')]
 class ClothProductBillLine extends BillLineProduct implements ProductBillLineInterface
 {
     public readonly string $relation;

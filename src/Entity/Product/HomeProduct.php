@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HomeProductRepository::class)]
-#[ORM\Table(name: 'home_products')]
+#[ORM\Table(name: 'home_product')]
 class HomeProduct extends Product implements ProductInterface
 {
     public function getCategoryName(): string

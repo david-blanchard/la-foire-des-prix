@@ -9,6 +9,7 @@ use App\Repository\ClothProductCampaignRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClothProductCampaignRepository::class)]
+#[ORM\Table(name: 'cloth_campaign_product')]
 class ClothProductCampaign extends CampaignProduct
 {
     public readonly string $relation;

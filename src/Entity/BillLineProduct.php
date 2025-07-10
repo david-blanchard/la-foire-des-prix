@@ -11,8 +11,8 @@ use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'relation', type: 'string')]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'bill_type', type: 'string')]
 #[ORM\DiscriminatorMap([
     'cloths' => ClothProductBillLine::class,
     'food' => FoodProductBillLine::class,

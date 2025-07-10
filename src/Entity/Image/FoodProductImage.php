@@ -8,6 +8,7 @@ use App\Repository\ClothProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClothProductImageRepository::class)]
+#[ORM\Table(name: 'food_product_image')]
 class FoodProductImage extends ProductImage
 {
     public readonly string $relation;

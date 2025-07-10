@@ -14,8 +14,8 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity()]
 #[ORM\Table(name: 'products')]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'relation', type: 'string')]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'product_type', type: 'string')]
 #[ORM\DiscriminatorMap([
     'cloths' => ClothProduct::class,
     'food' => FoodProduct::class,

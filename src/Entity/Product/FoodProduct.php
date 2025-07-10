@@ -10,7 +10,7 @@ use App\Repository\FoodProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FoodProductRepository::class)]
-#[ORM\Table(name: 'food_products')]
+#[ORM\Table(name: 'food_product')]
 class FoodProduct extends Product implements ProductInterface
 {
     public function getCategoryName(): string
