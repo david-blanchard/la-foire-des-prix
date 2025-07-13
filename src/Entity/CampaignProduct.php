@@ -10,9 +10,24 @@ use App\Repository\CampaignProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Attribute\Group;
 
+#[ApiResource(mercure: true)]
 #[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
 #[ORM\Table(name: 'campaign_products')]
+#[Groups(
+    name: 'campaign_product',
+    description: 'Campaign Product',
+    normalizationContext: [
+        'groups' => ['campaign_product.read', 'campaign.read', 'product.read']
+    ],
+    denormalizationContext: [
+        'groups' => ['campaign_product.write', 'campaign.write', 'product.write']
+    ]
+)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\MappedSuperclass]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'campaign_type', type: 'string')]
 #[ORM\DiscriminatorMap([
@@ -33,11 +48,11 @@ abstract class CampaignProduct
      */
     #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'campaignProducts')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private Collection $product;
+    protected Collection $products;
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getCampaign(): ?Campaign
@@ -52,30 +67,30 @@ abstract class CampaignProduct
         return $this;
     }
 
-//    public abstract function setProduct(ProductInterface|null $product): self;
+    //    public abstract function setProduct(ProductInterface|null $product): self;
 
-/**
- * @return Collection<int, Product>
- */
-public function getProduct(): Collection
-{
-    return $this->product;
-}
-
-public function addProduct(Product $product): static
-{
-    if (!$this->product->contains($product)) {
-        $this->product->add($product);
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
     }
 
-    return $this;
-}
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+        }
 
-public function removeProduct(Product $product): static
-{
-    $this->product->removeElement($product);
+        return $this;
+    }
 
-    return $this;
-}
+    public function removeProduct(Product $product): static
+    {
+        $this->products->removeElement($product);
+
+        return $this;
+    }
 
 }
