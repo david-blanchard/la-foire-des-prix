@@ -2,11 +2,13 @@
 
 namespace App\Entity\Image;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Product\HomeProduct;
 use App\Entity\ProductImage;
 use App\Repository\ClothProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(mercure: true)]
 #[ORM\Entity(repositoryClass: ClothProductImageRepository::class)]
 #[ORM\Table(name: 'home_product_image')]
 class HomeProductImage extends ProductImage

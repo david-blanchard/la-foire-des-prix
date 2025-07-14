@@ -11,20 +11,20 @@ use App\Repository\CampaignProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\MaxDepth;
 
-#[ApiResource(mercure: true)]
-#[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
-#[ORM\Table(name: 'campaign_products')]
-#[Groups(
-    name: 'campaign_product',
-    description: 'Campaign Product',
+#[ApiResource(
+    mercure: true,
     normalizationContext: [
-        'groups' => ['campaign_product.read', 'campaign.read', 'product.read'],
+        'groups' => ['campaign_product.read', 'product.read', 'campaign.read'],
     ],
     denormalizationContext: [
-        'groups' => ['campaign_product.write', 'campaign.write', 'product.write'],
+        'groups' => ['campaign_product.write'],
     ]
 )]
+#[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
+#[ORM\Table(name: 'campaign_products')]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\MappedSuperclass]
 #[ORM\InheritanceType('JOINED')]
@@ -40,13 +40,23 @@ abstract class CampaignProduct
 
     #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignProducts')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?Campaign $campaign;
+    #[Groups([
+        'campaign_product.read',
+        'campaign_product.write',
+        'campaign.read',
+    ])]
+    protected ?Campaign $campaign;
 
     /**
-     * @var Collection<int, Product>
+     * @var Collection<int, ProductInterface|null>
      */
     #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'campaignProducts')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups([
+        'campaign_product.read',
+        'campaign_product.write',
+        'product.read',
+    ])]
     protected Collection $products;
 
     public function __construct()
@@ -69,14 +79,14 @@ abstract class CampaignProduct
     //    public abstract function setProduct(ProductInterface|null $product): self;
 
     /**
-     * @return Collection<int, Product>
+     * @return Collection<int, ProductInterface|null>
      */
     public function getProducts(): Collection
     {
         return $this->products;
     }
 
-    public function addProduct(Product $product): static
+    public function addProduct(ProductInterface|null $product): static
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
@@ -85,7 +95,7 @@ abstract class CampaignProduct
         return $this;
     }
 
-    public function removeProduct(Product $product): static
+    public function removeProduct(ProductInterface|null $product): static
     {
         $this->products->removeElement($product);
 

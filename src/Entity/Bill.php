@@ -2,13 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Identifier;
 use App\Repository\BillRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiResource(
+    mercure: true,
+    normalizationContext: [
+        'groups' => ['bill.read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['bill.write'],
+    ]
+)]
 #[ORM\Entity(repositoryClass: BillRepository::class)]
 class Bill
 {
@@ -22,9 +33,11 @@ class Bill
     private Collection $billLines;
 
     #[ORM\Column]
+    #[Groups(['bill.read', 'bill.write'])]
     private ?float $vat = null;
 
     #[ORM\ManyToOne(inversedBy: 'bills')]
+    #[Groups(['bill.read', 'bill.write'])]
     private ?User $user = null;
 
     public function __construct()

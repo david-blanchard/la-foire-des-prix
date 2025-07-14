@@ -28,6 +28,4 @@ interface ProductInterface extends ProductBillLineInterface
      * @return Collection<int, ProductImage>
      */
     public function getProductImages(): Collection;
-
-    public function addImage(Image $image): self;
 }

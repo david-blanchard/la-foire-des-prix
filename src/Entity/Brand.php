@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Product\ClothProduct;
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
@@ -10,7 +11,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiResource(
+    mercure: true,
+    normalizationContext: [
+        'groups' => ['brand.read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['brand.write'],
+    ]
+)]
 #[ORM\Entity(repositoryClass: BrandRepository::class)]
 #[ORM\Table(name: 'brands')]
 class Brand
@@ -18,6 +29,10 @@ class Brand
     use Identifier;
     use TimestampableEntity;
     use Classifier;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['brand.read', 'brand.write'])]
+    protected ?string $name = null;
 
     /**
      * @var Collection<int, ClothProduct> $products

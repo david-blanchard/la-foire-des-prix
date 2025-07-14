@@ -67,6 +67,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     *
+     * @return string The user identifier, typically the email
      */
     public function getUserIdentifier(): string
     {

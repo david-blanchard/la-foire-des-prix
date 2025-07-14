@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Image\ClothProductImage;
 use App\Entity\Image\FoodProductImage;
 use App\Entity\Image\HomeProductImage;
@@ -9,7 +10,17 @@ use App\Entity\Traits\Identifier;
 use App\Repository\ProductImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiResource(
+    mercure: true,
+    normalizationContext: [
+        'groups' => ['product-image.read', 'product.read', 'image.read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['product-image.write'],
+    ]
+)]
 #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
 #[ORM\Table(name: 'product_images')]
 #[ORM\InheritanceType('JOINED')]
@@ -26,10 +37,20 @@ class ProductImage
 
     #[ORM\ManyToOne(targetEntity: Image::class, inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups([
+        'product-image.read',
+        'product-image.write',
+        'image.read',
+    ])]
     protected ?Image $image;
 
     #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups([
+        'product-image.read',
+        'product-image.write',
+        'product.read',
+    ])]
     protected ?Product $product = null;
 
     public function getImage(): ?Image

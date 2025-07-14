@@ -2,6 +2,7 @@
 
 namespace App\Entity\Product;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Campaign;
 use App\Entity\Image;
 use App\Entity\Product;
@@ -9,6 +10,7 @@ use App\Entity\ProductInterface;
 use App\Repository\ClothProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ApiResource(mercure: true)]
 #[ORM\Entity(repositoryClass: ClothProductRepository::class)]
 #[ORM\Table(name: 'cloth_product')]
 class ClothProduct extends Product implements ProductInterface
