@@ -114,7 +114,7 @@ abstract class Product
         return $this->campaignProducts;
     }
 
-//    abstract public function addCampaignProduct(CampaignProduct $campaignProduct): self;
+    //    abstract public function addCampaignProduct(CampaignProduct $campaignProduct): self;
 
     public function removeCampaignProduct(CampaignProduct $campaignProduct): self
     {

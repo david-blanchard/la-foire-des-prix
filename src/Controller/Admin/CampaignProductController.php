@@ -72,7 +72,7 @@ final class CampaignProductController extends AbstractController
     #[Route('/{id}', name: 'app_campaign_product_delete', methods: ['POST'])]
     public function delete(Request $request, CampaignProduct $campaignProduct, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $campaignProduct->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$campaignProduct->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($campaignProduct);
             $entityManager->flush();
         }

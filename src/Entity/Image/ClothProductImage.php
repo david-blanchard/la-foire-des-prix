@@ -18,16 +18,15 @@ class ClothProductImage extends ProductImage
         $this->image_type = ClothProduct::class;
     }
 
-    public function getProduct(): ClothProduct|null|\App\Entity\Product
+    public function getProduct(): ClothProduct|\App\Entity\Product|null
     {
         return $this->product;
     }
 
-    public function setProduct(ClothProduct|null|\App\Entity\Product $product): static
+    public function setProduct(ClothProduct|\App\Entity\Product|null $product): static
     {
         $this->product = $product;
 
         return $this;
     }
-
 }

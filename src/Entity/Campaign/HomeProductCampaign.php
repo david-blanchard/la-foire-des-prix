@@ -4,7 +4,6 @@ namespace App\Entity\Campaign;
 
 use App\Entity\CampaignProduct;
 use App\Entity\Product\HomeProduct;
-use App\Entity\ProductInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]
@@ -18,5 +17,4 @@ class HomeProductCampaign extends CampaignProduct
         parent::__construct();
         $this->campaign_type = HomeProduct::class;
     }
-
 }

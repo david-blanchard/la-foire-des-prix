@@ -41,22 +41,22 @@ class ClothProductCampaignRepository extends ServiceEntityRepository
         if (null === $productId) {
             return 0;
         }
-        /**
-        *         $today = new \DateTime();
-        *         $qb = $this->createQueryBuilder('cp');
-        *
-        *         $qb->join('cp.campaign', 'c')
-        *             ->join(ClothProduct::class, 'p', 'WITH', 'cp.product = p.id')
-        *             ->where('cp.product = :productId')
-        *             ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
-        *             ->setParameter('productId', $productId)
-        *             ->setParameter('today', $today)
-        *             ->select('c.discount');
-        *
-        *         $result = $qb->getQuery()->getOneOrNullResult();
-        */
+        /*
+         *         $today = new \DateTime();
+         *         $qb = $this->createQueryBuilder('cp');
+         *
+         *         $qb->join('cp.campaign', 'c')
+         *             ->join(ClothProduct::class, 'p', 'WITH', 'cp.product = p.id')
+         *             ->where('cp.product = :productId')
+         *             ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
+         *             ->setParameter('productId', $productId)
+         *             ->setParameter('today', $today)
+         *             ->select('c.discount');
+         *
+         *         $result = $qb->getQuery()->getOneOrNullResult();
+         */
 
-        /**
+        /*
          *  return $result['discount'] ?? 0;
          */
 

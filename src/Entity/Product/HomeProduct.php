@@ -5,11 +5,8 @@ namespace App\Entity\Product;
 use App\Entity\Campaign;
 use App\Entity\Image;
 use App\Entity\Product;
-use App\Entity\ProductImage;
 use App\Entity\ProductInterface;
 use App\Repository\HomeProductRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: HomeProductRepository::class)]
@@ -59,5 +56,4 @@ class HomeProduct extends Product implements ProductInterface
 
         return $this;
     }
-
 }

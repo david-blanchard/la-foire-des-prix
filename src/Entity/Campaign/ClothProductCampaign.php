@@ -4,7 +4,6 @@ namespace App\Entity\Campaign;
 
 use App\Entity\CampaignProduct;
 use App\Entity\Product\ClothProduct;
-use App\Entity\ProductInterface;
 use App\Repository\ClothProductCampaignRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,5 +18,4 @@ class ClothProductCampaign extends CampaignProduct
         parent::__construct();
         $this->campaign_type = ClothProduct::class;
     }
-
 }

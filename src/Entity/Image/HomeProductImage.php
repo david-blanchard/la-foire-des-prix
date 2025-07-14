@@ -18,12 +18,12 @@ class HomeProductImage extends ProductImage
         $this->image_type = HomeProduct::class;
     }
 
-    public function getProduct(): HomeProduct|null|\App\Entity\Product
+    public function getProduct(): HomeProduct|\App\Entity\Product|null
     {
         return $this->product;
     }
 
-    public function setProduct(HomeProduct|null|\App\Entity\Product $product): static
+    public function setProduct(HomeProduct|\App\Entity\Product|null $product): static
     {
         $this->product = $product;
 

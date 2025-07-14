@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\ProductInterface;
 use App\Repository\ClothProductCampaignRepository;
 use App\Repository\ClothProductImageRepository;
-use App\Repository\ClothProductRepository;
 
 readonly class ProductService implements ViewServiceInterface
 {

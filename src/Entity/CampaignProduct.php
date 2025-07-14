@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Campaign\ClothProductCampaign;
 use App\Entity\Campaign\FoodProductCampaign;
 use App\Entity\Campaign\HomeProductCampaign;
@@ -10,8 +11,6 @@ use App\Repository\CampaignProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
-use Symfony\Component\Serializer\Attribute\Group;
 
 #[ApiResource(mercure: true)]
 #[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
@@ -20,10 +19,10 @@ use Symfony\Component\Serializer\Attribute\Group;
     name: 'campaign_product',
     description: 'Campaign Product',
     normalizationContext: [
-        'groups' => ['campaign_product.read', 'campaign.read', 'product.read']
+        'groups' => ['campaign_product.read', 'campaign.read', 'product.read'],
     ],
     denormalizationContext: [
-        'groups' => ['campaign_product.write', 'campaign.write', 'product.write']
+        'groups' => ['campaign_product.write', 'campaign.write', 'product.write'],
     ]
 )]
 #[ORM\HasLifecycleCallbacks]
@@ -92,5 +91,4 @@ abstract class CampaignProduct
 
         return $this;
     }
-
 }

@@ -4,7 +4,6 @@ namespace App\Entity\Campaign;
 
 use App\Entity\CampaignProduct;
 use App\Entity\Product\FoodProduct;
-use App\Entity\ProductInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity()]

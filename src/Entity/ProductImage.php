@@ -7,8 +7,6 @@ use App\Entity\Image\FoodProductImage;
 use App\Entity\Image\HomeProductImage;
 use App\Entity\Traits\Identifier;
 use App\Repository\ProductImageRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -34,7 +32,6 @@ class ProductImage
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     protected ?Product $product = null;
 
-
     public function getImage(): ?Image
     {
         return $this->image;
@@ -58,5 +55,4 @@ class ProductImage
 
         return $this;
     }
-
 }
