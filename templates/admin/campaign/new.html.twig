@@ -1,11 +1,46 @@
-<!DOCTYPE html>
+{% extends 'layouts/admin.html.twig' %}
 
-<title>New Campaign</title>
+{% block title %}
+    Gérer une Campagne
+{% endblock %}
 
-{% block body %}
-    <h1>Create new Campaign</h1>
-
-    {{ include('campaign/_form.html.twig') }}
-
-    <a href="{{ path('app_campaign_index') }}">back to list</a>
+{% block children %}
+    <div class="container">
+        <h2 class="text-center my-5">
+            Ajouter une campagne
+        </h2>
+        <form method="POST" action="{{ path('admin_campaign_new') }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('campaign') }}">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="name">Libellé</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Nom de la campagne" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="starts_at">Date de début</label>
+                    <input type="text" id="starts_at" name="starts_at" class="form-control" placeholder="JJ/MM/YYYY" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="ends_at">Date de fin</label>
+                    <input type="text" id="ends_at" name="ends_at" class="form-control" placeholder="JJ/MM/YYYY" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="discount">Remise</label>
+                    <input type="text" id="discount" name="discount" class="form-control" placeholder="10" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex justify-content-center mb-5">
+                    <button type="submit" class="btn btn-outline-primary">Valider</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

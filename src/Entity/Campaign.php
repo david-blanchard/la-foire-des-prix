@@ -36,21 +36,21 @@ class Campaign
 
     #[ORM\Column(type: 'date_immutable')]
     #[Groups(['campaign.read', 'campaign.write'])]
-    private \DateTimeImmutable $startsAt;
+    protected \DateTimeImmutable $startsAt;
 
     #[ORM\Column(type: 'date_immutable')]
     #[Groups(['campaign.read', 'campaign.write'])]
-    private \DateTimeImmutable $endsAt;
+    protected \DateTimeImmutable $endsAt;
 
     #[ORM\Column(type: 'smallint')]
     #[Groups(['campaign.read', 'campaign.write'])]
-    private int $discount;
+    protected int $discount;
 
     /**
      * @var Collection<int, CampaignProduct> $campaignProducts
      */
     #[ORM\OneToMany(targetEntity: CampaignProduct::class, mappedBy: 'campaign', cascade: ['persist', 'remove'])]
-    private Collection $campaignProducts;
+    protected Collection $campaignProducts;
 
     public function __construct()
     {

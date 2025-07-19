@@ -1,33 +1,33 @@
-<!DOCTYPE html>
+{% extends 'layouts/admin.html.twig' %}
 
-<title>CampaignProduct index</title>
+{% block title %}
+    Association Campagne/Produit
+{% endblock %}
 
-{% block body %}
-    <h1>CampaignProduct index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>actions</th>
-            </tr>
+{% block children %}
+    <h2 class="text-center my-5">
+        Sélectionnez un produit
+    </h2>
+    <table class="table table-striped table-sm">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nom</th>
+        </tr>
         </thead>
         <tbody>
-        {% for campaign_product in campaign_products %}
+        {% for item in products %}
             <tr>
-                <td>{{ campaign_product.id }}</td>
-                <td>
-                    <a href="{{ path('app_campaign_product_show', {'id': campaign_product.id}) }}">show</a>
-                    <a href="{{ path('app_campaign_product_edit', {'id': campaign_product.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="2">no records found</td>
+                <th>
+                    <a href="{{ path('admin_campaign_product_new', { id: item.id }) }}" class="btn btn-outline-warning" alt="Editer {{ item.id }}" title="Editer {{ item.id }}">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <td>{{ item.name }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_campaign_product_new') }}">Create new</a>
 {% endblock %}
+
+
