@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class ProductsController extends AbstractController
+#[Route('/admin/products')]
+final class ProductsController extends AbstractController
 {
     public function __construct(
         private readonly ClothProductRepository $productRepository,
@@ -20,7 +21,7 @@ class ProductsController extends AbstractController
     ) {
     }
 
-    #[Route('/admin/products', name: 'admin_products_index', methods: ['GET'])]
+    #[Route(name: 'admin_products_index', methods: ['GET'])]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
         $query = $this->productRepository->createQueryBuilder('p')->getQuery();
@@ -35,7 +36,7 @@ class ProductsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/products/create', name: 'admin_products_create', methods: ['GET', 'POST'])]
+    #[Route('/create', name: 'admin_products_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
@@ -61,7 +62,7 @@ class ProductsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/products/{id}/edit', name: 'admin_products_edit', methods: ['GET', 'POST', 'PUT'])]
+    #[Route('/{id}/edit', name: 'admin_products_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
         ClothProduct $product,
@@ -90,7 +91,7 @@ class ProductsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/products/{id}/delete', name: 'admin_products_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'admin_products_delete', methods: ['POST'])]
     public function delete(Request $request, ClothProduct $product, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), (string) $request->request->get('_token'))) {
