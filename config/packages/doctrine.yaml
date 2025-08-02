@@ -1,7 +1,8 @@
 doctrine:
   dbal:
-    driver: 'pdo_mysql'
-    server_version: '%env(resolve:MYSQL_SERVER_VERSION)%'
+    driver: 'pdo_pgsql'
+    charset: UTF8
+    server_version: '%env(resolve:POSTGRES_SERVER_VERSION)%'
     url: '%env(resolve:DATABASE_URL)%'
 
     # IMPORTANT: You MUST configure your server version,
@@ -24,8 +25,9 @@ doctrine:
 when@test:
   doctrine:
     dbal:
-      driver: 'pdo_mysql'
-      server_version: '%env(resolve:MYSQL_SERVER_VERSION)%'
+      driver: 'pdo_pgsql'
+      charset: UTF8
+      server_version: '%env(resolve:POSTGRES_SERVER_VERSION)%'
       url: '%env(resolve:DATABASE_URL)%'
 
       # "TEST_TOKEN" is typically set by ParaTest

@@ -3,48 +3,37 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Entity\Product\ClothProduct;
-use App\Entity\Product\FoodProduct;
-use App\Entity\Product\HomeProduct;
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
-    mercure: true,
     normalizationContext: [
         'groups' => ['product.read'],
     ],
     denormalizationContext: [
         'groups' => ['product.write'],
-    ]
+    ],
+    mercure: true
 )]
 #[ORM\Entity()]
 #[ORM\Table(name: 'products')]
-#[ORM\InheritanceType('JOINED')]
-#[ORM\DiscriminatorColumn(name: 'product_type', type: 'string')]
-#[ORM\DiscriminatorMap([
-    'cloths' => ClothProduct::class,
-    'food' => FoodProduct::class,
-    'home' => HomeProduct::class,
-])]
-abstract class Product implements ProductInterface
+class Product implements ProductInterface
 {
     use Identifier;
     use Classifier;
     use TimestampableEntity;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['product.read', 'product.write'])]
     protected ?string $name = null;
 
-    #[ORM\Column(length: 1024)]
+    #[ORM\Column(length: 1024, nullable: true)]
     #[Groups(['product.read', 'product.write'])]
-    protected string $description;
+    protected ?string $description = null;
+
 
     #[ORM\Column(length: 1024, nullable: true)]
     #[Groups(['product.read', 'product.write'])]
@@ -52,39 +41,24 @@ abstract class Product implements ProductInterface
 
     #[ORM\Column(type: 'float')]
     #[Groups(['product.read', 'product.write'])]
-    protected float $price;
+    protected float $price = 0;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['product.read', 'product.write'])]
-    protected ?Brand $brand;
+    protected ?Brand $brand = null;
 
-    /**
-     * @var Collection<int, CampaignProduct> $campaignProducts
-     */
-    #[ORM\ManyToMany(targetEntity: CampaignProduct::class, mappedBy: 'products', cascade: ['persist', 'remove'])]
-    #[Groups(['product.write'])]
-    protected Collection $campaignProducts;
-
-    /**
-     * @var Collection<int, ProductImage> $productImages
-     */
-    #[ORM\OneToMany(targetEntity: ProductImage::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
-    #[Groups(['product.write'])]
-    protected Collection $productImages;
-
-    public function __construct()
+    public function getId(): ?int
     {
-        $this->campaignProducts = new ArrayCollection();
-        $this->productImages = new ArrayCollection();
+        return $this->id;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -96,7 +70,7 @@ abstract class Product implements ProductInterface
         return $this->moreInfo;
     }
 
-    public function setMoreInfo(?string $moreInfo): self
+    public function setMoreInfo(?string $moreInfo): static
     {
         $this->moreInfo = $moreInfo;
 
@@ -108,7 +82,7 @@ abstract class Product implements ProductInterface
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(float $price): static
     {
         $this->price = $price;
 
@@ -120,59 +94,15 @@ abstract class Product implements ProductInterface
         return $this->brand;
     }
 
-    public function setBrand(?Brand $brand): self
+    public function setBrand(?Brand $brand): static
     {
         $this->brand = $brand;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, CampaignProduct>
-     */
-    public function getCampaignProducts(): Collection
+    public function getCategoryName(): string
     {
-        return $this->campaignProducts;
-    }
-
-    //    abstract public function addCampaignProduct(CampaignProduct $campaignProduct): self;
-
-    public function removeCampaignProduct(CampaignProduct $campaignProduct): self
-    {
-        if ($this->campaignProducts->contains($campaignProduct)) {
-            $this->campaignProducts->removeElement($campaignProduct);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProductImage>
-     */
-    public function getProductImages(): Collection
-    {
-        return $this->productImages;
-    }
-
-    abstract public function addImage(Image $image): self;
-
-    abstract public function removeImage(Image $image): self;
-
-    public function addProductImage(ProductImage $productImage): self
-    {
-        if (!$this->productImages->contains($productImage)) {
-            $this->productImages[] = $productImage;
-        }
-
-        return $this;
-    }
-
-    public function removeProductImage(ProductImage $productImage): self
-    {
-        if ($this->productImages->contains($productImage)) {
-            $this->productImages->removeElement($productImage);
-        }
-
-        return $this;
+        return '';
     }
 }

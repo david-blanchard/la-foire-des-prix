@@ -2,33 +2,23 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Entity\BillLine\ClothProductBillLine;
-use App\Entity\BillLine\FoodProductBillLine;
-use App\Entity\BillLine\HomeProductBillLine;
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
-use App\Repository\CategoryRepository;
+use App\Repository\BillRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
-    mercure: true,
     normalizationContext: [
         'groups' => ['bill-line.read', 'product.read', 'bill.read'],
     ],
     denormalizationContext: [
         'groups' => ['bill-line.write'],
-    ]
+    ],
+    mercure: true
 )]
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[ORM\InheritanceType('JOINED')]
-#[ORM\DiscriminatorColumn(name: 'bill_type', type: 'string')]
-#[ORM\DiscriminatorMap([
-    'cloths' => ClothProductBillLine::class,
-    'food' => FoodProductBillLine::class,
-    'home' => HomeProductBillLine::class,
-])]
+#[ORM\Entity(repositoryClass: BillRepository::class)]
+#[ORM\Table(name: 'bill_lines')]
 class BillLineProduct
 {
     use Identifier;
@@ -43,26 +33,20 @@ class BillLineProduct
     private int $quantity;
 
     #[ORM\ManyToOne(inversedBy: 'billLines')]
-    #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         'bill-line.read',
         'bill-line.write',
         'bill.read',
     ])]
-    private Bill $bill;
+    private ?Bill $bill = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         'bill-line.read',
         'bill-line.write',
         'product.read',
     ])]
     private ?Product $product = null;
-
-    public function __construct()
-    {
-    }
 
     public function getQuantity(): int
     {
@@ -81,7 +65,7 @@ class BillLineProduct
         return $this->bill;
     }
 
-    public function setBill(Bill $bill): self
+    public function setBill(?Bill $bill): static
     {
         $this->bill = $bill;
 

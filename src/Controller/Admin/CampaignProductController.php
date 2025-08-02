@@ -26,7 +26,7 @@ final class CampaignProductController extends AbstractController
     #[Route('/new', name: 'admin_campaign_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $campaignProduct = new ClothProductCampaign();
+        $campaignProduct = new ProductCampaign();
         $form = $this->createForm(CampaignProductType::class, $campaignProduct);
         $form->handleRequest($request);
 

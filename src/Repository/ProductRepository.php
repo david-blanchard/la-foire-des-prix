@@ -2,35 +2,29 @@
 
 namespace App\Repository;
 
-use App\Entity\Product\HomeProduct;
+use App\Entity\Product;
 use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<HomeProduct>
+ * @extends ServiceEntityRepository<Product>
  */
-class HomeProductRepository extends ServiceEntityRepository
+class ProductRepository extends ServiceEntityRepository
 {
-    use ProductRepositoryTrait;
-
     public function __construct(
         ManagerRegistry $registry,
         private readonly EntityManagerInterface $em,
         private readonly CustomCacheInterface $cache,
     ) {
-        parent::__construct($registry, HomeProduct::class);
+        parent::__construct($registry, Product::class);
     }
 
     /**
      * Retrieve the values of a given product.
-     *
-     * @param int|null $productId The product ID
-     *
-     * @return HomeProduct|null The product entity or null if not found
      */
-    public function findById(?int $productId = null): ?HomeProduct
+    public function findById(?int $productId = null): ?Product
     {
         if (null === $productId) {
             $product = $this->findAll()[0] ?? null;
@@ -42,16 +36,16 @@ class HomeProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retrieve the product page properties from the database by slug.
+     * Retrieve the values of a given product by its slug.
      *
      * @param string $slug Free form of the product name
      *
-     * @return HomeProduct[] $properties Values to be set in product page view
+     * @return Product[] $products Array of products
      */
     public function findBySlug(string $slug): array
     {
         return $this->em->createQueryBuilder()
-            ->from(HomeProduct::class, 'p')
+            ->from(Product::class, 'p')
             ->Where('p.slug LIKE :slugLike')
             ->setParameter('slugLike', '%'.$slug.'%')
             ->select('p')
@@ -60,13 +54,13 @@ class HomeProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retrieve the product page properties from the database by slug.
+     * Retrieve the values of a given product by its slug.
      *
      * @param string $slug Free form of the product name
      *
-     * @return HomeProduct|null $properties Values to be set in product page view
+     * @return Product|null $product Product object
      */
-    public function findOneBySlug(string $slug): ?HomeProduct
+    public function findOneBySlug(string $slug): ?Product
     {
         $array = $this->findBySlug($slug);
 
@@ -81,17 +75,13 @@ class HomeProductRepository extends ServiceEntityRepository
         $this->cache->delete("product$productId");
     }
 
-    public function deletePropertiesFromCache(HomeProduct $product): void
+    public function deletePropertiesFromCache(Product $product): void
     {
         self::deletePropertiesFromCacheById((int) $product->getId());
     }
 
     /**
-     * Retrieve the product page properties from the cache by ID.
-     *
-     * @param int $productId The product ID
-     *
-     * @return array<mixed>|null $properties Values to be set in product page view
+     * @return array<mixed>|null
      */
     public function getPropertiesFromCacheById(int $productId): ?array
     {
@@ -101,7 +91,6 @@ class HomeProductRepository extends ServiceEntityRepository
     /**
      * Store the product page properties in cache by ID.
      *
-     * @param int          $productId  The product ID
      * @param array<mixed> $properties Values to be set in product page view
      */
     public function putPropertiesInCacheById(int $productId, array $properties): void

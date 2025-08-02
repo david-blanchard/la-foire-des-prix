@@ -3,7 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Campaign;
-use App\Entity\Product\ClothProduct;
+use App\Entity\CampaignProduct;
+use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -12,21 +13,25 @@ class CampaignProductsFixture extends Fixture implements DependentFixtureInterfa
 {
     public function load(ObjectManager $manager): void
     {
-        $campaignRepository = $manager->getRepository(Campaign::class);
-        $productRepository = $manager->getRepository(ClothProduct::class);
-
-        $data = [
+        $campaignProducts = [
             ['campaign' => CampaignsFixture::CAMPAIGN_LABEL_1, 'product' => ProductsFixture::PRODUCT_LABEL_1],
             ['campaign' => CampaignsFixture::CAMPAIGN_LABEL_2, 'product' => ProductsFixture::PRODUCT_LABEL_1],
             ['campaign' => CampaignsFixture::CAMPAIGN_LABEL_2, 'product' => ProductsFixture::PRODUCT_LABEL_2],
         ];
 
-        foreach ($data as $item) {
-            $campaign = $campaignRepository->findOneBy(['name' => $item['campaign']]);
-            $product = $productRepository->findOneBy(['name' => $item['product']]);
-            $campaignProduct = new Campaign\ClothProductCampaign();
+        $campaignRepository = $manager->getRepository(Campaign::class);
+        $productRepository = $manager->getRepository(Product::class);
+
+        foreach ($campaignProducts as $key => $data) {
+            $campaign = $campaignRepository->findOneBy(['name' => $data['campaign']]) ?? null;
+            $product = $productRepository->findOneBy(['name' => $data['product']]) ?? null;
+
+            $campaignProduct = new CampaignProduct();
             $campaignProduct->setCampaign($campaign);
-            $campaignProduct->addProduct($product);
+            $campaignProduct->setProduct($product);
+
+//            $campaign->addCampaignProduct($campaignProduct);
+
             $manager->persist($campaignProduct);
         }
 
