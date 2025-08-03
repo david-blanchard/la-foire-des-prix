@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+{% extends 'layouts/admin.html.twig' %}
 
-<title>CampaignProduct</title>
+{% block title %}
+    Association Campagne/Produit
+{% endblock %}
 
-{% block body %}
+{% block children %}
     <h1>CampaignProduct</h1>
 
     <table class="table">
@@ -14,9 +16,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_campaign_product_index') }}">back to list</a>
+    <a href="{{ path('admin_campaign_product_index') }}">back to list</a>
 
-    <a href="{{ path('app_campaign_product_edit', {'id': campaign_product.id}) }}">edit</a>
+    <a href="{{ path('admin_campaign_product_edit', {'id': campaign_product.id}) }}">edit</a>
 
-    {{ include('campaign_product/_delete_form.html.twig') }}
+    {{ include('admin/campaign_product/_delete_form.html.twig') }}
 {% endblock %}

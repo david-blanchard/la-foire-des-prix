@@ -2,55 +2,65 @@
 
 namespace App\Entity;
 
-use App\Entity\Campaign\ClothProductCampaign;
-use App\Entity\Campaign\FoodProductCampaign;
-use App\Entity\Campaign\HomeProductCampaign;
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Identifier;
 use App\Repository\CampaignProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiResource(
+    normalizationContext: [
+        'groups' => ['campaign-product.read', 'product.read', 'campaign.read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['campaign-product.write'],
+    ],
+    mercure: true
+)]
 #[ORM\Entity(repositoryClass: CampaignProductsRepository::class)]
 #[ORM\Table(name: 'campaign_products')]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'product', type: 'string')]
-#[ORM\DiscriminatorMap([
-    'cloths' => ClothProductCampaign::class,
-    'food' => FoodProductCampaign::class,
-    'home' => HomeProductCampaign::class,
-])]
-abstract class CampaignProduct
+class CampaignProduct
 {
     use Identifier;
 
-    #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignProducts')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?Campaign $campaign;
+    #[Groups([
+        'campaign-product.read',
+        'campaign-product.write',
+        'campaign.read',
+    ])]
+    protected ?Campaign $campaign = null;
 
-    #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
-    private ?int $productId;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups([
+        'campaign-product.read',
+        'campaign-product.write',
+        'product.read',
+    ])]
+    protected ?Product $product = null;
 
     public function getCampaign(): ?Campaign
     {
         return $this->campaign;
     }
 
-    public function setCampaign(?Campaign $campaign): self
+    public function setCampaign(?Campaign $campaign): static
     {
         $this->campaign = $campaign;
 
         return $this;
     }
 
-//    public abstract function setProduct(ProductInterface|null $product): self;
-
-    public function getProductId(): ?int
+    public function getProduct(): ?Product
     {
-        return $this->productId;
+        return $this->product;
     }
 
-    public function setProductId(?int $productId): self
+    public function setProduct(?Product $product): static
     {
-        $this->productId = $productId;
+        $this->product = $product;
 
         return $this;
     }

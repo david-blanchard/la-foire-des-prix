@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Image;
-use App\Entity\Product\ClothProduct;
+use App\Entity\Product;
 use App\Entity\ProductImage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,7 +30,7 @@ class ImageRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('i')
             ->join(ProductImage::class, 'pi', 'WITH', 'pi.image = i.id')
-            ->join(ClothProduct::class, 'p', 'WITH', 'pi.product = p.id')
+            ->join(Product::class, 'p', 'WITH', 'pi.product = p.id')
             ->andWhere('pi.product = :productId')
             ->setParameter('productId', $productId)
             ->select('i');

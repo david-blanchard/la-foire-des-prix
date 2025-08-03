@@ -3,7 +3,7 @@
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
     bootstrap="vendor/autoload.php"
     colors="true"
-    cacheDirectory=".phpunit.cache"
+    acheDirectory=".phpunit.cache"
 >
     <testsuites>
         <testsuite name="Unit">
@@ -13,6 +13,9 @@
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
     </testsuites>
+    <logging>
+        <testdoxText outputFile="var/log/testdox.txt" />
+    </logging>
     <php>
         <server name="APP_ENV" value="test"/>
         <server name="APP_SECRET" value="$ecretf0rt3st"/>

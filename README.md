@@ -22,7 +22,7 @@ Dans l'alternative, vous pouvez utiliser l'image Docker fournie qui regroupe tou
 docker compose up -d --build --wait
 ```
 
-Si vous utilisez Docker, toutes les commandes `arisan` et `composer` doivent être précédées de `docker compose exec php` pour être exécutées dans le container.
+Si vous utilisez Docker, toutes les commandes `php bin/console` et `composer` doivent être précédées de `docker compose exec php` pour être exécutées dans le container.
 
 ### 1.2 - Installation
 
@@ -54,26 +54,26 @@ Créez la base de données de test
 NOTE : cette étape n'est pas nécessaire si vous utilisez Docker, car l'instance est créée au montage de l'image.
 
 ```zsh
-symfony console doctrine:database:create --env=test
+php bin/console doctrine:database:create --env=test
 ```
 
 Créez la structure de la base de données de test
 
 ```zsh
-symfony console doctrine:migrations:migrate --env=test
+php bin/console doctrine:migrations:migrate --env=test
 ```
 
 Injectez les données de test
 
 ```zsh
-symfony console doctrine:fixtures:load
+php bin/console doctrine:fixtures:load --env=test
 ```
 ### 2.2 - Test
 
 Lancez le test
 
 ```zsh
-symfony console phpunit
+composer test
 ```
 
 Résultat attendu :
@@ -118,57 +118,30 @@ Time:   1.21s
 Créez un fichier d'environnement dev avec le fichier test
 
 ```zsh
-cp .env.testing .env
+cp .env.test .env
 ```
 
-Editez le fichier .env pour changer quelques valeurs qui caractérisent l'environnement de test : 
-
-
-> `<< APP_ENV=`**test**
-
-> `>> APP_ENV=`**local**
-
-> `<< DB_CONNECTION=mysql`**_testing**
-
-> `>> DB_CONNECTION=mysql`
-
-> `<< DB_DATABASE=lesprixbas`**_test**
-
-> `>> DB_DATABASE=lesprixbas`
-
-
-Quittez le mode test
+Maintenant que vous savez taper toutes les commandes Doctrine de création de base de données, migration de schéma,
+injection de données, vous pouvez utiliser la commande raccourcis présente dans les scripts Composer du projet
 
 ```zsh
-symfony config:cache
-```
-
-### 3.1 - Migration des données
-
-
-Créez la base de données lesprixbas
-
-```zsh
-symfony db:create
-```
-
-Créez la structure de la base de données
-
-```zsh
-symfony migrate
-```
-
-Injectez les données
-
-```zsh
-symfony db:seed
+composer refresh
 ```
 
 ### 3.2 - Lancement du projet
 
+Sans Docker :
+
 ```zsh
 symfony serve
 ```
+
+Avec Docker, un server Nginx est prêt sur :
+
+```zsh
+http://localhost:8081
+```
+
 ## 4 - LesPrixBas côté visiteur
 
 L'application s'ouvre sur la page produit Veste en jean de la catégorie Mode Femme.

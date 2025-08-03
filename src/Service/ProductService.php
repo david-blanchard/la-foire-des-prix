@@ -3,15 +3,14 @@
 namespace App\Service;
 
 use App\Entity\ProductInterface;
-use App\Repository\ClothProductCampaignRepository;
-use App\Repository\ClothProductImageRepository;
-use App\Repository\ClothProductRepository;
+use App\Repository\CampaignProductsRepository;
+use App\Repository\ProductImageRepository;
 
 readonly class ProductService implements ViewServiceInterface
 {
     public function __construct(
-        private ClothProductImageRepository $imagesRepository,
-        private ClothProductCampaignRepository $productCampaignRepository,
+        private ProductImageRepository $imagesRepository,
+        private CampaignProductsRepository $productCampaignRepository,
     ) {
     }
 

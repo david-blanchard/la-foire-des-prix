@@ -14,61 +14,66 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/campaign')]
 final class CampaignController extends AbstractController
 {
-    #[Route(name: 'app_campaign_index', methods: ['GET'])]
+    #[Route(name: 'admin_campaign_index', methods: ['GET'])]
     public function index(CampaignRepository $campaignRepository): Response
     {
-        return $this->render('campaign/index.html.twig', [
+        return $this->render('admin/campaign/index.html.twig', [
             'campaigns' => $campaignRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_campaign_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'admin_campaign_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $campaign = new Campaign();
-        $form = $this->createForm(CampaignType::class, $campaign);
-        $form->handleRequest($request);
+        if ($request->isMethod('POST')) {
+            $campaign = new Campaign();
+            $campaign->setName((string) $request->request->get('name'));
+            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('starts_at')))));
+            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('ends_at')))));
+            $campaign->setDiscount((int) $request->request->get('discount'));
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($campaign);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_campaign_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_campaign_index', [
+                'success' => 'La campagne a bien été enregistré !',
+            ]);
         }
 
-        return $this->render('campaign/new.html.twig', [
-            'campaign' => $campaign,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_campaign_show', methods: ['GET'])]
-    public function show(Campaign $campaign): Response
-    {
-        return $this->render('campaign/show.html.twig', [
+        return $this->render('admin/campaign/new.html.twig', [
             'campaign' => $campaign,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_campaign_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Campaign $campaign, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(CampaignType::class, $campaign);
-        $form->handleRequest($request);
+    /**
+     * @throws \DateMalformedStringException
+     */
+    #[Route('/{id}/edit', name: 'admin_campaign_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        Request $request,
+        Campaign $campaign,
+        EntityManagerInterface $entityManager
+    ): Response  {
+        if ($request->isMethod('POST')) {
+            $campaign->setName((string) $request->request->get('name'));
+            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('starts_at')))));
+            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('ends_at')))));
+            $campaign->setDiscount((int) $request->request->get('discount'));
 
-        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_campaign_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_campaign_index', [
+                'success' => 'La campagne a bien été mise à jour !',
+            ]);
         }
 
-        return $this->render('campaign/edit.html.twig', [
+        return $this->render('admin/campaign/edit.html.twig', [
             'campaign' => $campaign,
-            'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_campaign_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'admin_campaign_delete', methods: ['POST'])]
     public function delete(Request $request, Campaign $campaign, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$campaign->getId(), $request->getPayload()->getString('_token'))) {
@@ -76,6 +81,6 @@ final class CampaignController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_campaign_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_campaign_index', [], Response::HTTP_SEE_OTHER);
     }
 }

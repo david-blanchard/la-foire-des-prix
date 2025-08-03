@@ -2,7 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Product\ClothProduct;
+use App\Entity\Brand;
+use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -15,7 +16,7 @@ class ProductsFixture extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $brandRepository = $manager->getRepository('App\Entity\Brand');
+        $brandRepository = $manager->getRepository(Brand::class);
 
         $brand1 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_1]) ?? null;
         $brand2 = $brandRepository->findOneBy(['name' => BrandsFixture::BRAND_LABEL_2]) ?? null;
@@ -46,7 +47,7 @@ class ProductsFixture extends Fixture implements DependentFixtureInterface
         ];
 
         foreach ($products as $key => $data) {
-            $product = new ClothProduct();
+            $product = new Product();
             $product->setName($data['name']);
             $product->setDescription($data['description']);
             $product->setMoreInfo($data['more_infos']);

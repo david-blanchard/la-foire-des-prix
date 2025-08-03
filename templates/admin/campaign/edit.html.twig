@@ -1,13 +1,46 @@
-<!DOCTYPE html>
+{% extends 'layouts/admin.html.twig' %}
 
-<title>Edit Campaign</title>
+{% block title %}
+    Gérer une Campagne
+{% endblock %}
 
-{% block body %}
-    <h1>Edit Campaign</h1>
-
-    {{ include('campaign/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_campaign_index') }}">back to list</a>
-
-    {{ include('campaign/_delete_form.html.twig') }}
+{% block children %}
+    <div class="container">
+        <h2 class="text-center my-5">
+            Editer une campagne
+        </h2>
+        <form method="POST" action="{{ path('admin_campaign_edit', { id: campaign.id }) }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('campaign') }}">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="name">Libellé</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Nom de la campagne" value="{{ campaign.name }}" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="starts_at">Date de début</label>
+                    <input type="text" id="starts_at" name="starts_at" class="form-control" placeholder="JJ/MM/YYYY" value="{{ campaign.startsAt|date('Y-m-d H:i:s') }}" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="ends_at">Date de fin</label>
+                    <input type="text" id="ends_at" name="ends_at" class="form-control" placeholder="JJ/MM/YYYY" value="{{ campaign.endsAt|date('Y-m-d H:i:s') }}" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="discount">Remise</label>
+                    <input type="text" id="discount" name="discount" class="form-control" placeholder="10" value="{{ campaign.discount }}" />
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex justify-content-center mb-5">
+                    <button type="submit" class="btn btn-outline-primary">Valider</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

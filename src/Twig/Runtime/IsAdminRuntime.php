@@ -7,8 +7,8 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class IsAdminRuntime implements RuntimeExtensionInterface
 {
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
 
     public function userIsAdmin(): bool

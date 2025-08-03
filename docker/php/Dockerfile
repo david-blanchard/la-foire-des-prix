@@ -5,6 +5,7 @@ RUN apk add --no-cache --virtual .build-deps \
     git \
     unzip \
     libzip-dev \
+    postgresql-dev \
     mariadb-connector-c-dev \
     libmemcached-dev \
     autoconf \
@@ -14,10 +15,12 @@ RUN apk add --no-cache --virtual .build-deps \
     && apk add --no-cache \
     libmemcached \
     cyrus-sasl-dev \
+    libpq \
     libzip \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
-    && docker-php-ext-install pdo pdo_mysql mysqli zip bcmath \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo pdo_pgsql pgsql pdo_mysql mysqli zip bcmath \
     && apk del .build-deps
 
 # Install Composer
@@ -44,6 +47,9 @@ RUN apk add --no-cache \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     && adduser $USERNAME www-data \
     && rm -rf /var/cache/apk/*
+
+RUN apk add --no-cache \
+    bash python3 nodejs-current npm
 
 USER $USERNAME
 

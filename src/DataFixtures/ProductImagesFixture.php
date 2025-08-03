@@ -3,7 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Image;
-use App\Entity\Product\ClothProduct;
+use App\Entity\Product;
+use App\Entity\ProductImage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -20,15 +21,14 @@ class ProductImagesFixture extends Fixture implements DependentFixtureInterface
         ];
 
         $imageRepository = $manager->getRepository(Image::class);
-        $productRepository = $manager->getRepository(ClothProduct::class);
+        $productRepository = $manager->getRepository(Product::class);
 
         foreach ($productImages as $key => $data) {
             $product = $productRepository->findOneBy(['name' => $data['product']]) ?? null;
             $image = $imageRepository->findOneBy(['alt' => $data['image']]) ?? null;
 
-            $productImage = new Image\ClothProductImage();
+            $productImage = new ProductImage();
             $productImage->setProduct($product);
-            $productImage->setProductId((int) $product?->getId());
             $productImage->setImage($image);
             $manager->persist($productImage);
         }

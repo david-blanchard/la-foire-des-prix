@@ -29,4 +29,31 @@ class CampaignProductsRepository extends ServiceEntityRepository
     {
         return $this->find($id);
     }
+
+    /**
+     * Retrieve the discount of a product by its ID.
+     *
+     * @return int Discount percentage
+     */
+    public function getProductDiscountById(?int $productId): int
+    {
+        if (null === $productId) {
+            return 0;
+        }
+
+         $today = new \DateTime();
+         $qb = $this->createQueryBuilder('cp');
+
+         $qb->join('cp.campaign', 'c')
+             ->where('cp.product = :productId')
+             ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
+             ->setParameter('productId', $productId)
+             ->setParameter('today', $today)
+             ->select('c.discount as discount');
+
+          $result = $qb->getQuery()->getOneOrNullResult();
+
+         return $result['discount'] ?? 0;
+
+    }
 }
