@@ -3,8 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Bill;
-use App\Entity\BillLine\ClothProductBillLine;
-use App\Entity\Product\ClothProduct;
+use App\Entity\BillLineProduct;
+use App\Entity\Product;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,32 +18,32 @@ class BillFixture extends Fixture implements DependentFixtureInterface
         $userRepo = $manager->getRepository(User::class);
         $user = $userRepo->findOneBy(['email' => 'dblanchard1@lfdp.fr']);
 
-        $productRepo = $manager->getRepository(ClothProduct::class);
+        $productRepo = $manager->getRepository(Product::class);
         $product1 = $productRepo->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_1]);
         $product2 = $productRepo->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_2]);
         $product3 = $productRepo->findOneBy(['name' => ProductsFixture::PRODUCT_LABEL_3]);
 
         $bill = new Bill();
-        $bill->setUser($user);
+        $bill->setClient($user);
         $bill->setCreatedAt(new \DateTime());
         $bill->setVat(19.6);
         $manager->persist($bill);
 
-        $billLine1 = new ClothProductBillLine();
+        $billLine1 = new BillLineProduct();
         $billLine1->setBill($bill);
         $billLine1->setName((string) $product1?->getName());
         $billLine1->setProduct($product1);
         $billLine1->setQuantity(1);
         $manager->persist($billLine1);
 
-        $billLine2 = new ClothProductBillLine();
+        $billLine2 = new BillLineProduct();
         $billLine2->setBill($bill);
         $billLine2->setName((string) $product2?->getName());
         $billLine2->setProduct($product2);
         $billLine2->setQuantity(2);
         $manager->persist($billLine2);
 
-        $billLine3 = new ClothProductBillLine();
+        $billLine3 = new BillLineProduct();
         $billLine3->setBill($bill);
         $billLine3->setName((string) $product3?->getName());
         $billLine3->setProduct($product3);

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\ClothProductRepository;
+use App\Repository\ProductRepository;
 use App\Service\CartService;
 use App\Service\ProductService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,9 +13,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class WomanController extends AbstractController
 {
     public function __construct(
-        private readonly ClothProductRepository $productRepository,
-        private readonly CartService $cartService,
-        private readonly ProductService $productService,
+        private readonly ProductRepository $productRepository,
+        private readonly CartService       $cartService,
+        private readonly ProductService    $productService,
     ) {
     }
 

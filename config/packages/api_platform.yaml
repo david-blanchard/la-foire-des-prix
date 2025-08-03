@@ -1,0 +1,14 @@
+api_platform:
+  title: Hello API Platform
+  version: 1.0.0
+  enable_swagger_ui: true
+  enable_re_doc: true
+  swagger:
+    versions: [3]  # ou [3, 2] si tu veux les deux versions de Swagger
+    persist_authorization: true
+    api_keys: []
+  defaults:
+    pagination_enabled: false
+    stateless: true
+    cache_headers:
+      vary: [ 'Content-Type', 'Authorization', 'Origin' ]

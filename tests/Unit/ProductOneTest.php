@@ -4,13 +4,13 @@ namespace App\Tests\Unit;
 
 use App\DataFixtures\ProductsFixture;
 use App\Entity\Product\ClothProduct;
-use App\Repository\ClothProductRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ProductOneTest extends KernelTestCase
 {
-    private ClothProductRepository $productRepository;
+    private ProductRepository $productRepository;
 
     protected function setUp(): void
     {
