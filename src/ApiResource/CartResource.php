@@ -16,7 +16,11 @@ use App\Dto\CartStoreInput;
             uriTemplate: '/cart/retrieve',
             status: 200,
             controller: CartController::class . '::retrieve',
-
+            description: 'Retrieve the current cart from the session',
+            security: "is_granted('ROLE_USER')",
+            input: CartRetrieveInput::class,
+            output: CartOutput::class,
+            name: 'cart_retrieve',
         ),
         new \ApiPlatform\Metadata\Post(
             uriTemplate: '/cart/store',
@@ -37,5 +41,4 @@ use App\Dto\CartStoreInput;
 )]
 class CartResource
 {
-
 }
