@@ -19,6 +19,9 @@ class WomanController extends AbstractController
     ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/', name: 'woman', methods: ['GET'])]
     public function index(): Response
     {
@@ -43,6 +46,9 @@ class WomanController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/{slug}', name: 'product_info', methods: ['GET'])]
     public function show(string $slug): Response
     {
@@ -53,20 +59,12 @@ class WomanController extends AbstractController
         }
 
         // Fetch the product by slug
-        $product = $this->productRepository->findOneBySlug($slug);
-
-        if (null === $product) {
-            throw $this->createNotFoundException('Product not found.');
-        }
-
-        // Fetch attributes and convert them to properties
-        $product = $this->productRepository->findById($product->getId());
-        $props = $this->productService->prepareViewFields($product);
-
-        // Store properties in a cache
-        $this->productRepository->putPropertiesInCacheBySlug($slug, $props);
-
-        $cartFields = $this->cartService->prepareViewFields();
+        $cartFields = HomeController::fetchProductBySlug(
+            $this->productRepository,
+            $this->cartService,
+            $this->productService,
+            $slug
+        );
 
         return $this->render('woman/index.html.twig', [
             ...$props,

@@ -22,7 +22,7 @@ class UserFixture extends Fixture
         if (!$existingUser) {
             // Create one main user
             $user = new User();
-            $user->setEmail('dblanchard1@lfdp.fr');
+            $user->setEmail('david.b@lfdp.fr');
             $user->setPassword($this->passwordHasher->hashPassword($user, 'demo'));
             $user->setRoles();
 

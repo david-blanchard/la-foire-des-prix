@@ -31,20 +31,12 @@ class SearchController extends AbstractController
             }
 
             // Fetch the product by slug
-            $product = $this->productRepository->findOneBySlug($slug);
-
-            if (null === $product) {
-                throw $this->createNotFoundException('Product not found.');
-            }
-
-            // Fetch attributes and convert them to properties
-            $product = $this->productRepository->findById($product->getId());
-            $props = $this->productService->prepareViewFields($product);
-
-            // Store properties in a cache
-            $this->productRepository->putPropertiesInCacheBySlug($slug, $props);
-
-            $cartFields = $this->cartService->prepareViewFields();
+            $cartFields = HomeController::fetchProductBySlug(
+                $this->productRepository,
+                $this->cartService,
+                $this->productService,
+                $slug
+            );
 
             return $this->render('search/index.html.twig', [
                 ...$props,
@@ -57,7 +49,7 @@ class SearchController extends AbstractController
             return $this->render('errors/404.html.twig', [
                 ...$cartFields,
             ]);
-        } catch (\Throwable $throwable) {
+        } catch (\Exception $throwable) {
             // Handle the exception if needed
             $cartFields = $this->cartService->prepareViewFields();
 

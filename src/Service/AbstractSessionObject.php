@@ -14,9 +14,9 @@ abstract class AbstractSessionObject implements SessionObjectInterface
     private array $list = [];
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, mixed>|string
      */
-    abstract public function prepareViewFields(): array;
+    abstract public function prepareViewFields(): array|string;
 
     abstract public static function type(): string;
 

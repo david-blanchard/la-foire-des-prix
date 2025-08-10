@@ -2,39 +2,45 @@
 
 namespace App\Controller;
 
+use ApiPlatform\Metadata\ApiProperty;
 use App\Service\CartServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/cart')]
-final class CartController extends AbstractController
+class CartController extends AbstractController
 {
     public function __construct(
-        private readonly CartServiceInterface $cartService,
+        private readonly CartServiceInterface $cartProvider,
     ) {
     }
 
-    #[Route('/retrieve', name: 'cart_retrieve', methods: ['POST'])]
+    #[ApiProperty(
+        description: 'Retrieve the current cart from the session',
+        security: "is_granted('ROLE_USER')",
+        uriTemplate: '/cart/retrieve',
+    )]
     public function retrieve(): JsonResponse
     {
-        $sessionData = $this->cartService->retrieve();
-        $this->cartService->prepare($sessionData);
-        $data = $this->cartService->prepareViewFields();
+        $sessionData = $this->cartProvider->retrieve();
+        $this->cartProvider->prepare($sessionData);
+        $computedCart =  $this->cartProvider->prepareViewFields();
 
-        return $this->json($data);
+        return new JsonResponse($computedCart);
     }
 
-    #[Route('/store', name: 'cart_store', methods: ['POST'])]
+    #[ApiProperty(
+        description: 'Store the current cart in the session',
+        security: "is_granted('ROLE_USER')",
+        uriTemplate: '/cart/retrieve',
+    )]
     public function store(Request $request): JsonResponse
     {
         $json = $request->getContent();
         $input = (array) json_decode($json, true);
+        $this->cartProvider->store($input);
+        $computedCart =  $this->cartProvider->prepareViewFields();
 
-        $this->cartService->store($input);
-        $data = $this->cartService->prepareViewFields();
-
-        return $this->json($data);
+        return new JsonResponse($computedCart);
     }
 }

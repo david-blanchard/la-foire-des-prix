@@ -17,9 +17,9 @@ readonly class ProductService implements ViewServiceInterface
     /**
      * Transform ProductInfo attributes in properties usable in views.
      *
-     * @return array<string, mixed> Array of properties
+     * @return array<string, mixed>|string Array of properties
      */
-    public function prepareViewFields(?ProductInterface $data = null): array
+    public function prepareViewFields(?ProductInterface $data = null): array|string
     {
         $discount = $this->productCampaignRepository->getProductDiscountById($data?->getId());
         $props = [];
