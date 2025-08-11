@@ -29,6 +29,9 @@ security:
       pattern: ^/api
       stateless: true
       jwt: ~
+      refresh_jwt:
+        check_path: /api/token/refresh
+      entry_point: jwt
 
     main:
       lazy: true
