@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
@@ -26,12 +27,18 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): RedirectResponse
     {
-        $jwt = $this->jwtManager->create($token->getUser());
+        /* @var UserInterface $tokenUser */
+        $tokenUser = $token->getUser();
+
+        if($tokenUser === null) {
+            return new RedirectResponse($this->router->generate('home'));
+        }
+
+
+        $jwt = $this->jwtManager->create($tokenUser);
         $user = $token->getUser();
 
-        if ($request->isXmlHttpRequest() || str_contains($request->getAcceptableContentTypes()[0] ?? '', 'json')) {
-            $response = new JsonResponse(['success' => true]);
-        } elseif (in_array(User::ADMIN_ROLE, $user?->getRoles() ?? [], true)) {
+        if (in_array(User::ADMIN_ROLE, $user?->getRoles() ?? [], true)) {
             $response = new RedirectResponse($this->router->generate('admin_dashboard'));
         } else {
             $response = new RedirectResponse($this->router->generate('home'));
@@ -42,5 +49,4 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
         return $response;
     }
-
 }

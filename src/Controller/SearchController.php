@@ -30,7 +30,9 @@ class SearchController extends AbstractController
                 ...$cartFields,
             ]);
         } catch (NotFoundHttpException $notFoundHttpException) {
-            return $this->render('errors/404.html.twig', $this->cartService->prepareViewFields());
+            return $this->render('errors/404.html.twig', [
+                    ...$this->cartService->prepareViewFields()
+                ]);
         } catch (\Exception $throwable) {
             $cartFields = $this->cartService->prepareViewFields();
 

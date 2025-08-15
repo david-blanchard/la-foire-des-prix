@@ -7,7 +7,7 @@ use App\Entity\ProductInterface;
 interface ViewServiceInterface
 {
     /**
-     * @return array<string, mixed>|string
+     * @return array<mixed>
      */
-    public function prepareViewFields(?ProductInterface $data = null): array|string;
+    public function prepareViewFields(?ProductInterface $data = null): array;
 }

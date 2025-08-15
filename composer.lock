@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd11701f3ea595f381ea91deee15fdcd",
+    "content-hash": "36d408c26b37f634dd3e0ee9cf8df77a",
     "packages": [
         {
             "name": "api-platform/doctrine-common",
@@ -11215,6 +11215,58 @@
                 }
             ],
             "time": "2025-07-14T15:41:41+00:00"
+        },
+        {
+            "name": "kenaths/phpstan-fixer",
+            "version": "1.71",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kenaths/phpstan-fixer.git",
+                "reference": "8dc1dc698386f9da941df048fffd8b345f3fae43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenaths/phpstan-fixer/zipball/8dc1dc698386f9da941df048fffd8b345f3fae43",
+                "reference": "8dc1dc698386f9da941df048fffd8b345f3fae43",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^5.0",
+                "php": "^8.2|^8.3|^8.4",
+                "phpstan/phpstan": "^1.11|^2.0",
+                "symfony/console": "^6.4|^7.0",
+                "symfony/filesystem": "^6.4|^7.0",
+                "symfony/process": "^6.4|^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5|^11.0",
+                "symfony/var-dumper": "^6.4|^7.0"
+            },
+            "bin": [
+                "bin/phpstan-fix"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPStanFixer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHPStan Fixer",
+                    "email": "info@phpstan-fixer.com"
+                }
+            ],
+            "description": "A library to automatically fix PHPStan errors based on the provided level",
+            "support": {
+                "issues": "https://github.com/kenaths/phpstan-fixer/issues",
+                "source": "https://github.com/kenaths/phpstan-fixer/tree/1.71"
+            },
+            "time": "2025-07-14T10:42:28+00:00"
         },
         {
             "name": "masterminds/html5",

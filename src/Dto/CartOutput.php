@@ -11,5 +11,4 @@ class CartOutput
 
     #[Groups(['cart:read'])]
     public ?float $total = null;
-
 }

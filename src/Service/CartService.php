@@ -102,10 +102,10 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     /**
      * Make the Cart object ready to dipslay.
      *
-     * @return array<string, mixed>|string a simplified form of the Cart
+     * @return array<string, mixed>
      * @throws \Exception
      */
-    public function prepareViewFields(?object $data = null): array|string
+    public function prepareViewFields(?object $data = null): array
     {
         $computedCart = $this->computeCart();
         $json = $this->serializer->serialize($computedCart, 'json', ['groups' => ['cart:read']]);

@@ -14,7 +14,10 @@ class SearchService
     ) {
     }
 
-    public function fetchProductById(?int $productId = null): ?array
+    /**
+     * @return array<mixed>
+     */
+    public function fetchProductById(?int $productId = null): array
     {
         // Attempt to fetch properties from a cache by ID
         $props = $this->productRepository->getPropertiesFromCacheById($productId);
@@ -22,10 +25,14 @@ class SearchService
         if (null === $props) {
             // Fetch attributes and convert them to properties
             $product = $this->productRepository->findById($productId);
+            if (null === $product) {
+                throw new NotFoundHttpException('Product not found');
+            }
+
             $props = $this->productService->prepareViewFields($product);
 
             // Store properties in a cache
-            $this->productRepository->putPropertiesInCacheById($productId, $props);
+            $this->productRepository->putPropertiesInCacheById($product->getId(), $props);
         }
 
 
@@ -38,7 +45,7 @@ class SearchService
      *
      * @param string $slug
      *
-     * @return array<string[], array>
+     * @return array<mixed>
      *
      * @throws NotFoundHttpException|\Exception
      */

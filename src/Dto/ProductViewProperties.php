@@ -4,57 +4,63 @@ namespace App\Dto;
 
 class ProductViewProperties
 {
-    private int $id;
-    private string $name;
-    private string $description;
-    private string $moreInfo;
+    private ?int $id;
+    private ?string $name;
+    private ?string $description;
+    private ?string $moreInfo;
     private float $price;
-    private string $brand;
+    private ?string $brand;
     private float $discountRate;
     private float $discount;
     private string $featuresCaption;
+    /**
+     * @var array<mixed>
+     */
     private array $features;
+    /**
+     * @var array<mixed>
+     */
     private array $images;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): ProductViewProperties
+    public function setId(?int $id): ProductViewProperties
     {
         $this->id = $id;
         return $this;
     }
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): ProductViewProperties
+    public function setName(?string $name): ProductViewProperties
     {
         $this->name = $name;
         return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): ProductViewProperties
+    public function setDescription(?string $description): ProductViewProperties
     {
         $this->description = $description;
         return $this;
     }
 
-    public function getMoreInfo(): string
+    public function getMoreInfo(): ?string
     {
         return $this->moreInfo;
     }
 
-    public function setMoreInfo(string $moreInfo): ProductViewProperties
+    public function setMoreInfo(?string $moreInfo): ProductViewProperties
     {
         $this->moreInfo = $moreInfo;
         return $this;
@@ -71,16 +77,17 @@ class ProductViewProperties
         return $this;
     }
 
-    public function getBrand(): string
+    public function getBrand(): ?string
     {
         return $this->brand;
     }
 
-    public function setBrand(string $brand): ProductViewProperties
+    public function setBrand(?string $brand): ProductViewProperties
     {
         $this->brand = $brand;
         return $this;
     }
+
 
     public function getDiscountRate(): float
     {
@@ -115,28 +122,43 @@ class ProductViewProperties
         return $this;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getFeatures(): array
     {
         return $this->features;
     }
 
+    /**
+     * @param array<mixed> $features
+     */
     public function setFeatures(array $features): ProductViewProperties
     {
         $this->features = $features;
         return $this;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getImages(): array
     {
         return $this->images;
     }
 
+    /**
+     * @param array<mixed> $images
+     */
     public function setImages(array $images): ProductViewProperties
     {
         $this->images = $images;
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

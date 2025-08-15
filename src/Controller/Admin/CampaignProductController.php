@@ -26,20 +26,10 @@ final class CampaignProductController extends AbstractController
     #[Route('/new', name: 'admin_campaign_product_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $campaignProduct = new ProductCampaign();
-        $form = $this->createForm(CampaignProductType::class, $campaignProduct);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($campaignProduct);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_campaign_product_index', [], Response::HTTP_SEE_OTHER);
-        }
+        $campaignProduct = new CampaignProduct();
 
         return $this->render('admin/campaign_product/new.html.twig', [
             'campaign_product' => $campaignProduct,
-            'form' => $form,
         ]);
     }
 
@@ -54,25 +44,16 @@ final class CampaignProductController extends AbstractController
     #[Route('/{id}/edit', name: 'admin_campaign_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CampaignProduct $campaignProduct, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(CampaignProductType::class, $campaignProduct);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_campaign_product_index', [], Response::HTTP_SEE_OTHER);
-        }
 
         return $this->render('admin/campaign_product/edit.html.twig', [
             'campaign_product' => $campaignProduct,
-            'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'admin_campaign_product_delete', methods: ['POST'])]
     public function delete(Request $request, CampaignProduct $campaignProduct, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$campaignProduct->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $campaignProduct->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($campaignProduct);
             $entityManager->flush();
         }

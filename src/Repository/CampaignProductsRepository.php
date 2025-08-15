@@ -54,6 +54,5 @@ class CampaignProductsRepository extends ServiceEntityRepository
           $result = $qb->getQuery()->getOneOrNullResult();
 
          return $result['discount'] ?? 0;
-
     }
 }

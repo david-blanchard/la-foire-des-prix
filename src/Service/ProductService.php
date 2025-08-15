@@ -18,25 +18,25 @@ readonly class ProductService implements ViewServiceInterface
     /**
      * Transform ProductInfo attributes in properties usable in views.
      *
-     * @return array<string, mixed>|string Array of properties
+     * @return array<string, mixed>
      */
-    public function prepareViewFields(?ProductInterface $data = null): array|string
+    public function prepareViewFields(?ProductInterface $data = null): array
     {
         $discount = $this->productCampaignRepository->getProductDiscountById($data?->getId());
         $props = new ProductViewProperties();
         if (null !== $data) {
-            $images = $this->imagesRepository->findByProductId((int) $data?->getId());
+            $images = $this->imagesRepository->findByProductId((int) $data->getId());
 
-            $props->setId($data?->getId())
-                ->setName($data?->getName())
-                ->setDescription($data?->getDescription())
-                ->setMoreInfo($data?->getMoreInfo())
-                ->setPrice($data?->getPrice())
-                ->setBrand($data?->getBrand()?->getName())
+            $props->setId($data->getId())
+                ->setName($data->getName())
+                ->setDescription($data->getDescription())
+                ->setMoreInfo($data->getMoreInfo())
+                ->setPrice($data->getPrice())
+                ->setBrand($data->getBrand()?->getName())
                 ->setDiscountRate($discount)
-                ->setDiscount($this->computeDiscount((float) $data?->getPrice(), $discount))
+                ->setDiscount($this->computeDiscount((float) $data->getPrice(), $discount))
                 ->setFeaturesCaption('Information complémentaires')
-                ->setFeatures($this->grabMoreInfo($data?->getMoreInfo()))
+                ->setFeatures($this->grabMoreInfo($data->getMoreInfo()))
                 ->setImages($images);
         }
 

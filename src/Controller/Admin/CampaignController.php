@@ -22,6 +22,9 @@ final class CampaignController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws \DateMalformedStringException
+     */
     #[Route('/new', name: 'admin_campaign_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -29,8 +32,8 @@ final class CampaignController extends AbstractController
         if ($request->isMethod('POST')) {
             $campaign = new Campaign();
             $campaign->setName((string) $request->request->get('name'));
-            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('starts_at')))));
-            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('ends_at')))));
+            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", (int) strtotime((string) $request->request->get('starts_at')))));
+            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", (int) strtotime((string) $request->request->get('ends_at')))));
             $campaign->setDiscount((int) $request->request->get('discount'));
 
             $entityManager->persist($campaign);
@@ -54,11 +57,11 @@ final class CampaignController extends AbstractController
         Request $request,
         Campaign $campaign,
         EntityManagerInterface $entityManager
-    ): Response  {
+    ): Response {
         if ($request->isMethod('POST')) {
             $campaign->setName((string) $request->request->get('name'));
-            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('starts_at')))));
-            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('ends_at')))));
+            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", (int) strtotime((string) $request->request->get('starts_at')))));
+            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", (int) strtotime((string)$request->request->get('ends_at')))));
             $campaign->setDiscount((int) $request->request->get('discount'));
 
             $entityManager->flush();
@@ -76,7 +79,7 @@ final class CampaignController extends AbstractController
     #[Route('/{id}', name: 'admin_campaign_delete', methods: ['POST'])]
     public function delete(Request $request, Campaign $campaign, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$campaign->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $campaign->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($campaign);
             $entityManager->flush();
         }

@@ -17,5 +17,4 @@ interface ProductInterface extends CategoryInterface
     public function getPrice(): float;
 
     public function getBrand(): ?Brand;
-
 }

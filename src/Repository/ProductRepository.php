@@ -48,7 +48,7 @@ class ProductRepository extends ServiceEntityRepository
         return $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->Where('p.slug LIKE :slugLike')
-            ->setParameter('slugLike', '%'.$slug.'%')
+            ->setParameter('slugLike', '%' . $slug . '%')
             ->select('p')
             ->getQuery()
             ->getResult();
@@ -84,8 +84,12 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return array<mixed>|null
      */
-    public function getPropertiesFromCacheById(int $productId): ?array
+    public function getPropertiesFromCacheById(?int $productId = null): ?array
     {
+        if (null === $productId) {
+            return null;
+        }
+
         return $this->cache->get("product$productId");
     }
 
@@ -94,8 +98,11 @@ class ProductRepository extends ServiceEntityRepository
      *
      * @param array<mixed> $properties Values to be set in product page view
      */
-    public function putPropertiesInCacheById(int $productId, array $properties): void
+    public function putPropertiesInCacheById(?int $productId, array $properties): void
     {
+        if (null === $productId) {
+            return;
+        }
         $this->cache->set("product$productId", $properties); // Cache expiration: 1 heure
     }
 
