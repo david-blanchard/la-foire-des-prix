@@ -3,6 +3,7 @@
 namespace App\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
 use App\Controller\CartController;
 use App\Dto\CartOutput;
 use App\Dto\CartRetrieveInput;
@@ -12,7 +13,7 @@ use App\Dto\CartStoreInput;
     shortName: 'Cart',
     description: 'Cart management API',
     operations: [
-        new \ApiPlatform\Metadata\Post(
+        new Post(
             uriTemplate: '/cart/retrieve',
             status: 200,
             controller: CartController::class . '::retrieve',
@@ -22,7 +23,7 @@ use App\Dto\CartStoreInput;
             output: CartOutput::class,
             name: 'cart_retrieve',
         ),
-        new \ApiPlatform\Metadata\Post(
+        new Post(
             uriTemplate: '/cart/store',
             status: 200,
             controller: CartController::class . '::store',

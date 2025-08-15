@@ -39,9 +39,9 @@ class ImagesController extends AbstractController
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
-            $url = (string) $request->request->get('url');
-            $alt = (string) $request->request->get('alt');
-            $title = (string) $request->request->get('title');
+            $url = (string)$request->request->get('url');
+            $alt = (string)$request->request->get('alt');
+            $title = (string)$request->request->get('title');
 
             $image = new Image();
             $image->setUrl($url);
@@ -61,9 +61,9 @@ class ImagesController extends AbstractController
     public function edit(Request $request, Image $image, EntityManagerInterface $entityManager): Response
     {
         if ($request->isMethod('POST')) {
-            $url = (string) $request->request->get('url');
-            $alt = (string) $request->request->get('alt');
-            $title = (string) $request->request->get('title');
+            $url = (string)$request->request->get('url');
+            $alt = (string)$request->request->get('alt');
+            $title = (string)$request->request->get('title');
 
             $image->setUrl($url);
             $image->setAlt($alt);
@@ -82,7 +82,7 @@ class ImagesController extends AbstractController
     #[Route('/{id}/delete', name: 'admin_images_delete', methods: ['POST'])]
     public function delete(Request $request, Image $image, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $image->getId(), (string) $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $image->getId(), (string)$request->request->get('_token'))) {
             $entityManager->remove($image);
             $entityManager->flush();
         }

@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Dto\ProductViewProperties;
 use App\Entity\Product;
 use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -15,9 +14,9 @@ use Doctrine\Persistence\ManagerRegistry;
 class ProductRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry $registry,
+        ManagerRegistry                         $registry,
         private readonly EntityManagerInterface $em,
-        private readonly CustomCacheInterface $cache,
+        private readonly CustomCacheInterface   $cache,
     ) {
         parent::__construct($registry, Product::class);
     }
@@ -41,6 +40,20 @@ class ProductRepository extends ServiceEntityRepository
      *
      * @param string $slug Free form of the product name
      *
+     * @return Product|null $product Product object
+     */
+    public function findOneBySlug(string $slug): ?Product
+    {
+        $array = $this->findBySlug($slug);
+
+        return $array[0] ?? null;
+    }
+
+    /**
+     * Retrieve the values of a given product by its slug.
+     *
+     * @param string $slug Free form of the product name
+     *
      * @return Product[] $products Array of products
      */
     public function findBySlug(string $slug): array
@@ -54,18 +67,9 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * Retrieve the values of a given product by its slug.
-     *
-     * @param string $slug Free form of the product name
-     *
-     * @return Product|null $product Product object
-     */
-    public function findOneBySlug(string $slug): ?Product
+    public function deletePropertiesFromCache(Product $product): void
     {
-        $array = $this->findBySlug($slug);
-
-        return $array[0] ?? null;
+        self::deletePropertiesFromCacheById((int)$product->getId());
     }
 
     /**
@@ -74,36 +78,6 @@ class ProductRepository extends ServiceEntityRepository
     public function deletePropertiesFromCacheById(int $productId): void
     {
         $this->cache->delete("product$productId");
-    }
-
-    public function deletePropertiesFromCache(Product $product): void
-    {
-        self::deletePropertiesFromCacheById((int) $product->getId());
-    }
-
-    /**
-     * @return array<mixed>|null
-     */
-    public function getPropertiesFromCacheById(?int $productId = null): ?array
-    {
-        if (null === $productId) {
-            return null;
-        }
-
-        return $this->cache->get("product$productId");
-    }
-
-    /**
-     * Store the product page properties in cache by ID.
-     *
-     * @param array<mixed> $properties Values to be set in product page view
-     */
-    public function putPropertiesInCacheById(?int $productId, array $properties): void
-    {
-        if (null === $productId) {
-            return;
-        }
-        $this->cache->set("product$productId", $properties); // Cache expiration: 1 heure
     }
 
     /**
@@ -126,9 +100,21 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return array<mixed>|null
+     */
+    public function getPropertiesFromCacheById(?int $productId = null): ?array
+    {
+        if (null === $productId) {
+            return null;
+        }
+
+        return $this->cache->get("product$productId");
+    }
+
+    /**
      * Store the product page properties in cache by slug.
      *
-     * @param string       $slug       Free form of the product name
+     * @param string $slug Free form of the product name
      * @param array<mixed> $properties Values to be set in product page view
      */
     public function putPropertiesInCacheBySlug(string $slug, array $properties): void
@@ -138,5 +124,18 @@ class ProductRepository extends ServiceEntityRepository
             $this->cache->set("product$slug", $id);
             $this->putPropertiesInCacheById($id, $properties);
         }
+    }
+
+    /**
+     * Store the product page properties in cache by ID.
+     *
+     * @param array<mixed> $properties Values to be set in product page view
+     */
+    public function putPropertiesInCacheById(?int $productId, array $properties): void
+    {
+        if (null === $productId) {
+            return;
+        }
+        $this->cache->set("product$productId", $properties); // Cache expiration: 1 heure
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CampaignProduct;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,18 +42,18 @@ class CampaignProductsRepository extends ServiceEntityRepository
             return 0;
         }
 
-         $today = new \DateTime();
-         $qb = $this->createQueryBuilder('cp');
+        $today = new DateTime();
+        $qb = $this->createQueryBuilder('cp');
 
-         $qb->join('cp.campaign', 'c')
-             ->where('cp.product = :productId')
-             ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
-             ->setParameter('productId', $productId)
-             ->setParameter('today', $today)
-             ->select('c.discount as discount');
+        $qb->join('cp.campaign', 'c')
+            ->where('cp.product = :productId')
+            ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
+            ->setParameter('productId', $productId)
+            ->setParameter('today', $today)
+            ->select('c.discount as discount');
 
-          $result = $qb->getQuery()->getOneOrNullResult();
+        $result = $qb->getQuery()->getOneOrNullResult();
 
-         return $result['discount'] ?? 0;
+        return $result['discount'] ?? 0;
     }
 }

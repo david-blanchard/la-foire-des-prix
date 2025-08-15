@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
-
 interface ProductInterface extends CategoryInterface
 {
     public function getId(): ?int;

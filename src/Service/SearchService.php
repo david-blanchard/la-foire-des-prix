@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Repository\ProductRepository;
+use Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SearchService
@@ -35,19 +36,15 @@ class SearchService
             $this->productRepository->putPropertiesInCacheById($product->getId(), $props);
         }
 
-
         return [$props, $this->cartService->prepareViewFields()];
     }
-
 
     /**
      * Fetches a product by its slug and prepares the view fields.
      *
-     * @param string $slug
-     *
      * @return array<mixed>
      *
-     * @throws NotFoundHttpException|\Exception
+     * @throws NotFoundHttpException|Exception
      */
     public function fetchProductBySlug(string $slug): array
     {

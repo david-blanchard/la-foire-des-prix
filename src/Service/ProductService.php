@@ -10,7 +10,7 @@ use App\Repository\ProductImageRepository;
 readonly class ProductService implements ViewServiceInterface
 {
     public function __construct(
-        private ProductImageRepository $imagesRepository,
+        private ProductImageRepository     $imagesRepository,
         private CampaignProductsRepository $productCampaignRepository,
     ) {
     }
@@ -25,7 +25,7 @@ readonly class ProductService implements ViewServiceInterface
         $discount = $this->productCampaignRepository->getProductDiscountById($data?->getId());
         $props = new ProductViewProperties();
         if (null !== $data) {
-            $images = $this->imagesRepository->findByProductId((int) $data->getId());
+            $images = $this->imagesRepository->findByProductId((int)$data->getId());
 
             $props->setId($data->getId())
                 ->setName($data->getName())
@@ -34,7 +34,7 @@ readonly class ProductService implements ViewServiceInterface
                 ->setPrice($data->getPrice())
                 ->setBrand($data->getBrand()?->getName())
                 ->setDiscountRate($discount)
-                ->setDiscount($this->computeDiscount((float) $data->getPrice(), $discount))
+                ->setDiscount($this->computeDiscount((float)$data->getPrice(), $discount))
                 ->setFeaturesCaption('Information complémentaires')
                 ->setFeatures($this->grabMoreInfo($data->getMoreInfo()))
                 ->setImages($images);
@@ -46,8 +46,8 @@ readonly class ProductService implements ViewServiceInterface
     /**
      * Compute the discounted price of a product.
      *
-     * @param float|string $price   Original price
-     * @param int          $percent Discount percentage
+     * @param float|string $price Original price
+     * @param int $percent Discount percentage
      *
      * @return float Discounted price
      */

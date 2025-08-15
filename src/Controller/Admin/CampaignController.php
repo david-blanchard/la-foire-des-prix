@@ -3,8 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Campaign;
-use App\Form\CampaignType;
 use App\Repository\CampaignRepository;
+use DateMalformedStringException;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ final class CampaignController extends AbstractController
     }
 
     /**
-     * @throws \DateMalformedStringException
+     * @throws DateMalformedStringException
      */
     #[Route('/new', name: 'admin_campaign_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -31,10 +32,10 @@ final class CampaignController extends AbstractController
         $campaign = new Campaign();
         if ($request->isMethod('POST')) {
             $campaign = new Campaign();
-            $campaign->setName((string) $request->request->get('name'));
-            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", (int) strtotime((string) $request->request->get('starts_at')))));
-            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", (int) strtotime((string) $request->request->get('ends_at')))));
-            $campaign->setDiscount((int) $request->request->get('discount'));
+            $campaign->setName((string)$request->request->get('name'));
+            $campaign->setStartsAt(new DateTimeImmutable(date('Y-m-d H:i:s', (int)strtotime((string)$request->request->get('starts_at')))));
+            $campaign->setEndsAt(new DateTimeImmutable(date('Y-m-d H:i:s', (int)strtotime((string)$request->request->get('ends_at')))));
+            $campaign->setDiscount((int)$request->request->get('discount'));
 
             $entityManager->persist($campaign);
             $entityManager->flush();
@@ -50,7 +51,7 @@ final class CampaignController extends AbstractController
     }
 
     /**
-     * @throws \DateMalformedStringException
+     * @throws DateMalformedStringException
      */
     #[Route('/{id}/edit', name: 'admin_campaign_edit', methods: ['GET', 'POST'])]
     public function edit(
@@ -59,10 +60,10 @@ final class CampaignController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
         if ($request->isMethod('POST')) {
-            $campaign->setName((string) $request->request->get('name'));
-            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", (int) strtotime((string) $request->request->get('starts_at')))));
-            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", (int) strtotime((string)$request->request->get('ends_at')))));
-            $campaign->setDiscount((int) $request->request->get('discount'));
+            $campaign->setName((string)$request->request->get('name'));
+            $campaign->setStartsAt(new DateTimeImmutable(date('Y-m-d H:i:s', (int)strtotime((string)$request->request->get('starts_at')))));
+            $campaign->setEndsAt(new DateTimeImmutable(date('Y-m-d H:i:s', (int)strtotime((string)$request->request->get('ends_at')))));
+            $campaign->setDiscount((int)$request->request->get('discount'));
 
             $entityManager->flush();
 

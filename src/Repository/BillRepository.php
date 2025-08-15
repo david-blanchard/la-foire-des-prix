@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Bill;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Override;
+use RuntimeException;
 
 /**
  * @extends ServiceEntityRepository<Bill>
@@ -16,12 +18,12 @@ class BillRepository extends ServiceEntityRepository
         parent::__construct($registry, Bill::class);
     }
 
-    #[\Override]
+    #[Override]
     public function findOneBy(array $criteria, ?array $orderBy = null): Bill
     {
         $bill = parent::findOneBy($criteria, $orderBy);
         if (null === $bill) {
-            throw new \RuntimeException('Bill not found');
+            throw new RuntimeException('Bill not found');
         }
 
         return $bill;

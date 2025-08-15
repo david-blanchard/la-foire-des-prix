@@ -13,7 +13,7 @@ class RefreshToken extends AbstractRefreshToken
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
-    protected $id = null;
+    protected $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     protected $refreshToken;

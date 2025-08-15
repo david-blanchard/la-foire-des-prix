@@ -18,20 +18,10 @@ abstract class AbstractSessionObject implements SessionObjectInterface
      */
     abstract public function prepareViewFields(): array;
 
-    abstract public static function type(): string;
-
     /**
      * @param array<int|string, mixed>|null $data
      */
     abstract public function prepare(?array $data = null): void;
-
-    /**
-     * @return array<int|string, mixed>
-     */
-    public function items(): array
-    {
-        return $this->list;
-    }
 
     /**
      * @param array<int|string, mixed> $item
@@ -87,6 +77,16 @@ abstract class AbstractSessionObject implements SessionObjectInterface
             'type' => $this->type(),
             'content' => $this->items(),
         ];
+    }
+
+    abstract public static function type(): string;
+
+    /**
+     * @return array<int|string, mixed>
+     */
+    public function items(): array
+    {
+        return $this->list;
     }
 
     /**

@@ -53,9 +53,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return string The user identifier, typically the email
      * @see UserInterface
      *
-     * @return string The user identifier, typically the email
      */
     public function getUserIdentifier(): string
     {
@@ -63,9 +63,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return list<string>
      * @see UserInterface
      *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -120,13 +120,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setVerificationToken(?string $token): void
-    {
-        $this->verificationToken = $token;
-    }
-
     public function getVerificationToken(): ?string
     {
         return $this->verificationToken;
+    }
+
+    public function setVerificationToken(?string $token): void
+    {
+        $this->verificationToken = $token;
     }
 }

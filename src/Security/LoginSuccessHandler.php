@@ -4,15 +4,14 @@ namespace App\Security;
 
 use App\Entity\User;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
@@ -30,10 +29,9 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         /* @var UserInterface $tokenUser */
         $tokenUser = $token->getUser();
 
-        if($tokenUser === null) {
+        if (null === $tokenUser) {
             return new RedirectResponse($this->router->generate('home'));
         }
-
 
         $jwt = $this->jwtManager->create($tokenUser);
         $user = $token->getUser();

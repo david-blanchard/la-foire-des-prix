@@ -2,9 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Campaign\ClothProductCampaign;
 use App\Entity\CampaignProduct;
-use App\Form\CampaignProductType;
 use App\Repository\CampaignProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,7 +42,6 @@ final class CampaignProductController extends AbstractController
     #[Route('/{id}/edit', name: 'admin_campaign_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, CampaignProduct $campaignProduct, EntityManagerInterface $entityManager): Response
     {
-
         return $this->render('admin/campaign_product/edit.html.twig', [
             'campaign_product' => $campaignProduct,
         ]);

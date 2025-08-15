@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Repository\ProductRepository;
 use App\Service\CartService;
 use App\Service\SearchService;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class SearchController extends AbstractController
 {
     public function __construct(
-        private readonly CartService $cartService,
+        private readonly CartService   $cartService,
         private readonly SearchService $searchService,
     ) {
     }
@@ -31,9 +31,9 @@ class SearchController extends AbstractController
             ]);
         } catch (NotFoundHttpException $notFoundHttpException) {
             return $this->render('errors/404.html.twig', [
-                    ...$this->cartService->prepareViewFields()
-                ]);
-        } catch (\Exception $throwable) {
+                ...$this->cartService->prepareViewFields(),
+            ]);
+        } catch (Exception $throwable) {
             $cartFields = $this->cartService->prepareViewFields();
 
             return $this->render('errors/500.html.twig', [

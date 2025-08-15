@@ -22,140 +22,6 @@ class ProductViewProperties
      */
     private array $images;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): ProductViewProperties
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): ProductViewProperties
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): ProductViewProperties
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    public function getMoreInfo(): ?string
-    {
-        return $this->moreInfo;
-    }
-
-    public function setMoreInfo(?string $moreInfo): ProductViewProperties
-    {
-        $this->moreInfo = $moreInfo;
-        return $this;
-    }
-
-    public function getPrice(): float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(float $price): ProductViewProperties
-    {
-        $this->price = $price;
-        return $this;
-    }
-
-    public function getBrand(): ?string
-    {
-        return $this->brand;
-    }
-
-    public function setBrand(?string $brand): ProductViewProperties
-    {
-        $this->brand = $brand;
-        return $this;
-    }
-
-
-    public function getDiscountRate(): float
-    {
-        return $this->discountRate;
-    }
-
-    public function setDiscountRate(float $discountRate): ProductViewProperties
-    {
-        $this->discountRate = $discountRate;
-        return $this;
-    }
-
-    public function getDiscount(): float
-    {
-        return $this->discount;
-    }
-
-    public function setDiscount(float $discount): ProductViewProperties
-    {
-        $this->discount = $discount;
-        return $this;
-    }
-
-    public function getFeaturesCaption(): string
-    {
-        return $this->featuresCaption;
-    }
-
-    public function setFeaturesCaption(string $featuresCaption): ProductViewProperties
-    {
-        $this->featuresCaption = $featuresCaption;
-        return $this;
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function getFeatures(): array
-    {
-        return $this->features;
-    }
-
-    /**
-     * @param array<mixed> $features
-     */
-    public function setFeatures(array $features): ProductViewProperties
-    {
-        $this->features = $features;
-        return $this;
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function getImages(): array
-    {
-        return $this->images;
-    }
-
-    /**
-     * @param array<mixed> $images
-     */
-    public function setImages(array $images): ProductViewProperties
-    {
-        $this->images = $images;
-        return $this;
-    }
-
     /**
      * @return array<string, mixed>
      */
@@ -174,5 +40,149 @@ class ProductViewProperties
             'features' => $this->getFeatures(),
             'images' => $this->getImages(),
         ];
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): ProductViewProperties
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): ProductViewProperties
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): ProductViewProperties
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getMoreInfo(): ?string
+    {
+        return $this->moreInfo;
+    }
+
+    public function setMoreInfo(?string $moreInfo): ProductViewProperties
+    {
+        $this->moreInfo = $moreInfo;
+
+        return $this;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(float $price): ProductViewProperties
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?string $brand): ProductViewProperties
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getDiscountRate(): float
+    {
+        return $this->discountRate;
+    }
+
+    public function setDiscountRate(float $discountRate): ProductViewProperties
+    {
+        $this->discountRate = $discountRate;
+
+        return $this;
+    }
+
+    public function getDiscount(): float
+    {
+        return $this->discount;
+    }
+
+    public function setDiscount(float $discount): ProductViewProperties
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    public function getFeaturesCaption(): string
+    {
+        return $this->featuresCaption;
+    }
+
+    public function setFeaturesCaption(string $featuresCaption): ProductViewProperties
+    {
+        $this->featuresCaption = $featuresCaption;
+
+        return $this;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getFeatures(): array
+    {
+        return $this->features;
+    }
+
+    /**
+     * @param array<mixed> $features
+     */
+    public function setFeatures(array $features): ProductViewProperties
+    {
+        $this->features = $features;
+
+        return $this;
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param array<mixed> $images
+     */
+    public function setImages(array $images): ProductViewProperties
+    {
+        $this->images = $images;
+
+        return $this;
     }
 }
