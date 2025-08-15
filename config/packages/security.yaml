@@ -15,6 +15,11 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
+    api_cart_public:
+      pattern: ^/api/cart/(retrieve|store)
+      stateless: true
+      security: false
+
     login:
       pattern:  ^/api/login
       stateless: true
