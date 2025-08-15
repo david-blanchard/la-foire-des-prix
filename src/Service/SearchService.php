@@ -9,16 +9,25 @@ class SearchService
 {
     public function __construct(
         private readonly ProductRepository $productRepository,
-        private readonly CartService       $cartService,
-        private readonly ProductService    $productService,
+        private readonly CartService $cartService,
+        private readonly ProductService $productService,
     ) {
     }
 
     public function fetchProductById(?int $productId = null): ?array
     {
-        // Fetch attributes and convert them to properties
-        $product = $this->productRepository->findById($productId);
-        $props = $this->productService->prepareViewFields($product);
+        // Attempt to fetch properties from a cache by ID
+        $props = $this->productRepository->getPropertiesFromCacheById($productId);
+
+        if (null === $props) {
+            // Fetch attributes and convert them to properties
+            $product = $this->productRepository->findById($productId);
+            $props = $this->productService->prepareViewFields($product);
+
+            // Store properties in a cache
+            $this->productRepository->putPropertiesInCacheById($productId, $props);
+        }
+
 
         return [$props, $this->cartService->prepareViewFields()];
     }
@@ -33,20 +42,25 @@ class SearchService
      *
      * @throws NotFoundHttpException|\Exception
      */
-    public function fetchProductBySlug(string $slug): array {
-        // Fetch the product by slug
-        $product = $this->productRepository->findOneBySlug($slug);
+    public function fetchProductBySlug(string $slug): array
+    {
+        $props = $this->productRepository->getPropertiesFromCacheBySlug($slug);
 
-        if (null === $product) {
-            throw new NotFoundHttpException('Product not found');
+        if (null === $props) {
+            // Fetch the product by slug
+            $product = $this->productRepository->findOneBySlug($slug);
+
+            if (null === $product) {
+                throw new NotFoundHttpException('Product not found');
+            }
+
+            // Fetch attributes and convert them to properties
+            $product = $this->productRepository->findById($product->getId());
+            $props = $this->productService->prepareViewFields($product);
+
+            // Store properties in a cache
+            $this->productRepository->putPropertiesInCacheBySlug($slug, $props);
         }
-
-        // Fetch attributes and convert them to properties
-        $product = $this->productRepository->findById($product->getId());
-        $props = $this->productService->prepareViewFields($product);
-
-        // Store properties in a cache
-        $this->productRepository->putPropertiesInCacheBySlug($slug, $props);
 
         return [$props, $this->cartService->prepareViewFields()];
     }

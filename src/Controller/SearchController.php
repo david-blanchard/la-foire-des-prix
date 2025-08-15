@@ -14,9 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class SearchController extends AbstractController
 {
     public function __construct(
-        private readonly ProductRepository $productRepository,
-        private readonly CartService       $cartService,
-        private readonly SearchService     $searchService,
+        private readonly CartService $cartService,
+        private readonly SearchService $searchService,
     ) {
     }
 
@@ -24,13 +23,6 @@ class SearchController extends AbstractController
     public function index(string $slug): Response
     {
         try {
-            // Attempt to fetch properties from a cache by slug
-            $props = $this->productRepository->getPropertiesFromCacheBySlug($slug);
-            if (null !== $props) {
-                return $this->render('search/index.html.twig', $props);
-            }
-
-            // Fetch the product by slug
             [$props, $cartFields] = $this->searchService->fetchProductBySlug($slug);
 
             return $this->render('search/index.html.twig', [
@@ -38,14 +30,8 @@ class SearchController extends AbstractController
                 ...$cartFields,
             ]);
         } catch (NotFoundHttpException $notFoundHttpException) {
-            // Handle the exception if needed
-            $cartFields = $this->cartService->prepareViewFields();
-
-            return $this->render('errors/404.html.twig', [
-                ...$cartFields,
-            ]);
+            return $this->render('errors/404.html.twig', $this->cartService->prepareViewFields());
         } catch (\Exception $throwable) {
-            // Handle the exception if needed
             $cartFields = $this->cartService->prepareViewFields();
 
             return $this->render('errors/500.html.twig', [
