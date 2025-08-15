@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Dto\ProductViewProperties;
 use App\Entity\Product;
 use App\Service\CustomCacheInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

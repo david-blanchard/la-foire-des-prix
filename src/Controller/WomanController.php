@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ProductRepository;
 use App\Service\CartService;
 use App\Service\ProductService;
+use App\Service\SearchService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,8 +15,7 @@ class WomanController extends AbstractController
 {
     public function __construct(
         private readonly ProductRepository $productRepository,
-        private readonly CartService       $cartService,
-        private readonly ProductService    $productService,
+        private readonly SearchService     $searchService,
     ) {
     }
 
@@ -31,11 +31,7 @@ class WomanController extends AbstractController
             return $this->render('woman/index.html.twig', $props);
         }
 
-        // Fetch attributes and convert them to properties
-        $product = $this->productRepository->findById();
-        $props = $this->productService->prepareViewFields($product);
-
-        $cartFields = $this->cartService->prepareViewFields();
+        [$props, $cartFields] = $this->searchService->fetchProductById();
 
         // Store properties in a cache
         $this->productRepository->putPropertiesInCacheById(-1, $props);
@@ -59,12 +55,9 @@ class WomanController extends AbstractController
         }
 
         // Fetch the product by slug
-        $cartFields = HomeController::fetchProductBySlug(
-            $this->productRepository,
-            $this->cartService,
-            $this->productService,
-            $slug
-        );
+        [$props, $cartFields] = $this->searchService->fetchProductBySlug($slug);
+
+        $this->productRepository->putPropertiesInCacheById($props['id'] ?? null, $props);
 
         return $this->render('woman/index.html.twig', [
             ...$props,
