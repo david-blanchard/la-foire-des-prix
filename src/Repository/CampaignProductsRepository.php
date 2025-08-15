@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\CampaignProduct;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -42,7 +41,7 @@ class CampaignProductsRepository extends ServiceEntityRepository
             return 0;
         }
 
-        $today = new DateTime();
+        $today = new \DateTime();
         $qb = $this->createQueryBuilder('cp');
 
         $qb->join('cp.campaign', 'c')

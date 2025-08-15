@@ -6,7 +6,6 @@ use App\Dto\CartOutput;
 use App\Dto\CartStoreInput;
 use App\Dto\CartStoreInputContent;
 use App\Repository\ProductRepository;
-use Exception;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -15,11 +14,10 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     private Session $session;
 
     public function __construct(
-        private readonly ProductRepository   $productRepository,
-        private readonly ProductService      $productService,
+        private readonly ProductRepository $productRepository,
+        private readonly ProductService $productService,
         private readonly SerializerInterface $serializer,
-    )
-    {
+    ) {
         $this->session = new Session();
     }
 
@@ -40,7 +38,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
             if (is_array($quantity)) {
                 continue;
             }
-            $product = $this->productRepository->findById((int)$productId);
+            $product = $this->productRepository->findById((int) $productId);
             $props = $this->productService->prepareViewFields($product);
             $price = $props['discount'] ?: floatval($props['price']);
 
@@ -60,7 +58,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      *
      * @return array<string, mixed>
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function prepareViewFields(?object $data = null): array
     {
@@ -85,8 +83,8 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      * This allows computing the exact sum of a given product
      * accordingly to its actual quantity.
      *
-     * @param array<string, mixed> $sessionData state of the cart in session
-     * @param array<string, mixed>|null $input data to update the cart with
+     * @param array<string, mixed>      $sessionData state of the cart in session
+     * @param array<string, mixed>|null $input       data to update the cart with
      */
     public function reduce(?array $sessionData, ?array $input = null): void
     {

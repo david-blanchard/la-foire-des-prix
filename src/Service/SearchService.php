@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Repository\ProductRepository;
-use Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SearchService
@@ -44,7 +43,7 @@ class SearchService
      *
      * @return array<mixed>
      *
-     * @throws NotFoundHttpException|Exception
+     * @throws NotFoundHttpException|\Exception
      */
     public function fetchProductBySlug(string $slug): array
     {

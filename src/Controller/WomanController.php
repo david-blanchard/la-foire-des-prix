@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Service\SearchService;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +16,7 @@ class WomanController extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[Route('/', name: 'woman', methods: ['GET'])]
     public function index(): Response
@@ -31,7 +30,7 @@ class WomanController extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[Route('/{slug}', name: 'product_info', methods: ['GET'])]
     public function show(string $slug): Response

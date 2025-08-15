@@ -34,7 +34,6 @@ class Product implements ProductInterface
     #[Groups(['product.read', 'product.write'])]
     protected ?string $description = null;
 
-
     #[ORM\Column(length: 1024, nullable: true)]
     #[Groups(['product.read', 'product.write'])]
     protected ?string $moreInfo = null;

@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Campaign;
-use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -17,14 +16,14 @@ class CampaignsFixture extends Fixture
         $campaigns = [
             [
                 'name' => self::CAMPAIGN_LABEL_1,
-                'start' => new DateTimeImmutable('2021-03-21'),
-                'end' => new DateTimeImmutable('2021-06-20'),
+                'start' => new \DateTimeImmutable('2021-03-21'),
+                'end' => new \DateTimeImmutable('2021-06-20'),
                 'discount' => 15,
             ],
             [
                 'name' => self::CAMPAIGN_LABEL_2,
-                'start' => new DateTimeImmutable('2021-06-21'),
-                'end' => new DateTimeImmutable('2021-09-20'),
+                'start' => new \DateTimeImmutable('2021-06-21'),
+                'end' => new \DateTimeImmutable('2021-09-20'),
                 'discount' => 25,
             ],
         ];

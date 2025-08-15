@@ -9,7 +9,7 @@ trait ObjectUtils
      */
     public static function toObject(array $data): object
     {
-        $json = (string)json_encode($data);
+        $json = (string) json_encode($data);
 
         return json_decode($json);
     }
@@ -19,7 +19,7 @@ trait ObjectUtils
      */
     public static function toArray(object $data): array
     {
-        $json = (string)json_encode($data);
+        $json = (string) json_encode($data);
 
         return json_decode($json, true);
     }

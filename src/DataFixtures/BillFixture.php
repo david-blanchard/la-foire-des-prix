@@ -6,7 +6,6 @@ use App\Entity\Bill;
 use App\Entity\BillLineProduct;
 use App\Entity\Product;
 use App\Entity\User;
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,27 +25,27 @@ class BillFixture extends Fixture implements DependentFixtureInterface
 
         $bill = new Bill();
         $bill->setClient($user);
-        $bill->setCreatedAt(new DateTime());
+        $bill->setCreatedAt(new \DateTime());
         $bill->setVat(19.6);
         $manager->persist($bill);
 
         $billLine1 = new BillLineProduct();
         $billLine1->setBill($bill);
-        $billLine1->setName((string)$product1?->getName());
+        $billLine1->setName((string) $product1?->getName());
         $billLine1->setProduct($product1);
         $billLine1->setQuantity(1);
         $manager->persist($billLine1);
 
         $billLine2 = new BillLineProduct();
         $billLine2->setBill($bill);
-        $billLine2->setName((string)$product2?->getName());
+        $billLine2->setName((string) $product2?->getName());
         $billLine2->setProduct($product2);
         $billLine2->setQuantity(2);
         $manager->persist($billLine2);
 
         $billLine3 = new BillLineProduct();
         $billLine3->setBill($bill);
-        $billLine3->setName((string)$product3?->getName());
+        $billLine3->setName((string) $product3?->getName());
         $billLine3->setProduct($product3);
         $billLine3->setQuantity(1);
         $manager->persist($billLine3);
@@ -54,7 +53,7 @@ class BillFixture extends Fixture implements DependentFixtureInterface
         $bill->addBillLine($billLine1);
         $bill->addBillLine($billLine2);
         $bill->addBillLine($billLine3);
-        $bill->setUpdatedAt(new DateTime());
+        $bill->setUpdatedAt(new \DateTime());
         $manager->persist($bill);
 
         $manager->flush();

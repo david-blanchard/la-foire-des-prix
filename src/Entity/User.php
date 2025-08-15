@@ -54,8 +54,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @return string The user identifier, typically the email
-     * @see UserInterface
      *
+     * @see UserInterface
      */
     public function getUserIdentifier(): string
     {
@@ -64,8 +64,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @return list<string>
-     * @see UserInterface
      *
+     * @see UserInterface
      */
     public function getRoles(): array
     {
