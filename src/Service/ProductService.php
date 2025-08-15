@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Dto\ProductViewProperties;
 use App\Entity\ProductInterface;
 use App\Repository\CampaignProductsRepository;
 use App\Repository\ProductImageRepository;
@@ -22,23 +23,24 @@ readonly class ProductService implements ViewServiceInterface
     public function prepareViewFields(?ProductInterface $data = null): array|string
     {
         $discount = $this->productCampaignRepository->getProductDiscountById($data?->getId());
-        $props = [];
-        $props['name'] = $data?->getName();
-        $props['id'] = $data?->getId();
-        $props['description'] = $data?->getDescription();
-        $props['moreInfo'] = $data?->getMoreInfo();
-        $props['price'] = $data?->getPrice();
-        $props['brand'] = $data?->getBrand()?->getName();
-        $props['discountRate'] = $discount;
-        $props['discount'] = $this->computeDiscount((float) $data?->getPrice(), $discount);
+        $props = new ProductViewProperties();
+        if (null !== $data) {
+            $images = $this->imagesRepository->findByProductId((int) $data?->getId());
 
-        $props['featuresCaption'] = 'Information complémentaires';
-        $props['features'] = $this->grabMoreInfo($data?->getMoreInfo());
+            $props->setId($data?->getId())
+                ->setName($data?->getName())
+                ->setDescription($data?->getDescription())
+                ->setMoreInfo($data?->getMoreInfo())
+                ->setPrice($data?->getPrice())
+                ->setBrand($data?->getBrand()?->getName())
+                ->setDiscountRate($discount)
+                ->setDiscount($this->computeDiscount((float) $data?->getPrice(), $discount))
+                ->setFeaturesCaption('Information complémentaires')
+                ->setFeatures($this->grabMoreInfo($data?->getMoreInfo()))
+                ->setImages($images);
+        }
 
-        $images = $this->imagesRepository->findByProductId((int) $data?->getId());
-        $props['images'] = $images;
-
-        return $props;
+        return $props->toArray();
     }
 
     /**
