@@ -26,7 +26,17 @@
         "watch": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "refresh": "docker compose exec php composer refresh",
+        "cover": "docker compose exec php composer cover",
+        "lint": "docker compose exec php composer lint",
+        "lint:fix": "docker compose exec php composer lint:fix",
+        "analyse": "docker compose exec php composer analyse",
+        "analyse:fix": "docker compose exec php composer analyse:fix",
+        "publish": "docker compose exec php composer publish",
+        "test": "docker compose exec php composer test",
+        "test:refresh": "docker compose exec php composer refresh-test",
+        "test:again": "docker compose exec php composer retest",
+        "test:watch": "docker compose exec php composer bin/phpunit --testsuite=unit --testdox --colors=always --stop-on-failure --no-coverage --process-isolation --parallel"
     },
     "dependencies": {
         "acorn": "^8.14.1",
