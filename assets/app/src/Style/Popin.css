@@ -1,0 +1,94 @@
+#screen-layout {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+  display: block;
+}
+
+.frame-layout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 10001;
+}
+
+.popin-box {
+  /* line-height: 1em; */
+  position: relative;
+  font-size: 18px;
+  text-align: center;
+  top: 35%;
+  height: auto;
+  color: #000;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid #000;
+  width: 30%;
+  left: 35%;
+}
+
+#banner-message {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  font-size: 20px;
+  text-align: center;
+  transition: all 0.2s;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 130px;
+}
+
+@media (min-width: 40em) {
+  #banner-message {
+    font-size: 14px;
+  }
+}
+
+.popin-cta {
+  background: #0084ff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 14px;
+  font-size: 15px;
+  color: #fff;
+}
+
+.cancel {
+  background: #ff8400 !important;
+}
+
+.go {
+  background: #ff4400 !important;
+}
+
+#banner-message.alt {
+  background: #0084ff;
+  color: #fff;
+  margin-top: 40px;
+  width: 200px;
+}
+
+#banner-message.alt button {
+  background: #fff;
+  color: #000;
+}
+
+#close {
+  position: relative;
+  float: right;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+.title {
+  font-weight: 600;
+}

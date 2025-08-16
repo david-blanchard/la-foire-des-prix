@@ -15,5 +15,3 @@ search.attachSearchEvent()
 
 const cart = new Cart()
 cart.retrieve()
-
-console.log("Happy coding !!");

@@ -1,0 +1,49 @@
+{% extends 'layouts/auth.html.twig' %}
+
+{% block children %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ 'Confirm Password'|trans }}</div>
+
+                <div class="card-body">
+                    {{ 'Please confirm your password before continuing.'|trans }}
+
+                    <form method="POST" action="{{ path('password_confirm') }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('confirm_password') }}">
+
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ 'Password'|trans }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control {{ errors.password is defined ? 'is-invalid' : '' }}" name="password" required autocomplete="current-password">
+
+                                {% if errors.password is defined %}
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ errors.password }}</strong>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    {{ 'Confirm Password'|trans }}
+                                </button>
+
+                                {% if path('password_request') is defined %}
+                                    <a class="btn btn-link" href="{{ path('password_request') }}">
+                                        {{ 'Forgot Your Password?'|trans }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

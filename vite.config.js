@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite'
 import symfonyPlugin from 'vite-plugin-symfony'
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
     plugins: [
+        react(),
         symfonyPlugin(),
         viteStaticCopy({
             targets: [
@@ -27,8 +29,30 @@ export default defineConfig({
         outDir: 'public/build',
         rollupOptions: {
             input: {
+                main: './assets/app/src/main.jsx',
                 app: './assets/js/app.js',
-                style: './assets/styles/app.css',
+                style: './assets/styles/app.css'
+            },
+            output: {
+                entryFileNames: 'js/[name].js',
+                chunkFileNames: 'js/[name].js',
+                assetFileNames: (assetInfo) => {
+                    if (assetInfo.name === 'style.css') {
+                        return 'css/style.css';
+                    }
+                    if (assetInfo.name === 'app.css') {
+                        return 'css/app.css';
+                    }
+                    return 'assets/[name].[ext]';
+                }
+            },
+            preserveEntrySignatures: 'strict',
+            manualChunks: {
+                vendor: ['react', 'react-dom', 'react-router-dom', 'axios'],
+                bootstrap: ['bootstrap', 'jquery'],
+                fontawesome: ['@fortawesome/fontawesome-free'],
+                'font-awesome': ['font-awesome'],
+                'bootstrap-icons': ['bootstrap-icons']
             }
         }
     },
