@@ -10,6 +10,10 @@ export default defineConfig({
                 {
                     src: 'assets/images/*',
                     dest: 'images'  // Cela va copier dans /dist/images
+                },
+                {
+                    src: 'node_modules/font-awesome/fonts/*',
+                    dest: 'fonts'  // This will copy to /dist/fonts
                 }
             ]
         })
@@ -25,7 +29,6 @@ export default defineConfig({
             input: {
                 app: './assets/js/app.js',
                 style: './assets/styles/app.css',
-
             }
         }
     },
