@@ -13,11 +13,11 @@
  */
 return [
     'main' => [
-        'path' => './assets/app/main.jsx',
+        'path' => './app/main.tsx',
         'entrypoint' => true,
     ],
     'app' => [
-        'path' => './assets/app/src/App.jsx',
+        'path' => './assets/js/app.js',
         'entrypoint' => true,
     ],
     'style' => [
