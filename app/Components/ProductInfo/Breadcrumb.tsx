@@ -1,6 +1,8 @@
-import React from "react";
+type BreadcrumbProps = {
+  name: string;
+};
 
-export default function Breadcrumb({ name }) {
+export default function Breadcrumb({ name }: BreadcrumbProps) {
   return (
     <nav id="breadcrumb0" aria-label="breadcrumb">
       <ol className="breadcrumb">

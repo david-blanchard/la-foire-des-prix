@@ -1,19 +1,25 @@
-import React from "react";
+import type { Image } from "../../Entity/Image";
 
-export default function ProductImage({ image, size }) {
+type ProductImageProps = {
+  image: Image;
+  size: number;
+};
+
+export default function ProductImage({ image, size }: ProductImageProps) {
+  if (!image) {
+    return null; // Gestion d'un cas où l'image est indéfinie
+  }
+
   return (
     <img
-      src={"/build/images/blank.gif"}
+      src="/build/images/blank.gif"
       data-src={image.url}
-      name="picto"
+      data-name="picto"
       alt={image.alt}
-      title={image.title}
       className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
       width={size}
       height={size}
-      preserveAspectRatio="xMidYMid slice"
-      focusable="false"
-      aria-label={image.title}
+      aria-label={image.alt}
     />
   );
 }

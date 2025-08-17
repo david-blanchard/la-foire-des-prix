@@ -4,6 +4,7 @@
 .nbproject/
 .project/
 
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -53,3 +54,8 @@ phpstan.neon
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> yarn ###
+yarn-error.log
+.yarn/
+###< yarn ###

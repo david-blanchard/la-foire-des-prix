@@ -1,17 +1,27 @@
 import React from "react";
-import ProductImage from "./ProductImage.tsx";
+import ProductImage from "./ProductImage";
 
-export default function ImagesPanel({ images = [], isAdmin, id, onAddImages }) {
-  // Gestion du fallback si aucune image n'est fournie
+import type { Image } from "../../Entity/Image";
+
+type ImagesPanelProps = {
+  images?: Image[];
+  isAdmin: boolean;
+  id: string | number;
+  onAddImages?: React.MouseEventHandler<HTMLAnchorElement>;
+};
+
+export default function ImagesPanel({
+  images = [],
+  isAdmin,
+  id,
+  onAddImages,
+}: ImagesPanelProps) {
   const hasNoImage = !images[0];
-  const fallbackImage = {
+  const fallbackImage: Image = {
     url: "/assets/images/misc/no-image.png",
     alt: "pas d'image disponible",
-    title: "pas d'image disponible"
   };
-  const displayImages = hasNoImage
-    ? Array(4).fill(fallbackImage)
-    : images;
+  const displayImages = hasNoImage ? Array(4).fill(fallbackImage) : images;
 
   return (
     <div>
@@ -27,6 +37,7 @@ export default function ImagesPanel({ images = [], isAdmin, id, onAddImages }) {
             tabIndex={0}
             data-toggle="button"
             aria-pressed={idx === 0 ? "true" : "false"}
+            type="button"
           >
             <ProductImage image={image} size={50} />
           </button>

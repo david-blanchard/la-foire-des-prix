@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 
 export default function Quantity() {
   const [quantity, setQuantity] = useState(1);
@@ -20,7 +20,7 @@ export default function Quantity() {
               Quantité
             </span>
           </li>
-          <li className={`page-item${quantity === 1 ? " disabled" : ""}`}>
+          <li className={`page-item${quantity === 1 ? ' disabled' : ''}`}>
             <button
               id="less"
               name="quantity-handler"
@@ -33,7 +33,7 @@ export default function Quantity() {
             </button>
           </li>
           <li className="page-item disabled">
-            <span id="quantity" name="count" className="page-link">
+            <span id="quantity" data-name="count" className="page-link">
               {quantity}
             </span>
           </li>

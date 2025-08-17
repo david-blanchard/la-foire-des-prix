@@ -24,4 +24,10 @@ return [
         'path' => './assets/styles/app.css',
         'entrypoint' => true,
     ],
+    'react' => [],
+    'react-dom' => [],
+    'popper' => [
+        ''
+    ],
+
 ];

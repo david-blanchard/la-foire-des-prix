@@ -1,8 +1,8 @@
-import {Identifier} from "./Traits/Identifier";
-import {Classifier} from "./Traits/Classifier";
-import {Brand} from "./Brand";
-import {Dater} from "./Traits/Dater";
-import {Category} from "./Category";
+import type {Identifier} from "./Traits/Identifier";
+import type {Classifier} from "./Traits/Classifier";
+import type {Brand} from "./Brand";
+import type {Dater} from "./Traits/Dater";
+import type {Category} from "./Category";
 
 export interface Product extends Identifier, Classifier, Dater, Category {
     name?: string | null;

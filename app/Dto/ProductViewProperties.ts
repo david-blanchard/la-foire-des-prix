@@ -1,4 +1,4 @@
-import {Image} from "../Entity/Image";
+import type {Image} from "../Entity/Image.ts";
 
 export interface ProductViewProperties {
   id?: number | null;

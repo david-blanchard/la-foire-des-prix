@@ -1,6 +1,14 @@
-import React from "react";
-import AppHeader from "../Header/AppHeader.tsx";
-import AppFooter from "../Footer/AppFooter.tsx";
+import AppHeader from '../Header/AppHeader';
+import AppFooter from '../Footer/AppFooter';
+
+type AppLayoutProps = {
+  title?: string;
+  stylesheets?: React.ReactNode;
+  headJavascripts?: React.ReactNode;
+  javascripts?: React.ReactNode;
+  csrfToken?: string;
+  children: React.ReactNode;
+};
 
 export default function AppLayout({
   title,
@@ -9,15 +17,14 @@ export default function AppLayout({
   javascripts,
   csrfToken,
   children,
-}) {
+}: AppLayoutProps) {
   return (
     <html lang="en" className="h-100">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="csrf-token" content={csrfToken} />
+        {csrfToken && <meta name="csrf-token" content={csrfToken} />}
         <meta name="description" content="" />
         <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{title}</title>
         {/* Liens CSS */}
         {stylesheets}

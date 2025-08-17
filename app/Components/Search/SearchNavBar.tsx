@@ -1,6 +1,10 @@
-import React from "react";
+type SearchNavBarProps = {
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
-export default function SearchNavBar({ onSubmit, value, onChange }) {
+export default function SearchNavBar({ onSubmit, value, onChange }: SearchNavBarProps) {
   return (
     <form
       id="form0"

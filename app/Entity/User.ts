@@ -1,4 +1,4 @@
-import {Identifier} from './Traits/Identifier';
+import type {Identifier} from './Traits/Identifier.ts';
 
 export interface User extends Identifier {
     email: string;

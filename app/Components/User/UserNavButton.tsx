@@ -1,6 +1,24 @@
-import React from "react";
+import type { User } from '../../Entity/User';
 
-export default function UserNavButton({ user, isAdmin, onLogout, homeUrl, adminUiUrl, loginUrl, registerUrl }) {
+type UserNavButtonProps = {
+  user: User | null;
+  isAdmin: boolean;
+  onLogout: () => void;
+  homeUrl: string;
+  adminUiUrl: string;
+  loginUrl: string;
+  registerUrl: string;
+};
+
+export default function UserNavButton({
+  user,
+  isAdmin,
+  onLogout,
+  homeUrl,
+  adminUiUrl,
+  loginUrl,
+  registerUrl,
+}: UserNavButtonProps) {
   return (
     <div className="dropdown">
       <button
@@ -15,29 +33,41 @@ export default function UserNavButton({ user, isAdmin, onLogout, homeUrl, adminU
         <i className="fa fa-user-circle"></i>
       </button>
       <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-        {!user ? (
+        {!user && (
           <>
-            <a className="dropdown-item" href={loginUrl}>Connexion</a>
-            <a className="dropdown-item" href={registerUrl}>Pas encore inscrit ?</a>
+            <a className="dropdown-item" href={loginUrl}>
+              Connexion
+            </a>
+            <a className="dropdown-item" href={registerUrl}>
+              Pas encore inscrit ?
+            </a>
           </>
-        ) : null}
-        <a
-          className="dropdown-item"
-          href="#"
-          onClick={e => {
-            e.preventDefault();
-            onLogout();
-          }}
-        >
-          Déconnexion
-        </a>
+        )}
+        {user && (
+          <a
+            className="dropdown-item"
+            href="#"
+            onClick={e => {
+              e.preventDefault();
+              onLogout();
+            }}
+          >
+            Déconnexion
+          </a>
+        )}
         {!isAdmin ? (
           <>
-            <a className="dropdown-item" href={homeUrl}>F.A.Q</a>
-            <a className="dropdown-item" href={homeUrl}>Mentions légales</a>
+            <a className="dropdown-item" href={homeUrl}>
+              F.A.Q
+            </a>
+            <a className="dropdown-item" href={homeUrl}>
+              Mentions légales
+            </a>
           </>
         ) : (
-          <a className="dropdown-item" href={adminUiUrl}>Admin UI</a>
+          <a className="dropdown-item" href={adminUiUrl}>
+            Admin UI
+          </a>
         )}
       </div>
     </div>

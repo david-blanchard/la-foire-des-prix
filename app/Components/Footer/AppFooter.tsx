@@ -1,7 +1,5 @@
-import React from "react";
-
-const home = "/";
-const logo = "/build/images/logos/lesprixbas_smaller.png";
+const home = '/';
+const logo = '/build/images/logos/lesprixbas_smaller.png';
 
 export default function AppFooter() {
   return (
@@ -11,7 +9,7 @@ export default function AppFooter() {
           <div className="row">
             <div className="col-12 col-md">
               <a href={home}>
-                <img className="mb-2" src={logo} alt="Cpascher" />
+                <img className="mb-2" src={logo} alt="Les Prix Bas" />
               </a>
               <small className="d-block mb-3 text-muted">&copy; 2021</small>
             </div>
