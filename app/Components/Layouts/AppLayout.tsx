@@ -1,6 +1,6 @@
 import React from "react";
-import AppHeader from "../Header/AppHeader.jsx";
-import AppFooter from "../Footer/AppFooter.jsx";
+import AppHeader from "../Header/AppHeader.tsx";
+import AppFooter from "../Footer/AppFooter.tsx";
 
 export default function AppLayout({
   title,

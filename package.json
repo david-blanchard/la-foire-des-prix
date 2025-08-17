@@ -26,10 +26,10 @@
         "watch": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
-        "lint": "eslint ./assets/app --ext .js,.jsx,.ts,.tsx",
-        "lint:fix": "eslint ./assets/app --ext .js,.jsx,.ts,.tsx --fix",
-        "format": "prettier --write ./assets/app/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
-        "format:check": "prettier --check ./assets/app/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
+        "lint": "eslint ./app --ext .js,.jsx,.ts,.tsx",
+        "lint:fix": "eslint ./app --ext .js,.jsx,.ts,.tsx --fix",
+        "format": "prettier --write ./app/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
+        "format:check": "prettier --check ./app/**/*.{js,jsx,ts,tsx,json,css,scss,md}",
         "test:unit": "vitest run --reporter=verbose",
         "refresh": "docker compose exec php composer refresh",
         "cover": "docker compose exec php composer cover",
@@ -106,6 +106,8 @@
         "eslint-plugin-react-refresh": "^0.4.20",
         "globals": "^16.3.0",
         "prettier": "^3.6.2",
+        "typescript": "~5.8.3",
+        "typescript-eslint": "^8.39.1",
         "vite": "^6.3.4",
         "vite-plugin-symfony": "^8.0.2"
     }

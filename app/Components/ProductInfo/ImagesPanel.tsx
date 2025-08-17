@@ -1,5 +1,5 @@
 import React from "react";
-import ProductImage from "./ProductImage.jsx";
+import ProductImage from "./ProductImage.tsx";
 
 export default function ImagesPanel({ images = [], isAdmin, id, onAddImages }) {
   // Gestion du fallback si aucune image n'est fournie
