@@ -57,5 +57,5 @@ phpstan.neon
 
 ###> yarn ###
 yarn-error.log
-.yarn/
+.yarn/cache
 ###< yarn ###
