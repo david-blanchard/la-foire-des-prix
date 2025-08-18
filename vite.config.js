@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import symfonyPlugin from 'vite-plugin-symfony'
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import {viteStaticCopy} from 'vite-plugin-static-copy';
 
 export default defineConfig({
     plugins: [
@@ -11,10 +11,6 @@ export default defineConfig({
                     src: 'assets/images/*',
                     dest: 'images'  // Cela va copier dans /dist/images
                 },
-                {
-                    src: 'node_modules/font-awesome/fonts/*',
-                    dest: 'fonts'  // This will copy to /dist/fonts
-                }
             ]
         })
     ],
