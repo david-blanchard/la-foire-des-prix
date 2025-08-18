@@ -16,18 +16,8 @@ return [
         'path' => './app/main.tsx',
         'entrypoint' => true,
     ],
-    'app' => [
-        'path' => './assets/js/app.js',
-        'entrypoint' => true,
-    ],
     'style' => [
         'path' => './assets/styles/app.css',
         'entrypoint' => true,
     ],
-    'react' => [],
-    'react-dom' => [],
-    'popper' => [
-        ''
-    ],
-
 ];

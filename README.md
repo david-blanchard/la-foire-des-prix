@@ -176,7 +176,7 @@ J'ai utilisé le système d'authentification embarqué dans Laravel 8 qui est d'
 
 On peut ajouter autant de produits que l'on veut au panier. Le total tient compte des prix remisés. Tout se passe en backend. 
 
-A chaque clic sur "Ajouter au panier" une requête ajax envoie un objet JS contenant le type d'objet de session à stocker (ici Cart), la quantité de produits à ajouter et l'ID du produit. Côté backend, l'objet de session Cart est retrouvé et s'il était déjà rempli le total des produits est calculé en tenant compte des remises et des quanittés pour chaque produit figurant dans le panier. Une fois le calcul du panier fait, il est renvoyé côté client avec les deux seules informations : quantité et total. C'est une fonction JS qui fait l'affichage du panier.
+A chaque clic sur "Ajouter au panier" une requête ajax envoie un objet JS contenant le type d'objet de session à stocker (ici CartManager), la quantité de produits à ajouter et l'ID du produit. Côté backend, l'objet de session CartManager est retrouvé et s'il était déjà rempli le total des produits est calculé en tenant compte des remises et des quanittés pour chaque produit figurant dans le panier. Une fois le calcul du panier fait, il est renvoyé côté client avec les deux seules informations : quantité et total. C'est une fonction JS qui fait l'affichage du panier.
 
 La suppression des produits du panier ou la diminution des quantités ne sont pas implémentées, une page dédiée au panier serait plus simple pour ces opérations.
 

@@ -1,12 +1,12 @@
-import type {Image} from "../Entity/Image.ts";
+import type { Image } from '../Entity/Image.ts';
 
 export interface ProductViewProperties {
-  id?: number | null;
-  name?: string | null;
-  description?: string | null;
-  moreInfo?: string | null;
+  id: number;
+  name: string;
+  description: string;
+  moreInfo: string;
   price: number;
-  brand?: string | null;
+  brand: string;
   discountRate: number;
   discount: number;
   featuresCaption: string;

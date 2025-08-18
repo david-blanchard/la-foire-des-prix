@@ -1,4 +1,4 @@
-import type { Image } from "../../Entity/Image";
+import type { Image } from '../../Entity/Image';
 
 type ProductImageProps = {
   image: Image;
@@ -23,3 +23,5 @@ export default function ProductImage({ image, size }: ProductImageProps) {
     />
   );
 }
+
+export type { ProductImageProps };

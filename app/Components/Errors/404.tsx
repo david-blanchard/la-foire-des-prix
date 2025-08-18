@@ -1,4 +1,4 @@
-import AppLayout from '../Layouts/AppLayout.tsx';
+import AppLayout from '../Layouts/AppLayout';
 
 export default function NotFoundPage() {
   return (

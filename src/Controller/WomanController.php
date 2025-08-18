@@ -12,16 +12,17 @@ class WomanController extends AbstractController
 {
     public function __construct(
         private readonly SearchService $searchService,
-    ) {
+    )
+    {
     }
 
     /**
      * @throws \Exception
      */
     #[Route('/', name: 'woman', methods: ['GET'])]
-    public function index(): Response
+    public function index(?int $productId = null): Response
     {
-        [$props, $cartFields] = $this->searchService->fetchProductById();
+        [$props, $cartFields] = $this->searchService->fetchProductById($productId);
 
         return $this->render('woman/index.html.twig', [
             ...$props,

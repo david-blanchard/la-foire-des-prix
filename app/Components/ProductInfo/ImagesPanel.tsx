@@ -1,7 +1,7 @@
-import React from "react";
-import ProductImage from "./ProductImage";
+import React from 'react';
+import ProductImage from './ProductImage';
 
-import type { Image } from "../../Entity/Image";
+import type { Image } from '../../Entity/Image';
 
 type ImagesPanelProps = {
   images?: Image[];
@@ -10,7 +10,7 @@ type ImagesPanelProps = {
   onAddImages?: React.MouseEventHandler<HTMLAnchorElement>;
 };
 
-export default function ImagesPanel({
+function ImagesPanel({
   images = [],
   isAdmin,
   id,
@@ -18,7 +18,7 @@ export default function ImagesPanel({
 }: ImagesPanelProps) {
   const hasNoImage = !images[0];
   const fallbackImage: Image = {
-    url: "/assets/images/misc/no-image.png",
+    url: '/assets/images/misc/no-image.png',
     alt: "pas d'image disponible",
   };
   const displayImages = hasNoImage ? Array(4).fill(fallbackImage) : images;
@@ -32,11 +32,11 @@ export default function ImagesPanel({
         {displayImages.map((image, idx) => (
           <button
             key={idx}
-            className={`btn${idx === 0 ? " focus" : ""}`}
+            className={`btn${idx === 0 ? ' focus' : ''}`}
             name="btn-picto"
             tabIndex={0}
             data-toggle="button"
-            aria-pressed={idx === 0 ? "true" : "false"}
+            aria-pressed={idx === 0 ? 'true' : 'false'}
             type="button"
           >
             <ProductImage image={image} size={50} />
@@ -57,3 +57,6 @@ export default function ImagesPanel({
     </div>
   );
 }
+
+export type { ImagesPanelProps };
+export default ImagesPanel;

@@ -29,8 +29,7 @@ export default defineConfig({
     outDir: 'public/build',
     rollupOptions: {
       input: {
-        main: './app/main.tsx',
-        app: './assets/js/app.js',
+        app: './app/main.tsx',
         style: './assets/styles/app.css',
       },
       output: {
