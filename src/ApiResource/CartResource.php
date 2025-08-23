@@ -16,7 +16,7 @@ use App\Dto\ResourceInput;
         new Post(
             uriTemplate: '/cart/retrieve',
             status: 200,
-            controller: CartController::class . '::retrieve',
+            controller: CartController::class.'::retrieve',
             description: 'Retrieve the current cart from the session',
             security: "is_granted('ROLE_USER')",
             input: ResourceInput::class,
@@ -26,7 +26,7 @@ use App\Dto\ResourceInput;
         new Post(
             uriTemplate: '/cart/store',
             status: 200,
-            controller: CartController::class . '::store',
+            controller: CartController::class.'::store',
             description: 'Send the current cart addition to the session',
             security: "is_granted('ROLE_USER')",
             input: CartStoreInput::class,

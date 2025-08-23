@@ -37,6 +37,15 @@ class Image
     #[Groups(['image.read', 'image.write'])]
     private ?string $title = null;
 
+    public function getData(): array
+    {
+        return [
+            'url' => $this->getUrl(),
+            'alt' => $this->getAlt(),
+            'title' => $this->getTitle(),
+        ];
+    }
+
     public function getUrl(): ?string
     {
         return $this->url;

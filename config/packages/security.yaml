@@ -15,13 +15,18 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
+    front_api:
+      pattern: ^/api/front
+      stateless: true
+      security: false
+
     api_cart_public:
       pattern: ^/api/cart/(retrieve|store)
       stateless: true
       security: false
 
     login:
-      pattern:  ^/api/login
+      pattern: ^/api/login
       stateless: true
       json_login:
         check_path: /api/login_check
@@ -50,7 +55,7 @@ security:
       jwt: ~
       entry_point: form_login
       logout:
-          path: app_logout
+        path: app_logout
         # where to redirect after logout
         # target: app_any_route
 
@@ -59,19 +64,22 @@ security:
 
       # https://symfony.com/doc/current/security/impersonating_user.html
       # switch_user: true
-#    admin:
-#      pattern: ^/admin
-#      provider: app_user_provider
-#      custom_authenticators:
-#        - App\Security\LoginFormAuthenticator
-#      logout:
-#          path: /logout
+  #    admin:
+  #      pattern: ^/admin
+  #      provider: app_user_provider
+  #      custom_authenticators:
+  #        - App\Security\LoginFormAuthenticator
+  #      logout:
+  #          path: /logout
 
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
+    - { path: ^/api/front, roles: PUBLIC_ACCESS }
     - { path: ^/api/cart/retrieve, roles: PUBLIC_ACCESS }
     - { path: ^/api/cart/store, roles: PUBLIC_ACCESS }
+    - { path: ^/api/product/retrieve, roles: PUBLIC_ACCESS }
+    - { path: ^/api/product/store, roles: PUBLIC_ACCESS }
     - { path: ^/api/doc, roles: PUBLIC_ACCESS }
     - { path: ^/api/docs, roles: PUBLIC_ACCESS }
     - { path: ^/api/login, roles: PUBLIC_ACCESS }

@@ -12,8 +12,7 @@ class WomanController extends AbstractController
 {
     public function __construct(
         private readonly SearchService $searchService,
-    )
-    {
+    ) {
     }
 
     /**

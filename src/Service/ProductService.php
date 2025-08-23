@@ -6,13 +6,16 @@ use App\Dto\ProductViewProperties;
 use App\Entity\ProductInterface;
 use App\Repository\CampaignProductsRepository;
 use App\Repository\ProductImageRepository;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 readonly class ProductService implements ViewServiceInterface
 {
     public function __construct(
-        private ProductImageRepository $imagesRepository,
+        private ProductImageRepository     $imagesRepository,
         private CampaignProductsRepository $productCampaignRepository,
-    ) {
+        private RequestStack               $requestStack,
+    )
+    {
     }
 
     /**
@@ -22,23 +25,37 @@ readonly class ProductService implements ViewServiceInterface
      */
     public function prepareViewFields(?ProductInterface $data = null): array
     {
-        $discount = $this->productCampaignRepository->getProductDiscountById($data?->getId());
         $props = new ProductViewProperties();
-        if (null !== $data) {
-            $images = $this->imagesRepository->findByProductId((int) $data->getId());
+        if (null === $data)
+            return $props->toArray();
 
-            $props->setId($data->getId())
-                ->setName($data->getName())
-                ->setDescription($data->getDescription())
-                ->setMoreInfo($data->getMoreInfo())
-                ->setPrice($data->getPrice())
-                ->setBrand($data->getBrand()?->getName())
-                ->setDiscountRate($discount)
-                ->setDiscount($this->computeDiscount((float) $data->getPrice(), $discount))
-                ->setFeaturesCaption('Information complémentaires')
-                ->setFeatures($this->grabMoreInfo($data->getMoreInfo()))
-                ->setImages($images);
-        }
+        $request = $this->requestStack->getCurrentRequest();
+        $hostname = $request ? $request->getSchemeAndHttpHost() : '';
+
+        $discount = $this->productCampaignRepository->getProductDiscountById($data?->getId());
+        $rawImages = $this->imagesRepository->findByProductId((int)$data->getId());
+
+        $images = array_map(function ($img) use ($hostname) {
+            $data = $img->getData();
+
+            return [
+                'url' => $hostname . $data['url'],
+                'alt' => $data['alt'],
+                'title' => $data['title'],
+            ];
+        }, $rawImages);
+
+        $props->setId($data->getId())
+            ->setName($data->getName())
+            ->setDescription($data->getDescription())
+            ->setMoreInfo($data->getMoreInfo())
+            ->setPrice($data->getPrice())
+            ->setBrand($data->getBrand()?->getName())
+            ->setDiscountRate($discount)
+            ->setDiscount($this->computeDiscount((float)$data->getPrice(), $discount))
+            ->setFeaturesCaption('Information complémentaires')
+            ->setFeatures($this->grabMoreInfo($data->getMoreInfo()))
+            ->setImages($images);
 
         return $props->toArray();
     }
@@ -46,8 +63,8 @@ readonly class ProductService implements ViewServiceInterface
     /**
      * Compute the discounted price of a product.
      *
-     * @param float|string $price   Original price
-     * @param int          $percent Discount percentage
+     * @param float|string $price Original price
+     * @param int $percent Discount percentage
      *
      * @return float Discounted price
      */

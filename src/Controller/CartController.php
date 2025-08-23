@@ -7,18 +7,22 @@ use App\Service\CartServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
+
+#[Route('/cart', name: 'api_cart_')]
 class CartController extends AbstractController
 {
     public function __construct(
         private readonly CartServiceInterface $cartProvider,
-    ) {
+    )
+    {
     }
 
     #[ApiProperty(
         description: 'Retrieve the current cart from the session',
         security: "is_granted('ROLE_USER')",
-        uriTemplate: '/cart/retrieve',
+        uriTemplate: '/retrieve',
     )]
     public function retrieve(): JsonResponse
     {
@@ -32,12 +36,12 @@ class CartController extends AbstractController
     #[ApiProperty(
         description: 'Store the current cart in the session',
         security: "is_granted('ROLE_USER')",
-        uriTemplate: '/cart/retrieve',
+        uriTemplate: '/store',
     )]
     public function store(Request $request): JsonResponse
     {
         $json = $request->getContent();
-        $input = (array) json_decode($json, true);
+        $input = (array)json_decode($json, true);
         $this->cartProvider->store($input);
         $computedCart = $this->cartProvider->prepareViewFields();
 

@@ -2,6 +2,8 @@
 
 namespace App\Dto;
 
+use App\Entity\Image;
+
 class ProductViewProperties
 {
     private ?int $id;
@@ -151,7 +153,7 @@ class ProductViewProperties
     }
 
     /**
-     * @return array<mixed>
+     * @return string[]
      */
     public function getFeatures(): array
     {
@@ -159,7 +161,7 @@ class ProductViewProperties
     }
 
     /**
-     * @param array<mixed> $features
+     * @param string[] $features
      */
     public function setFeatures(array $features): ProductViewProperties
     {
@@ -168,16 +170,14 @@ class ProductViewProperties
         return $this;
     }
 
-    /**
-     * @return array<mixed>
-     */
+    /* @return Image[] */
     public function getImages(): array
     {
         return $this->images;
     }
 
     /**
-     * @param array<mixed> $images
+     * @param Image[] $images
      */
     public function setImages(array $images): ProductViewProperties
     {
