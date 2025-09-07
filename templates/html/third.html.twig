@@ -1,0 +1,261 @@
+<!-- index.html adapté pour Tailwind CSS 4 -->
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+<head>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+    <meta content="..." name="csrf-token">
+    <meta content="" name="description"/>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html {
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-white">
+
+<header>
+    <nav class="flex items-center justify-between fixed top-0 left-0 right-0 bg-white shadow-sm z-10 px-4 py-2">
+        <a class="flex items-center" href="/">
+            <picture>
+                <source media="(max-width: 1200px)"
+                        srcset="http://localhost:8081/build/images/logos/lesprixbas_smaller.png"/>
+                <source media="(min-width: 1200px)"
+                        srcset="http://localhost:8081/build/images/logos/lesprixbas_small.png"/>
+                <img alt="Les Prix Bas" class="h-8" id="logo"
+                     src="http://localhost:8081/build/images/logos/lesprixbas_small.png"/>
+            </picture>
+        </a>
+        <form action="javascript:void(0)" class="flex gap-2 w-full max-w-md ml-4" id="form0" method="GET">
+            <input aria-label="Recherche" class="flex-1 border rounded px-3 py-1" id="search" name="product"
+                   placeholder="Lancez-vous" type="text"/>
+            <button class="px-3 py-1 border border-green-600 text-green-600 rounded hover:bg-green-50"
+                    id="submit-search-cta"
+                    type="submit">
+                <!-- Utiliser une icône SVG ici -->
+                <span class="sr-only">Rechercher</span>
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+        <span class="flex items-center border border-green-600 text-green-600 rounded px-3 py-1 ml-3 cursor-pointer"
+              id="cart-cta">
+      <i class="fa fa-shopping-cart"></i>
+      <span class="ml-2" id="cart-count" name="quantity">0</span>
+      <span class="ml-2" id="cart-total" name="price">0,00 €</span>
+    </span>
+        <div class="relative ml-3">
+            <button class="flex items-center px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300" id="dropdown01"
+                    type="button">
+                <i class="fa fa-user-circle"></i>
+            </button>
+            <div aria-labelledby="dropdown01"
+                 class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg hidden">
+                <a class="block px-4 py-2 hover:bg-gray-100" href="/login">Connexion</a>
+                <a class="block px-4 py-2 hover:bg-gray-100" href="/register">Pas encore inscrit ?</a>
+                <a class="block px-4 py-2 hover:bg-gray-100" href="/">F.A.Q</a>
+                <a class="block px-4 py-2 hover:bg-gray-100" href="/">Mentions légales</a>
+            </div>
+        </div>
+    </nav>
+    <div class="h-20" id="placeholder"></div>
+    <div class="bg-gray-100 shadow-sm py-2" id="subnavbar1">
+        <nav class="flex">
+            <div class="mr-4">
+                <a class="bg-gray-100 text-gray-800 px-4 py-2 rounded" href="/">Tous nos rayons <span class="sr-only">(current)</span></a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<nav aria-label="breadcrumb" class="mt-4 px-4" id="breadcrumb0">
+    <ol class="flex text-gray-600 text-sm space-x-2">
+        <li><a class="hover:underline" href="#">Accueil</a></li>
+        <li>/</li>
+        <li><a class="hover:underline" href="#">Mode femme</a></li>
+        <li>/</li>
+        <li class="text-gray-900">Tee-shirt uni à bretelles maille élastique</li>
+    </ol>
+</nav>
+
+<main class="container mx-auto px-4 flex-1">
+    <div class="flex flex-col md:flex-row md:space-x-8 mt-8 ">
+        <div class="md:w-6/12 order-1 md:order-1 flex flex-col items-end">
+            <div class="mb-4" id="main-picto">
+                <img alt="T-shirt uni à bretelles noir maille élastique pour femme 1/3"
+                     class="w-100 h-100 object-cover rounded shadow"
+                     src="http://localhost:8081/build/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-1.webp"
+                     name="picto"
+                     data-src="/build/images/blank.gif"/>
+            </div>
+            <div class="flex space-x-2">
+                <button class="focus:outline-none border-2 border-blue-600 rounded">
+                    <img alt="..."
+                         class="w-12 h-12 object-cover rounded"
+                         src="http://localhost:8081/build/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-1.webp"
+                         name="picto" data-src="/build/images/blank.gif"/>
+                </button>
+                <button class="focus:outline-none border rounded">
+                    <img alt="..."
+                         class="w-12 h-12 object-cover rounded"
+                         src="http://localhost:8081/build/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-2.webp"
+                         name="picto" data-src="/build/images/blank.gif"/>
+                </button>
+                <button class="focus:outline-none border rounded">
+                    <img alt="..."
+                         class="w-12 h-12 object-cover rounded"
+                         src="http://localhost:8081/build/images/articles/tee-shirt-uni-a-bretelles-maille-elastique-femme-noir-3.webp"
+                         name="picto" data-src="/build/images/blank.gif"/>
+                </button>
+            </div>
+        </div>
+
+        <div class="md:w-6/12 order-2 md:order-2">
+            <div class="mb-4">
+                <h4 class="text-2xl font-bold">Tee-shirt uni à bretelles maille élastique</h4>
+            </div>
+            <div class="flex justify-between items-center mb-4">
+                <h5 class="text-lg font-semibold">Le Vestiaire</h5>
+                <h3 class="text-xl text-green-600 font-bold" data-discount-rate="0" id="price-tag" name="unit-price">
+                    13,99 €</h3>
+            </div>
+            <div class="mb-4" id="home">
+                <p class="text-gray-700 mb-2">Ce tee-shirt à fines bretelles, indispensable en toutes saisons, se porte
+                    seul ou associé à d'autres tenues. Tee-shirt uni. Encolure arrondie. Fines bretelles. En maille
+                    jersey élastique. Longueur 60 cm environ.</p>
+                <label class="block font-semibold" for="features">Information complémentaires :</label>
+                <ul class="list-disc pl-5 text-gray-700" id="features">
+                    <li>Lavage 30°</li>
+                    <li>Repassage faible température</li>
+                    <li>Pas de séchage en tambour</li>
+                    <li>95% coton, 5% élasthanne</li>
+                </ul>
+            </div>
+
+
+            <!-- Sélecteurs -->
+            <div class="space-y-4">
+                <!-- Taille ou options (si besoin) -->
+                <!-- TODO: Ajoutez vos variantes (taille, couleur) -->
+
+                <!-- Quantité -->
+                <div class="flex items-center gap-3">
+                    <label for="qty" class="text-sm text-gray-700">Quantité</label>
+                    <div class="inline-flex items-stretch rounded-md border">
+                        <button type="button" class="px-3 py-2 text-gray-700 hover:bg-gray-50" data-dec>-</button>
+                        <input id="qty" type="number" min="1" value="1"
+                               class="w-14 border-x px-2 py-2 text-center outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"/>
+                        <button type="button" class="px-3 py-2 text-gray-700 hover:bg-gray-50" data-inc>+</button>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="flex items-center gap-3">
+                    <button
+                        class="inline-flex w-full items-center justify-center gap-2 rounded-md bg-gray-900 px-5 py-3 text-white hover:bg-gray-800 sm:w-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-90" viewBox="0 0 24 24"
+                             fill="currentColor">
+                            <path
+                                d="M7 4h-2l-1 2h2l2 10h10l2-8h-12l-.5-2zm-2 16c-1.105 0-2-.895-2-2s.895-2 2-2c1.104 0 2 .895 2 2s-.896 2-2 2zm12 0c-1.104 0-2-.895-2-2s.896-2 2-2 2 .895 2 2-.896 2-2 2z"/>
+                        </svg>
+                        <span>Ajouter au panier</span>
+                    </button>
+                    <button
+                        class="hidden sm:inline-flex items-center justify-center rounded-md border px-4 py-3 text-gray-700 hover:bg-gray-50">
+                        Ajouter à la liste
+                    </button>
+                </div>
+
+                <!-- Infos livraison/garanties -->
+                <div class="divide-y rounded-md border bg-white">
+                    <details class="group p-4 open:pb-4">
+                        <summary class="flex cursor-pointer list-none items-center justify-between">
+                            <span class="font-medium">Livraison</span>
+                            <svg class="h-5 w-5 transition-transform group-open:rotate-180"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                      d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </summary>
+                        <div class="mt-3 text-sm text-gray-700">
+                            <p>Livraison standard 2–4 jours ouvrés. Retours sous 30 jours.</p>
+                        </div>
+                    </details>
+
+                    <details class="group p-4 open:pb-4">
+                        <summary class="flex cursor-pointer list-none items-center justify-between">
+                            <span class="font-medium">Garanties</span>
+                            <svg class="h-5 w-5 transition-transform group-open:rotate-180"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                      d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </summary>
+                        <div class="mt-3 text-sm text-gray-700">
+                            <p>Satisfait ou remboursé sous 30 jours. Support prioritaire.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+        </div>
+</main>
+
+<footer class="py-8 border-t mt-auto bg-gray-100">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-wrap">
+            <div class="w-full md:w-1/4 mb-4">
+                <a href="/"><img alt="Cpascher" class="mb-2 h-8" src="/build/images/logos/lesprixbas_smaller.png"/></a>
+                <small class="block text-gray-400">&copy; 2021</small>
+            </div>
+            <div class="w-1/2 md:w-1/4 mb-4">
+                <h5 class="font-bold mb-2">Features</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Cool stuff</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Random feature</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Team feature</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Stuff for developers</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Another one</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Last time</a></li>
+                </ul>
+            </div>
+            <div class="w-1/2 md:w-1/4 mb-4">
+                <h5 class="font-bold mb-2">Resources</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Resource</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Resource name</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Another resource</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Final resource</a></li>
+                </ul>
+            </div>
+            <div class="w-1/2 md:w-1/4 mb-4">
+                <h5 class="font-bold mb-2">About</h5>
+                <ul class="space-y-1 text-sm">
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Team</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Locations</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Privacy</a></li>
+                    <li><a class="text-gray-500 hover:text-gray-700" href="/">Terms</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- JS minimal pour l’incrément de quantité -->
+<script>
+    const root = document.currentScript.closest("body");
+    root.querySelector("[data-inc]")?.addEventListener("click", () => {
+        const input = document.getElementById("qty");
+        input.value = Math.max(1, (parseInt(input.value || "1", 10) + 1));
+    });
+    root.querySelector("[data-dec]")?.addEventListener("click", () => {
+        const input = document.getElementById("qty");
+        input.value = Math.max(1, (parseInt(input.value || "1", 10) - 1));
+    });
+</script>
+</body>
+</html>
+
