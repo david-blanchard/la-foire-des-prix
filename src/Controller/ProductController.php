@@ -15,15 +15,15 @@ class ProductController extends AbstractController
 {
     public function __construct(
         private readonly SearchService $searchService,
-    )
-    {
+    ) {
     }
 
 
     /**
      * @throws \Exception
      */
-    #[Route('/{id}/retrieve',
+    #[Route(
+        '/{id}/retrieve',
         name: 'api_product_retrieve_id',
         requirements: ['id' => '\d+'],
         methods: ['GET']
@@ -73,6 +73,4 @@ class ProductController extends AbstractController
             ],
         ]);
     }
-
-
 }

@@ -35,6 +35,10 @@ security:
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+    csrf_token:
+      pattern: ^/csrf_token
+      stateless: true
+
     api:
       pattern: ^/api
       stateless: true
@@ -86,6 +90,7 @@ security:
     - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
     - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/, roles: PUBLIC_ACCESS }
+    - { path: ^/csrf_token, roles: PUBLIC_ACCESS }
     - { path: ^/login, roles: PUBLIC_ACCESS }
     - { path: ^/admin, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
