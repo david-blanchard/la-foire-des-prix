@@ -6,23 +6,23 @@ use App\Entity\Image;
 
 class ProductViewProperties
 {
-    private ?int $id;
-    private ?string $name;
-    private ?string $description;
-    private ?string $moreInfo;
-    private float $price;
-    private ?string $brand;
-    private float $discountRate;
-    private float $discount;
-    private string $featuresCaption;
+    private int $id = 0;
+    private string $name = '';
+    private string $description = '';
+    private string $moreInfo = '';
+    private float $price = 0.0;
+    private string $brand = '';
+    private float $discountRate = 0.0;
+    private float $discount = 0.0;
+    private string $featuresCaption = '';
     /**
      * @var array<mixed>
      */
-    private array $features;
+    private array $features = [];
     /**
      * @var array<mixed>
      */
-    private array $images;
+    private array $images = [];
 
     /**
      * @return array<string, mixed>
@@ -44,48 +44,48 @@ class ProductViewProperties
         ];
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): ProductViewProperties
+    public function setId(int $id): ProductViewProperties
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): ProductViewProperties
+    public function setName(string $name): ProductViewProperties
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): ProductViewProperties
+    public function setDescription(string $description): ProductViewProperties
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getMoreInfo(): ?string
+    public function getMoreInfo(): string
     {
         return $this->moreInfo;
     }
 
-    public function setMoreInfo(?string $moreInfo): ProductViewProperties
+    public function setMoreInfo(string $moreInfo): ProductViewProperties
     {
         $this->moreInfo = $moreInfo;
 
@@ -104,12 +104,12 @@ class ProductViewProperties
         return $this;
     }
 
-    public function getBrand(): ?string
+    public function getBrand(): string
     {
         return $this->brand;
     }
 
-    public function setBrand(?string $brand): ProductViewProperties
+    public function setBrand(string $brand): ProductViewProperties
     {
         $this->brand = $brand;
 

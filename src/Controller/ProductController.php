@@ -18,7 +18,6 @@ class ProductController extends AbstractController
     ) {
     }
 
-
     /**
      * @throws \Exception
      */
@@ -30,7 +29,7 @@ class ProductController extends AbstractController
     )]
     public function retrieveId(?int $id = null): JsonResponse
     {
-//        dd(["method" => __METHOD__, "productId" => $productId]);
+        //        dd(["method" => __METHOD__, "productId" => $productId]);
         [$props, $cartFields] = $this->searchService->fetchProductById($id);
 
         return new JsonResponse([
@@ -41,7 +40,6 @@ class ProductController extends AbstractController
             ],
         ]);
     }
-
 
     #[Route('/best/retrieve', name: 'api_product_best', methods: ['GET'])]
     public function retrieveBest(): Response

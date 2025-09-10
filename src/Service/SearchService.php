@@ -19,6 +19,10 @@ class SearchService
      */
     public function fetchProductById(?int $productId = null): array
     {
+        $sessionData = $this->cartService->retrieve();
+        $this->cartService->prepare($sessionData);
+        $computedCart = $this->cartService->prepareViewFields();
+
         // Attempt to fetch properties from a cache by ID
         $props = $this->productRepository->getPropertiesFromCacheById($productId);
 
@@ -35,7 +39,7 @@ class SearchService
             $this->productRepository->putPropertiesInCacheById($product->getId(), $props);
         }
 
-        return [$props, $this->cartService->prepareViewFields()];
+        return [$props, $computedCart];
     }
 
     /**
@@ -47,6 +51,10 @@ class SearchService
      */
     public function fetchProductBySlug(string $slug): array
     {
+        $sessionData = $this->cartService->retrieve();
+        $this->cartService->prepare($sessionData);
+        $computedCart = $this->cartService->prepareViewFields();
+
         $props = $this->productRepository->getPropertiesFromCacheBySlug($slug);
 
         if (null === $props) {
@@ -65,6 +73,6 @@ class SearchService
             $this->productRepository->putPropertiesInCacheBySlug($slug, $props);
         }
 
-        return [$props, $this->cartService->prepareViewFields()];
+        return [$props, $computedCart];
     }
 }
