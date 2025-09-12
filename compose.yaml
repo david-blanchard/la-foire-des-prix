@@ -22,7 +22,7 @@ services:
     image: memcached:latest
     restart: always
     ports:
-      - "11211"
+      - "11211:11211"
     networks:
       - lfdp-network
 

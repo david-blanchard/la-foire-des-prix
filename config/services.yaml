@@ -45,3 +45,6 @@ services:
         arguments:
             $router: '@router'
 
+    App\Service\CartService:
+        arguments:
+            $cache: '@app.cache.memcached'
