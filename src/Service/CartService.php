@@ -6,19 +6,18 @@ use App\Dto\CartOutput;
 use App\Dto\CartStoreInput;
 use App\Dto\CartStoreInputContent;
 use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class CartService extends AbstractSessionObject implements CartServiceInterface
 {
-    private Session $session;
-
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly ProductService $productService,
         private readonly SerializerInterface $serializer,
+        private readonly CacheInterface $cache,
     ) {
-        $this->session = new Session();
     }
 
     /**
@@ -54,7 +53,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     }
 
     /**
-     * Make the Cart object ready to dipslay.
+     * Make the Cart object ready to display.
      *
      * @return array<string, mixed>
      *
@@ -83,7 +82,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      * This allows computing the exact sum of a given product
      * accordingly to its actual quantity.
      *
-     * @param array<string, mixed>      $sessionData state of the cart in session
+     * @param array<string, mixed>      $sessionData state of the cart in cache
      * @param array<string, mixed>|null $input       data to update the cart with
      */
     public function reduce(?array $sessionData, ?array $input = null): void
@@ -114,7 +113,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     }
 
     /**
-     * Store the cart in session.
+     * Store the cart in cache.
      *
      * @param array<mixed> $input data to update the cart with
      */
@@ -124,24 +123,27 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
 
         $this->reduce($sessionData, $input);
         $sessionCart = $this->makeSessionObject();
-        $this->session->set('cart', $sessionCart);
+
+        // Supprimer la clé pour forcer la mise à jour
+        $this->cache->delete('cart');
+
+        // Recréer la valeur dans le cache avec expiration
+        $this->cache->get('cart', function (ItemInterface $item) use ($sessionCart): array {
+            $item->expiresAfter(3600); // 1 heure d'expiration
+            return $sessionCart;
+        });
     }
 
     /**
-     * Retrieve the cart state from the given session data.
+     * Retrieve the cart state from the given cache data.
      *
-     * @return array<string, mixed> a state of the cart in session
+     * @return array<string, mixed> a state of the cart in cache
      */
     public function retrieve(): array
     {
-        $result = $this->makeEmptySessionObject();
-
-        $result = $this->session->get('cart') ?? $result;
-        if (is_object($result)) {
-            $result = self::toArray($result);
-        }
-
-        return $result;
+        return $this->cache->get('cart', function (): array {
+            return $this->makeEmptySessionObject();
+        });
     }
 
     /**
