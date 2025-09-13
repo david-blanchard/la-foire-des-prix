@@ -26,8 +26,9 @@ readonly class ProductService implements ViewServiceInterface
     public function prepareViewFields(?ProductInterface $data = null): array
     {
         $props = new ProductViewProperties();
-        if (null === $data)
+        if (null === $data) {
             return $props->toArray();
+        }
 
         $request = $this->requestStack->getCurrentRequest();
         $hostname = $request ? $request->getSchemeAndHttpHost() : '';

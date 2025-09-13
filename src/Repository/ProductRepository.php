@@ -14,11 +14,10 @@ use Doctrine\Persistence\ManagerRegistry;
 class ProductRepository extends ServiceEntityRepository
 {
     public function __construct(
-        ManagerRegistry                         $registry,
+        ManagerRegistry $registry,
         private readonly EntityManagerInterface $em,
-        private readonly CustomCacheInterface   $cache,
-    )
-    {
+        private readonly CustomCacheInterface $cache,
+    ) {
         parent::__construct($registry, Product::class);
     }
 
@@ -66,7 +65,7 @@ class ProductRepository extends ServiceEntityRepository
         return $this->em->createQueryBuilder()
             ->from(Product::class, 'p')
             ->Where('p.slug LIKE :slugLike')
-            ->setParameter('slugLike', '%' . $slug . '%')
+            ->setParameter('slugLike', '%'.$slug.'%')
             ->select('p')
             ->getQuery()
             ->getResult();
@@ -74,7 +73,7 @@ class ProductRepository extends ServiceEntityRepository
 
     public function deletePropertiesFromCache(Product $product): void
     {
-        self::deletePropertiesFromCacheById((int)$product->getId());
+        self::deletePropertiesFromCacheById((int) $product->getId());
     }
 
     /**
@@ -119,7 +118,7 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * Store the product page properties in cache by slug.
      *
-     * @param string $slug Free form of the product name
+     * @param string       $slug       Free form of the product name
      * @param array<mixed> $properties Values to be set in product page view
      */
     public function putPropertiesInCacheBySlug(string $slug, array $properties): void

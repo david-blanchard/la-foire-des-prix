@@ -14,8 +14,7 @@ class CartController extends AbstractController
 {
     public function __construct(
         private readonly CartService $cartService,
-    )
-    {
+    ) {
     }
 
     #[ApiProperty(
@@ -40,7 +39,7 @@ class CartController extends AbstractController
     public function store(Request $request): JsonResponse
     {
         $json = $request->getContent();
-        $input = (array)json_decode($json, true);
+        $input = (array) json_decode($json, true);
         $this->cartService->store($input);
         $computedCart = $this->cartService->prepareViewFields();
 
@@ -73,5 +72,4 @@ class CartController extends AbstractController
     {
         $this->cartService->destroy();
     }
-
 }

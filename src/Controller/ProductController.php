@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Service\CartService;
 use App\Service\SearchService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,6 +16,7 @@ class ProductController extends AbstractController
 {
     public function __construct(
         private readonly SearchService $searchService,
+        public readonly CartService $cartService,
     ) {
     }
 
@@ -29,7 +31,6 @@ class ProductController extends AbstractController
     )]
     public function retrieveId(?int $id = null): JsonResponse
     {
-        //        dd(["method" => __METHOD__, "productId" => $productId]);
         [$props, $cartFields] = $this->searchService->fetchProductById($id);
 
         return new JsonResponse([

@@ -14,5 +14,4 @@ class CartStoreInput
      */
     #[Groups(['cart:write', 'cart:read'])]
     public array $content = [];
-
 }

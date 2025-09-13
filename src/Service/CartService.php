@@ -24,6 +24,49 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     ) {
     }
 
+    public function getCartState(): CartOutput
+    {
+        $cartId = $this->getCartIdFromRequest();
+
+        return $this->cache->get($cartId, function (ItemInterface $item): array {
+            $item->expiresAfter(3600); // 1 heure d'expiration
+
+            return $this->makeEmptySessionObject();
+        });
+    }
+
+    private function getCartIdFromRequest(): ?string
+    {
+        $request = $this->requestStack->getCurrentRequest();
+
+        return $request->headers->get('X-Cart-ID');
+    }
+
+    /**
+     * Used to make a default object.
+     *
+     * @return array<string, mixed> a default object
+     */
+    public function makeEmptySessionObject(): array
+    {
+        $cartInput = new CartStoreInput();
+        $cartInput->type = self::type();
+        $cartInput->content = [];
+        $cartItem = new CartStoreInputContent();
+        $cartItem->productId = 0;
+        $cartItem->quantity = 0;
+        $cartInput->content[] = $cartItem;
+
+        $json = $this->serializer->serialize($cartInput, 'json', ['groups' => ['cart:write']]);
+
+        return json_decode($json, true);
+    }
+
+    public static function type(): string
+    {
+        return 'Cart';
+    }
+
     /**
      * Compute the total sum of the cart
      * accordingly to the product prices and quantities.
@@ -73,6 +116,31 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     }
 
     /**
+     * Generate a unique cart identifier based on user or session.
+     */
+    public function getCartIdentifier(): string
+    {
+        $user = $this->tokenStorage->getToken()?->getUser();
+
+        if ($user) {
+            return 'cart_user_'.$user->getId();
+        }
+
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request) {
+            $cartId = $request->headers->get('X-Cart-ID');
+
+            $ip = $request->getClientIp();
+            $userAgent = $request->headers->get('User-Agent', '');
+
+            return 'cart_guest_'.md5($ip.$userAgent);
+        }
+
+        return 'cart_default_'.uniqid();
+    }
+
+    /**
      * Add a product to the cart.
      *
      * @param array<string, mixed> $data
@@ -117,6 +185,19 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
         }
     }
 
+    public function destroy(): void
+    {
+        $emptyCart = [
+            'type' => 'Cart',
+            'content' => [],
+        ];
+
+        $this->store($emptyCart);
+
+        $cartKey = $this->getCartIdentifier();
+        $this->cache->delete($cartKey);
+    }
+
     /**
      * Store the cart in cache avec identifiant unique.
      *
@@ -152,78 +233,5 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
         return $this->cache->get($cartKey, function (): array {
             return $this->makeEmptySessionObject();
         });
-    }
-
-    /**
-     * Used to make a default object.
-     *
-     * @return array<string, mixed> a default object
-     */
-    public function makeEmptySessionObject(): array
-    {
-        $cartInput = new CartStoreInput();
-        $cartInput->type = self::type();
-        $cartInput->content = [];
-        $cartItem = new CartStoreInputContent();
-        $cartItem->productId = 0;
-        $cartItem->quantity = 0;
-        $cartInput->content[] = $cartItem;
-
-        $json = $this->serializer->serialize($cartInput, 'json', ['groups' => ['cart:write']]);
-
-        return json_decode($json, true);
-    }
-
-    public static function type(): string
-    {
-        return 'Cart';
-    }
-
-    public function destroy(): void
-    {
-        $emptyCart = [
-            'type' => 'Cart',
-            'content' => []
-        ];
-
-        $this->store($emptyCart);
-
-        $cartKey = $this->getCartIdentifier();
-        $this->cache->delete($cartKey);
-    }
-
-    private function getCartIdFromRequest(): ?string
-    {
-        $request = $this->requestStack->getCurrentRequest();
-        return $request->headers->get('X-Cart-ID');
-    }
-
-    /**
-     * Generate a unique cart identifier based on user or session.
-     */
-    public function getCartIdentifier(): string
-    {
-        $user = $this->tokenStorage->getToken()?->getUser();
-
-        if ($user) {
-            return 'cart_user_' . $user->getId();
-        }
-
-        $request = $this->requestStack->getCurrentRequest();
-
-        if ($request) {
-            $cartId = $request->headers->get('X-Cart-ID');
-
-            if ($cartId) {
-                return 'cart_guest_' . $cartId;
-            }
-
-            $ip = $request->getClientIp();
-            $userAgent = $request->headers->get('User-Agent', '');
-
-            return 'cart_temp_' . md5($ip . $userAgent);
-        }
-
-        return 'cart_default_' . uniqid();
     }
 }
