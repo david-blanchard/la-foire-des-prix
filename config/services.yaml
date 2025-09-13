@@ -48,3 +48,5 @@ services:
     App\Service\CartService:
         arguments:
             $cache: '@app.cache.memcached'
+            $tokenStorage: '@security.token_storage'
+            $requestStack: '@request_stack'

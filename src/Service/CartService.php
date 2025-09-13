@@ -6,6 +6,8 @@ use App\Dto\CartOutput;
 use App\Dto\CartStoreInput;
 use App\Dto\CartStoreInputContent;
 use App\Repository\ProductRepository;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -17,6 +19,8 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
         private readonly ProductService $productService,
         private readonly SerializerInterface $serializer,
         private readonly CacheInterface $cache,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -48,6 +52,7 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
         $catOutput = new CartOutput();
         $catOutput->quantity = $numberOfProducts;
         $catOutput->total = $total;
+        $catOutput->cartId = $this->getCartIdentifier();
 
         return $catOutput;
     }
@@ -113,23 +118,24 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     }
 
     /**
-     * Store the cart in cache.
+     * Store the cart in cache avec identifiant unique.
      *
      * @param array<mixed> $input data to update the cart with
      */
-    public function store(array $input): void
+    public function store(?array $input = null): void
     {
         $sessionData = $this->retrieve();
 
         $this->reduce($sessionData, $input);
         $sessionCart = $this->makeSessionObject();
 
-        // Supprimer la clé pour forcer la mise à jour
-        $this->cache->delete('cart');
+        $cartKey = $this->getCartIdentifier();
 
-        // Recréer la valeur dans le cache avec expiration
-        $this->cache->get('cart', function (ItemInterface $item) use ($sessionCart): array {
+        $this->cache->delete($cartKey);
+
+        $this->cache->get($cartKey, function (ItemInterface $item) use ($sessionCart): array {
             $item->expiresAfter(3600); // 1 heure d'expiration
+
             return $sessionCart;
         });
     }
@@ -141,7 +147,9 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
      */
     public function retrieve(): array
     {
-        return $this->cache->get('cart', function (): array {
+        $cartKey = $this->getCartIdentifier();
+
+        return $this->cache->get($cartKey, function (): array {
             return $this->makeEmptySessionObject();
         });
     }
@@ -169,5 +177,53 @@ class CartService extends AbstractSessionObject implements CartServiceInterface
     public static function type(): string
     {
         return 'Cart';
+    }
+
+    public function destroy(): void
+    {
+        $emptyCart = [
+            'type' => 'Cart',
+            'content' => []
+        ];
+
+        $this->store($emptyCart);
+
+        $cartKey = $this->getCartIdentifier();
+        $this->cache->delete($cartKey);
+    }
+
+    private function getCartIdFromRequest(): ?string
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        return $request->headers->get('X-Cart-ID');
+    }
+
+    /**
+     * Generate a unique cart identifier based on user or session.
+     */
+    public function getCartIdentifier(): string
+    {
+        $user = $this->tokenStorage->getToken()?->getUser();
+
+        if ($user) {
+            return 'cart_user_' . $user->getId();
+        }
+
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request) {
+            $cartId = $request->headers->get('X-Cart-ID');
+
+            if ($cartId) {
+                return 'cart_guest_' . $cartId;
+            }
+
+            $ip = $request->getClientIp();
+            $userAgent = $request->headers->get('User-Agent', '');
+
+            return 'cart_temp_' . md5($ip . $userAgent);
+        }
+
+        return 'cart_default_' . uniqid();
     }
 }

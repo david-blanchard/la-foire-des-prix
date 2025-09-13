@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use ApiPlatform\Metadata\ApiProperty;
-use App\Service\CartServiceInterface;
+use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,8 +13,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class CartController extends AbstractController
 {
     public function __construct(
-        private readonly CartServiceInterface $cartProvider,
-    ) {
+        private readonly CartService $cartService,
+    )
+    {
     }
 
     #[ApiProperty(
@@ -24,9 +25,9 @@ class CartController extends AbstractController
     )]
     public function retrieve(): JsonResponse
     {
-        $sessionData = $this->cartProvider->retrieve();
-        $this->cartProvider->prepare($sessionData);
-        $computedCart = $this->cartProvider->prepareViewFields();
+        $sessionData = $this->cartService->retrieve();
+        $this->cartService->prepare($sessionData);
+        $computedCart = $this->cartService->prepareViewFields();
 
         return new JsonResponse($computedCart);
     }
@@ -39,10 +40,38 @@ class CartController extends AbstractController
     public function store(Request $request): JsonResponse
     {
         $json = $request->getContent();
-        $input = (array) json_decode($json, true);
-        $this->cartProvider->store($input);
-        $computedCart = $this->cartProvider->prepareViewFields();
+        $input = (array)json_decode($json, true);
+        $this->cartService->store($input);
+        $computedCart = $this->cartService->prepareViewFields();
 
         return new JsonResponse($computedCart);
     }
+
+    #[ApiProperty(
+        description: 'Generate a new cart identifier',
+        security: "is_granted('ROLE_USER')",
+        uriTemplate: '/id',
+    )]
+    #[Route('/id', name: 'generate_id', methods: ['POST'])]
+    public function generateCartId(): JsonResponse
+    {
+        $cartId = $this->cartService->getCartIdentifier();
+
+        return $this->json([
+            'success' => true,
+            'cartId' => $cartId,
+        ]);
+    }
+
+    #[ApiProperty(
+        description: 'Clear the current cart in the session',
+        security: "is_granted('ROLE_USER')",
+        uriTemplate: '/clear',
+    )]
+    #[Route('/clear', name: 'clear', methods: ['DELETE'])]
+    public function clear(): void
+    {
+        $this->cartService->destroy();
+    }
+
 }
