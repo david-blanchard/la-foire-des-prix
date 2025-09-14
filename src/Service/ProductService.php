@@ -14,8 +14,7 @@ readonly class ProductService implements ViewServiceInterface
         private ProductImageRepository     $imagesRepository,
         private CampaignProductsRepository $productCampaignRepository,
         private RequestStack               $requestStack,
-    )
-    {
+    ) {
     }
 
     /**

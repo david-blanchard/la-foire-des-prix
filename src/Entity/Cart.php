@@ -23,11 +23,6 @@ class Cart
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $client = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getTotal(): ?float
     {
         return $this->total;
