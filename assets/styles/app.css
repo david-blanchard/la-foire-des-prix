@@ -1,19 +1,14 @@
-@import "font-awesome/css/font-awesome.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
 @import "bootstrap";
 
 @font-face {
-    font-family: "FontAwesome";
-    src: url("../fonts/fontawesome-webfont.woff2") format("woff");
-}
-
-@font-face {
     font-family: "Montserrat";
-    src: url("../fonts/montserrat-regular.woff2") format("woff");
+    src: url("../fonts/montserrat-regular.woff2") format("woff2");
 }
 
 @font-face {
     font-family: "Turbinado";
-    src: url("../fonts/turbinado-light.woff2") format("woff");
+    src: url("../fonts/turbinado-light.woff2") format("woff2");
 }
 
 @tailwind base;

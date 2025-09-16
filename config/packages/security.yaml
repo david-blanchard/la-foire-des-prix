@@ -83,7 +83,6 @@ security:
     - { path: ^/api/cart/retrieve, roles: PUBLIC_ACCESS }
     - { path: ^/api/cart/store, roles: PUBLIC_ACCESS }
     - { path: ^/api/product/retrieve, roles: PUBLIC_ACCESS }
-    - { path: ^/api/product/store, roles: PUBLIC_ACCESS }
     - { path: ^/api/doc, roles: PUBLIC_ACCESS }
     - { path: ^/api/docs, roles: PUBLIC_ACCESS }
     - { path: ^/api/login, roles: PUBLIC_ACCESS }

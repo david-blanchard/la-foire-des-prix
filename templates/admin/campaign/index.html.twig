@@ -9,7 +9,7 @@
     <h2 class="text-center my-5">
         Campagnes
         <a href="{{ path('admin_campaign_new') }}" class="btn btn-outline-primary" alt="Créer" title="Créer">
-            <i class="fa fa-edit" aria-hidden="true"></i>
+            <i class="bi bi-pencil" aria-hidden="true"></i>
         </a>
     </h2>
 
@@ -30,7 +30,7 @@
 
                 <th>
                     <a href="{{ path('admin_campaign_edit', { id: campaign.id }) }}" class="btn btn-outline-warning" alt="Editer {{ campaign.id }}" title="Editer {{ campaign.id }}">
-                        <i class="fa fa-edit" aria-hidden="true"></i>
+                        <i class="bi bi-pencil" aria-hidden="true"></i>
                     </a>
                 </th>
 
@@ -43,7 +43,7 @@
                             class="btn btn-outline-danger"
                             onclick="document.querySelector('#delete-modal-{{ campaign.id }}').style.display='block'"
                     >
-                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        <i class="bi bi-trash" aria-hidden="true"></i>
                     </button>
                     <form action="{{ path('admin_campaign_delete', { id: campaign.id }) }}" method="POST">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ campaign.id) }}">
