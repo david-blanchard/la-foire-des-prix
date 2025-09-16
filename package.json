@@ -33,6 +33,7 @@
     "dependencies": {
         "acorn": "^8.14.1",
         "bootstrap": "^4.6.2",
+        "bootstrap-icons": "^1.13.1",
         "braces": "^3.0.3",
         "buffer-from": "^1.1.2",
         "debug": "^4.4.0",
@@ -41,7 +42,6 @@
         "fast-glob": "^3.3.3",
         "fastq": "^1.19.1",
         "fill-range": "^7.1.1",
-        "font-awesome": "^4.7.0",
         "glob-parent": "^5.1.2",
         "immutable": "^5.1.1",
         "is-extglob": "^2.1.1",
