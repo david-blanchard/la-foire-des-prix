@@ -55,3 +55,6 @@ phpstan.neon
 ###< friendsofphp/php-cs-fixer ###
 /.yarn/cache
 /.yarn/install-state.gz
+###> openapi-generator ###
+/openapi/*
+###< openapi-generator ###
