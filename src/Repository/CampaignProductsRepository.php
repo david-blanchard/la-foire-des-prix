@@ -13,7 +13,8 @@ class CampaignProductsRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-    ) {
+    )
+    {
         parent::__construct($registry, CampaignProduct::class);
     }
 
@@ -54,5 +55,23 @@ class CampaignProductsRepository extends ServiceEntityRepository
         $result = $qb->getQuery()->getOneOrNullResult();
 
         return $result['discount'] ?? 0;
+    }
+
+    /**
+     * @return Product[]
+     */
+    public function findProductsByCampaignId(int $campaignId): array
+    {
+        $campaignProducts = $this->createQueryBuilder('cp')
+            ->join('cp.product', 'p')
+            ->where('cp.campaign = :campaignId')
+            ->setParameter('campaignId', $campaignId)
+            ->getQuery()
+            ->getResult();
+
+        // Extraire les produits des objets CampaignProduct
+        return array_map(function ($campaignProduct) {
+            return $campaignProduct->getProduct();
+        }, $campaignProducts);
     }
 }

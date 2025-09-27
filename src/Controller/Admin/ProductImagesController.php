@@ -19,10 +19,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class ProductImagesController extends AbstractController
 {
     public function __construct(
-        private readonly BrandRepository $brandRepository,
+        private readonly BrandRepository        $brandRepository,
         private readonly ProductImageRepository $productImageRepository,
-        private readonly ImageRepository $imageRepository,
-    ) {
+        private readonly ImageRepository        $imageRepository,
+    )
+    {
     }
 
     #[Route(name: 'admin_product_images_index', methods: ['GET'])]
@@ -51,7 +52,7 @@ class ProductImagesController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $imageId = $request->request->get('image');
-            $image = $entityManager->getRepository(Image::class)->find($imageId);
+            $image = $this->imageRepository->find($imageId);
 
             $productImage = new ProductImage();
             $productImage->setProduct($product);
@@ -64,7 +65,7 @@ class ProductImagesController extends AbstractController
         }
 
         $brand = $this->brandRepository->find($product->getBrand());
-        $associatedImages = $this->productImageRepository->findByProductId((int) $product->getId());
+        $associatedImages = $this->productImageRepository->findByProductId((int)$product->getId());
 
         return $this->render('admin/product_images/create.html.twig', [
             'product' => $product,
@@ -77,7 +78,7 @@ class ProductImagesController extends AbstractController
     #[Route('/{id}/delete', name: 'admin_product_images_delete', methods: ['POST'])]
     public function delete(ProductImage $productImage, Request $request, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$productImage->getId(), (string) $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $productImage->getId(), (string)$request->request->get('_token'))) {
             $entityManager->remove($productImage);
             $entityManager->flush();
         }
