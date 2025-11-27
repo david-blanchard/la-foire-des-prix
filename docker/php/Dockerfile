@@ -50,7 +50,7 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 RUN apk add --no-cache \
-    bash python3 nodejs-current npm
+    bash python3 nodejs-current npm git
 
 RUN npm install -g npm@latest \
     && npm install -g corepack \
