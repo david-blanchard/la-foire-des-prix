@@ -25,7 +25,7 @@ class ProductImage
     use Identifier;
     use TimestampableEntity;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups([
         'product-image.read',
@@ -34,7 +34,7 @@ class ProductImage
     ])]
     protected ?Image $image = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'productImages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups([
         'product-image.read',
