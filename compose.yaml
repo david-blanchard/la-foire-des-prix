@@ -32,13 +32,15 @@ services:
   vite:
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
-    command: ["yarn", "dev", "--host", "0.0.0.0"]
+      dockerfile: docker/vite/Dockerfile
     working_dir: /var/www/html
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:cached
+      - /var/www/html/node_modules
     ports:
       - "5173:5173"
+    environment:
+      - NODE_ENV=development
     networks:
       - lfdp-network
     restart: unless-stopped

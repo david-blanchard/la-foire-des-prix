@@ -1,0 +1,12 @@
+node_modules
+vendor
+var
+.git
+.env
+.env.local
+*.md
+docker
+public/build
+.gitignore
+README.md
+LICENSE

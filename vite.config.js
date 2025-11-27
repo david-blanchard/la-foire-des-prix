@@ -31,6 +31,13 @@ export default defineConfig({
     server: {
         port: 5173,
         strictPort: true,
-        cors: true
+        host: true, // Écouter sur toutes les interfaces
+        cors: true,
+        hmr: {
+            host: 'localhost' // HMR accessible depuis le navigateur
+        },
+        watch: {
+            usePolling: true // Nécessaire pour Docker
+        }
     }
 })
