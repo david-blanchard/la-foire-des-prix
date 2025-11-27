@@ -30,7 +30,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 # Configure PHP-FPM
-RUN echo "pm.max_children = 5" >> /usr/local/etc/php-fpm.d/www.conf \
+RUN sed -i 's/listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.d/www.conf \
+    && echo "pm.max_children = 5" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.start_servers = 2" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.min_spare_servers = 1" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.max_spare_servers = 3" >> /usr/local/etc/php-fpm.d/www.conf
@@ -51,8 +52,18 @@ RUN apk add --no-cache \
 RUN apk add --no-cache \
     bash python3 nodejs-current npm
 
+RUN npm install -g npm@latest \
+    && npm install -g corepack \
+    && corepack prepare yarn@stable --activate
+
+# Copy entrypoint script
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 USER $USERNAME
 
 EXPOSE 9000
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 CMD ["php-fpm"]

@@ -1,0 +1,37 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.209.6/containers/php
+{
+	"name": "Devrez",
+	"dockerComposeFile": "../compose.yaml",
+	"workspaceFolder": "/var/www/html",
+	"service": "php",
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/zsh"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"hookyqr.beautify",
+		"xdebug.php-debug",
+		"bmewburn.vscode-intelephense-client",
+		"ms-azuretools.vscode-docker",
+		"mrmlnc.vscode-apache",
+		"GitHub.copilot-chat",
+		"ms-vscode.vscode-node-azure-pack",
+		"ms-azuretools.vscode-azurefunctions",
+		"ms-azuretools.vscode-azureresourcegroups",
+		"ms-azuretools.vscode-azure-github-copilot",
+		"ms-ossdata.vscode-pgsql",
+		"ephect-io.vscode-intelephect"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [8222],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
+
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "david"
+}

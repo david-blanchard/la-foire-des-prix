@@ -15,8 +15,25 @@ services:
     networks:
       - lfdp-network
     depends_on:
-      - pgsql
-      - memcached
+      pgsql:
+        condition: service_healthy
+      memcached:
+        condition: service_started
+    restart: unless-stopped
+
+  vite:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    command: ["yarn", "dev", "--host", "0.0.0.0"]
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "5173:5173"
+    networks:
+      - lfdp-network
+    restart: unless-stopped
 
   memcached:
     image: memcached:latest

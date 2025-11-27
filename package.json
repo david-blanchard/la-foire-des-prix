@@ -26,9 +26,10 @@
         "watch": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
-        "composer": "docker compose exec php composer $*",
-        "console": "docker compose exec php bin/console $*",
-        "test:watch": "docker compose exec php composer bin/phpunit --testsuite=unit --testdox --colors=always --stop-on-failure --no-coverage --process-isolation --parallel"
+        "composerd": "docker compose exec php composer $*",
+        "consoled": "docker compose exec php bin/console $*",
+        "testd:watch": "docker compose exec php composer bin/phpunit --testsuite=unit --testdox --colors=always --stop-on-failure --no-coverage --process-isolation --parallel",
+        "postinstall": "composer install && composer refresh && bin/console assets:install --symlink --relative && bin/console tailwind:build && vite build && vite"
     },
     "dependencies": {
         "acorn": "^8.14.1",
@@ -78,5 +79,6 @@
     },
     "devDependencies": {
         "vite-plugin-symfony": "^8.0.2"
-    }
+    },
+    "packageManager": "yarn@4.12.0"
 }
