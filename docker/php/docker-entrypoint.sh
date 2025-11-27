@@ -25,9 +25,42 @@ if [ -f "composer.json" ]; then
         echo "Composer dependencies already installed..."
     fi
 
-    # Run migrations
+    # Run migrations intelligently - macOS optimized
     echo "Running database migrations..."
-    su -s /bin/bash david -c "cd /var/www/html && composer refresh" || echo "Warning: composer refresh failed, continuing anyway..."    
+    
+    # Wait for database to be ready
+    echo "Waiting for database to be ready..."
+    MAX_RETRIES=30
+    RETRY_COUNT=0
+    until su -s /bin/bash david -c "cd /var/www/html && php bin/console dbal:run-sql 'SELECT 1' --no-interaction" > /dev/null 2>&1; do
+        RETRY_COUNT=$((RETRY_COUNT + 1))
+        if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
+            echo "Database not ready after $MAX_RETRIES attempts, continuing anyway..."
+            break
+        fi
+        echo "Waiting for database... ($RETRY_COUNT/$MAX_RETRIES)"
+        sleep 1
+    done
+    
+    # Check if database exists and has tables
+    DB_EXISTS=$(su -s /bin/bash david -c "cd /var/www/html && php bin/console doctrine:query:sql 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = current_database()' --no-interaction 2>/dev/null | tail -1" || echo "0")
+    
+    if [ "$DB_EXISTS" = "0" ] || [ -z "$DB_EXISTS" ]; then
+        echo "Database empty, running full setup..."
+        su -s /bin/bash david -c "cd /var/www/html && composer refresh" || echo "Warning: composer refresh failed, continuing anyway..."
+    else
+        echo "Database exists with $DB_EXISTS tables, running migrations only..."
+        su -s /bin/bash david -c "cd /var/www/html && php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration" || echo "Warning: migrations failed, continuing anyway..."
+        
+        # Load fixtures only if product table is empty
+        PRODUCT_COUNT=$(su -s /bin/bash david -c "cd /var/www/html && php bin/console dbal:run-sql 'SELECT COUNT(*) FROM product' --no-interaction 2>/dev/null | tail -1" || echo "0")
+        if [ "$PRODUCT_COUNT" = "0" ] || [ -z "$PRODUCT_COUNT" ]; then
+            echo "Loading fixtures (product table is empty)..."
+            su -s /bin/bash david -c "cd /var/www/html && php bin/console doctrine:fixtures:load --no-interaction --append" || echo "Warning: fixtures loading failed, continuing anyway..."
+        else
+            echo "Fixtures already loaded (product count: $PRODUCT_COUNT), skipping..."
+        fi
+    fi
 fi
 
 # Build Symfony assets
