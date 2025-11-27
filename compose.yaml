@@ -11,10 +11,11 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_SERVER_VERSION: ${POSTGRES_SERVER_VERSION}
     healthcheck:
-      test: ["CMD", "healthcheck.sh"]
-      timeout: 5s
+      test: ["CMD", "sh", "-c", "cd /var/www/html && healthcheck.sh"]
+      timeout: 10s
+      interval: 10s
       retries: 5
-      start_period: 60s
+      start_period: 120s
     volumes:
       - .:/var/www/html
     ports:
