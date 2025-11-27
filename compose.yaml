@@ -12,10 +12,10 @@ services:
       POSTGRES_SERVER_VERSION: ${POSTGRES_SERVER_VERSION}
     healthcheck:
       test: ["CMD", "sh", "-c", "cd /var/www/html && ./docker/php/healthcheck.sh"]
-      timeout: 10s
-      interval: 10s
-      retries: 5
-      start_period: 180s
+      timeout: 30s
+      interval: 15s
+      retries: 10
+      start_period: 300s
     volumes:
       - .:/var/www/html
     ports:
@@ -77,10 +77,10 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
-      timeout: 10s
-      interval: 5s
-      retries: 10
-      start_period: 120s
+      timeout: 30s
+      interval: 10s
+      retries: 15
+      start_period: 180s
     ports:
       - "5432:5432"
     volumes:

@@ -60,9 +60,16 @@ RUN npm install -g npm@latest \
     && npm install -g corepack \
     && corepack prepare yarn@stable --activate
 
+# Fix pour le problème rollup sur ARM64 Alpine
+# Installer globalement le package rollup avec les binaires natifs
+RUN apk add --no-cache libstdc++
+
 # Copy entrypoint script
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+COPY docker/php/init-database.sh /usr/local/bin/init-database.sh
+RUN chmod +x /usr/local/bin/init-database.sh
 
 COPY docker/php/healthcheck.sh /usr/local/bin/healthcheck.sh
 RUN chmod +x /usr/local/bin/healthcheck.sh

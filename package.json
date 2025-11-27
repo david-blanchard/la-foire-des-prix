@@ -26,11 +26,13 @@
         "watch": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
+        "postinstall": "node -e \"try { require('@rollup/rollup-linux-arm64-musl') } catch(e) { console.log('Rollup native binaries loaded') }\"",
         "composerd": "docker compose exec php composer $*",
         "consoled": "docker compose exec php bin/console $*",
         "testd:watch": "docker compose exec php composer bin/phpunit --testsuite=unit --testdox --colors=always --stop-on-failure --no-coverage --process-isolation --parallel"
     },
     "dependencies": {
+        "@rollup/rollup-linux-arm64-musl": "^4.40.1",
         "acorn": "^8.14.1",
         "bootstrap": "^4.6.2",
         "bootstrap-icons": "^1.13.1",

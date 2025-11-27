@@ -8,10 +8,12 @@ ENV POSTGRES_PASSWORD=demo
 # Fix pour macOS : définir explicitement PGDATA pour éviter les problèmes de permissions
 ENV PGDATA=/var/lib/postgresql/data/pgdata
 
-# PostgreSQL crée automatiquement la base de données et l'utilisateur via les variables d'environnement
-# On ajoute seulement les privilèges supplémentaires si nécessaire
-RUN mkdir -p /docker-entrypoint-initdb.d && \
-    echo "GRANT ALL PRIVILEGES ON SCHEMA public TO ${POSTGRES_USER};" > /docker-entrypoint-initdb.d/01_grant_privileges.sql && \
+# Créer le script d'initialisation qui utilisera les variables d'environnement réelles
+RUN mkdir -p /docker-entrypoint-initdb.d
+
+# Le script sera exécuté avec les variables d'environnement du runtime
+COPY docker/postgres/init.sh /docker-entrypoint-initdb.d/01_init.sh
+RUN chmod +x /docker-entrypoint-initdb.d/01_init.sh && \
     chown -R postgres:postgres /docker-entrypoint-initdb.d/
 
 # Créer le répertoire pgdata avec les bonnes permissions
