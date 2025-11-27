@@ -64,6 +64,9 @@ RUN npm install -g npm@latest \
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
+COPY docker/php/healthcheck.sh /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/healthcheck.sh
+
 # Don't switch to user here - we need root to start php-fpm
 # The entrypoint will handle user switching for other tasks
 

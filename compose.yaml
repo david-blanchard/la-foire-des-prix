@@ -10,8 +10,15 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_SERVER_VERSION: ${POSTGRES_SERVER_VERSION}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
     volumes:
       - .:/var/www/html
+    ports:
+      - ":9000"
     networks:
       - lfdp-network
     depends_on:
@@ -39,7 +46,7 @@ services:
     image: memcached:latest
     restart: always
     ports:
-      - "11211:11211"
+      - ":11211"
     networks:
       - lfdp-network
 
@@ -53,7 +60,9 @@ services:
     networks:
       - lfdp-network
     depends_on:
-      - pgsql
+      php:
+        condition: service_healthy
+    restart: unless-stopped
 
   pgsql:
     build:
