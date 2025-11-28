@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 # Install system dependencies and PHP extensions
 RUN apk add --no-cache --virtual .build-deps \
@@ -12,19 +12,28 @@ RUN apk add --no-cache --virtual .build-deps \
     g++ \
     make \
     zlib-dev \
+    linux-headers \
     && apk add --no-cache \
     libmemcached \
     cyrus-sasl-dev \
     libpq \
     libzip \
-    && pecl install memcached \
-    && docker-php-ext-enable memcached \
+    && pecl install memcached apcu xdebug \
+    && docker-php-ext-enable memcached apcu xdebug \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql pdo_mysql mysqli zip bcmath \
     && apk del .build-deps
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Configure Xdebug
+RUN echo "xdebug.mode=debug,develop,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.log_level=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Set working directory
 WORKDIR /var/www/html
