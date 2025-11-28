@@ -31,24 +31,17 @@ echo "📦 Ensuring database exists..."
 php bin/console doctrine:database:create --if-not-exists || echo "Database already exists"
 
 # Check if database already has data (products table exists and has data)
-# The output format is a table, we need to extract just the number
-# Example output:
-#  -------
-#   count
-#  -------
-#   3
-#  -------
+# First check if the table exists using information_schema to avoid errors
+echo "📊 Checking if products table exists..."
+TABLE_EXISTS=$(php bin/console dbal:run-sql "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'products'" --no-interaction 2>/dev/null | grep -oE "[0-9]+" | head -1 || echo "0")
 
-# Try to get product count (will fail if table doesn't exist)
-PRODUCT_OUTPUT=$(php bin/console dbal:run-sql 'SELECT COUNT(*) FROM products' --no-interaction 2>&1)
-PRODUCT_EXIT_CODE=$?
-
-if [ $PRODUCT_EXIT_CODE -ne 0 ]; then
-    echo "📊 Products table doesn't exist yet (exit code: $PRODUCT_EXIT_CODE) - proceeding with full initialization..."
+if [ "$TABLE_EXISTS" = "0" ]; then
+    echo "📊 Products table doesn't exist yet - proceeding with full initialization..."
     PRODUCT_COUNT=0
 else
-    # Extract the number from the table output (2 lines after "count", then remove spaces)
-    PRODUCT_COUNT=$(echo "$PRODUCT_OUTPUT" | grep -A2 "count" | tail -1 | tr -d ' ' || echo "0")
+    # Table exists, now get the count
+    echo "📊 Products table exists, checking row count..."
+    PRODUCT_COUNT=$(php bin/console dbal:run-sql 'SELECT COUNT(*) FROM products' --no-interaction 2>/dev/null | grep -oE "[0-9]+" | head -1 || echo "0")
     echo "📊 Current product count: $PRODUCT_COUNT"
 fi
 
