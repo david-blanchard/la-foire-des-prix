@@ -30,6 +30,42 @@ echo "✅ Database is accessible!"
 echo "📦 Ensuring database exists..."
 php bin/console doctrine:database:create --if-not-exists || echo "Database already exists"
 
+# Check if database already has data (products table exists and has data)
+# The output format is a table, we need to extract just the number
+# Example output:
+#  -------
+#   count
+#  -------
+#   3
+#  -------
+
+# Try to get product count (will fail if table doesn't exist)
+PRODUCT_OUTPUT=$(php bin/console dbal:run-sql 'SELECT COUNT(*) FROM products' --no-interaction 2>&1)
+PRODUCT_EXIT_CODE=$?
+
+if [ $PRODUCT_EXIT_CODE -ne 0 ]; then
+    echo "📊 Products table doesn't exist yet (exit code: $PRODUCT_EXIT_CODE) - proceeding with full initialization..."
+    PRODUCT_COUNT=0
+else
+    # Extract the number from the table output (2 lines after "count", then remove spaces)
+    PRODUCT_COUNT=$(echo "$PRODUCT_OUTPUT" | grep -A2 "count" | tail -1 | tr -d ' ' || echo "0")
+    echo "📊 Current product count: $PRODUCT_COUNT"
+fi
+
+# If count is greater than 0, database is already initialized
+if [ ! -z "$PRODUCT_COUNT" ] && [ "$PRODUCT_COUNT" -gt 0 ] 2>/dev/null; then
+    echo "✅ Database already initialized with $PRODUCT_COUNT products"
+    echo "⏭️  Skipping migrations and fixtures (database already has data)"
+
+    # Create flag file immediately since database is ready
+    echo "Database initialization complete" > /tmp/.db-ready
+    echo "✅ Database is ready!"
+    exit 0
+fi
+
+# If we reach here, database is empty - proceed with initialization
+echo "📊 Database is empty (count: $PRODUCT_COUNT) - proceeding with full initialization..."
+
 # Check if tables exist
 TABLE_COUNT=$(php bin/console doctrine:query:sql 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = current_database()' --no-interaction 2>/dev/null | tail -1 || echo "0")
 echo "📊 Found $TABLE_COUNT tables in database"
@@ -43,23 +79,16 @@ else
     exit 1
 fi
 
-# Check if products table has data
-PRODUCT_COUNT=$(php bin/console dbal:run-sql 'SELECT COUNT(*) FROM products' --no-interaction 2>/dev/null | tail -1 || echo "0")
-echo "📊 Found $PRODUCT_COUNT products in database"
-
-if [ "$PRODUCT_COUNT" = "0" ] || [ -z "$PRODUCT_COUNT" ]; then
-    echo "🌱 Loading fixtures (products table is empty)..."
-    if php bin/console doctrine:fixtures:load --no-interaction; then
-        echo "✅ Fixtures loaded successfully"
-        # Verify fixtures were actually loaded
-        NEW_PRODUCT_COUNT=$(php bin/console dbal:run-sql 'SELECT COUNT(*) FROM products' --no-interaction 2>/dev/null | tail -1 || echo "0")
-        echo "📊 After loading fixtures: $NEW_PRODUCT_COUNT products"
-    else
-        echo "❌ ERROR: Fixtures loading failed!"
-        exit 1
-    fi
+# Load fixtures
+echo "🌱 Loading fixtures..."
+if php bin/console doctrine:fixtures:load --no-interaction; then
+    echo "✅ Fixtures loaded successfully"
+    # Verify fixtures were actually loaded
+    NEW_PRODUCT_COUNT=$(php bin/console dbal:run-sql 'SELECT COUNT(*) FROM products' --no-interaction 2>/dev/null | tail -1 || echo "0")
+    echo "📊 After loading fixtures: $NEW_PRODUCT_COUNT products"
 else
-    echo "✅ Fixtures already loaded (product count: $PRODUCT_COUNT)"
+    echo "❌ ERROR: Fixtures loading failed!"
+    exit 1
 fi
 
 # Create flag file to indicate database is ready
