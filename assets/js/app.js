@@ -1,4 +1,4 @@
-// import "./styles/app.css";
+import "../styles/app.css";
 import * as bootstrap from "bootstrap";
 import Cart from "./lib/cart.js";
 import ProductPage from "./lib/product-page.js";

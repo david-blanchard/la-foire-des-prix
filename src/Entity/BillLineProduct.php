@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
 use App\Repository\BillRepository;
@@ -60,7 +61,7 @@ class BillLineProduct
         return $this;
     }
 
-    public function getBill(): Bill
+    public function getBill(): ?Bill
     {
         return $this->bill;
     }

@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\Collection;
-
 interface ProductInterface extends CategoryInterface
 {
     public function getId(): ?int;
@@ -17,5 +15,4 @@ interface ProductInterface extends CategoryInterface
     public function getPrice(): float;
 
     public function getBrand(): ?Brand;
-
 }

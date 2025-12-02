@@ -13,7 +13,8 @@ class CampaignProductsRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-    ) {
+    )
+    {
         parent::__construct($registry, CampaignProduct::class);
     }
 
@@ -41,19 +42,36 @@ class CampaignProductsRepository extends ServiceEntityRepository
             return 0;
         }
 
-         $today = new \DateTime();
-         $qb = $this->createQueryBuilder('cp');
+        $today = new \DateTime();
+        $qb = $this->createQueryBuilder('cp');
 
-         $qb->join('cp.campaign', 'c')
-             ->where('cp.product = :productId')
-             ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
-             ->setParameter('productId', $productId)
-             ->setParameter('today', $today)
-             ->select('c.discount as discount');
+        $qb->join('cp.campaign', 'c')
+            ->where('cp.product = :productId')
+            ->andWhere($qb->expr()->between(':today', 'c.startsAt', 'c.endsAt'))
+            ->setParameter('productId', $productId)
+            ->setParameter('today', $today)
+            ->select('c.discount as discount');
 
-          $result = $qb->getQuery()->getOneOrNullResult();
+        $result = $qb->getQuery()->getOneOrNullResult();
 
-         return $result['discount'] ?? 0;
+        return $result['discount'] ?? 0;
+    }
 
+    /**
+     * @return Product[]
+     */
+    public function findProductsByCampaignId(int $campaignId): array
+    {
+        $campaignProducts = $this->createQueryBuilder('cp')
+            ->join('cp.product', 'p')
+            ->where('cp.campaign = :campaignId')
+            ->setParameter('campaignId', $campaignId)
+            ->getQuery()
+            ->getResult();
+
+        // Extraire les produits des objets CampaignProduct
+        return array_map(function ($campaignProduct) {
+            return $campaignProduct->getProduct();
+        }, $campaignProducts);
     }
 }

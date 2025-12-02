@@ -15,8 +15,18 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
+    front_api:
+      pattern: ^/api/front
+      stateless: true
+      security: false
+
+    api_cart_public:
+      pattern: ^/api/cart/(retrieve|store)
+      stateless: true
+      security: false
+
     login:
-      pattern:  ^/api/login
+      pattern: ^/api/login
       stateless: true
       json_login:
         check_path: /api/login_check
@@ -25,11 +35,17 @@ security:
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
+    csrf_token:
+      pattern: ^/csrf_token
+      stateless: true
+
     api:
       pattern: ^/api
       stateless: true
-      provider: app_user_provider
       jwt: ~
+      refresh_jwt:
+        check_path: /api/token/refresh
+      entry_point: jwt
 
     main:
       lazy: true
@@ -40,8 +56,10 @@ security:
         enable_csrf: true
         # where to redirect after login
         success_handler: App\Security\LoginSuccessHandler
+      jwt: ~
+      entry_point: form_login
       logout:
-          path: app_logout
+        path: app_logout
         # where to redirect after logout
         # target: app_any_route
 
@@ -50,18 +68,28 @@ security:
 
       # https://symfony.com/doc/current/security/impersonating_user.html
       # switch_user: true
-#    admin:
-#      pattern: ^/admin
-#      provider: app_user_provider
-#      custom_authenticators:
-#        - App\Security\LoginFormAuthenticator
-#      logout:
-#          path: /logout
+  #    admin:
+  #      pattern: ^/admin
+  #      provider: app_user_provider
+  #      custom_authenticators:
+  #        - App\Security\LoginFormAuthenticator
+  #      logout:
+  #          path: /logout
 
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
+    - { path: ^/api/front, roles: PUBLIC_ACCESS }
+    - { path: ^/api/cart/retrieve, roles: PUBLIC_ACCESS }
+    - { path: ^/api/cart/store, roles: PUBLIC_ACCESS }
+    - { path: ^/api/product/retrieve, roles: PUBLIC_ACCESS }
+    - { path: ^/api/doc, roles: PUBLIC_ACCESS }
+    - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+    - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
+    - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/, roles: PUBLIC_ACCESS }
+    - { path: ^/csrf_token, roles: PUBLIC_ACCESS }
     - { path: ^/login, roles: PUBLIC_ACCESS }
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/api/login, roles: PUBLIC_ACCESS }

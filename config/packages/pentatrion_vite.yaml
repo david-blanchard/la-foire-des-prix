@@ -1,0 +1,7 @@
+pentatrion_vite:
+    # Désactiver le mode dev server (on utilise les assets buildés)
+    # Le serveur Vite tourne en parallèle pour le HMR mais Symfony
+    # utilise les fichiers buildés dans public/build
+    
+    # Répertoire de build (relatif au répertoire public/)
+    build_directory: 'build'

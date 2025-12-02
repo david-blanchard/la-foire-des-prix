@@ -5,20 +5,24 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\Classifier;
 use App\Entity\Traits\Identifier;
+use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     normalizationContext: [
-        'groups' => ['product.read'],
+        'groups' => ['product.read', 'product-image.read'],
     ],
     denormalizationContext: [
-        'groups' => ['product.write'],
+        'groups' => ['product.write', 'product-image.write'],
     ],
     mercure: true
 )]
-#[ORM\Entity()]
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\Table(name: 'products')]
 class Product implements ProductInterface
 {
@@ -34,7 +38,6 @@ class Product implements ProductInterface
     #[Groups(['product.read', 'product.write'])]
     protected ?string $description = null;
 
-
     #[ORM\Column(length: 1024, nullable: true)]
     #[Groups(['product.read', 'product.write'])]
     protected ?string $moreInfo = null;
@@ -47,6 +50,16 @@ class Product implements ProductInterface
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['product.read', 'product.write'])]
     protected ?Brand $brand = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, cascade: ['persist', 'remove'])]
+    #[Groups(['product.read', 'product.write'])]
+    #[MaxDepth(3)]
+    protected Collection $productImages;
+
+    public function __construct()
+    {
+        $this->productImages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -97,6 +110,35 @@ class Product implements ProductInterface
     public function setBrand(?Brand $brand): static
     {
         $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductImage>
+     */
+    public function getProductImages(): Collection
+    {
+        return $this->productImages;
+    }
+
+    public function addProductImage(ProductImage $productImage): static
+    {
+        if (!$this->productImages->contains($productImage)) {
+            $this->productImages[] = $productImage;
+            $productImage->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductImage(ProductImage $productImage): static
+    {
+        if ($this->productImages->removeElement($productImage)) {
+            if ($productImage->getProduct() === $this) {
+                $productImage->setProduct(null);
+            }
+        }
 
         return $this;
     }

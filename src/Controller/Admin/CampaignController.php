@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Campaign;
-use App\Form\CampaignType;
 use App\Repository\CampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +21,9 @@ final class CampaignController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws \DateMalformedStringException
+     */
     #[Route('/new', name: 'admin_campaign_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -29,8 +31,8 @@ final class CampaignController extends AbstractController
         if ($request->isMethod('POST')) {
             $campaign = new Campaign();
             $campaign->setName((string) $request->request->get('name'));
-            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('starts_at')))));
-            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('ends_at')))));
+            $campaign->setStartsAt(new \DateTimeImmutable(date('Y-m-d H:i:s', (int) strtotime((string) $request->request->get('starts_at')))));
+            $campaign->setEndsAt(new \DateTimeImmutable(date('Y-m-d H:i:s', (int) strtotime((string) $request->request->get('ends_at')))));
             $campaign->setDiscount((int) $request->request->get('discount'));
 
             $entityManager->persist($campaign);
@@ -53,12 +55,12 @@ final class CampaignController extends AbstractController
     public function edit(
         Request $request,
         Campaign $campaign,
-        EntityManagerInterface $entityManager
-    ): Response  {
+        EntityManagerInterface $entityManager,
+    ): Response {
         if ($request->isMethod('POST')) {
             $campaign->setName((string) $request->request->get('name'));
-            $campaign->setStartsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('starts_at')))));
-            $campaign->setEndsAt(new \DateTimeImmutable(date("Y-m-d H:i:s", strtotime($request->request->get('ends_at')))));
+            $campaign->setStartsAt(new \DateTimeImmutable(date('Y-m-d H:i:s', (int) strtotime((string) $request->request->get('starts_at')))));
+            $campaign->setEndsAt(new \DateTimeImmutable(date('Y-m-d H:i:s', (int) strtotime((string) $request->request->get('ends_at')))));
             $campaign->setDiscount((int) $request->request->get('discount'));
 
             $entityManager->flush();

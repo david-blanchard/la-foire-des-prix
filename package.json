@@ -26,11 +26,16 @@
         "watch": "vite dev",
         "build": "vite build",
         "preview": "vite preview",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "postinstall": "node -e \"try { require('@rollup/rollup-linux-arm64-musl') } catch(e) { console.log('Rollup native binaries loaded') }\"",
+        "composerd": "docker compose exec php composer $*",
+        "consoled": "docker compose exec php bin/console $*",
+        "testd:watch": "docker compose exec php composer bin/phpunit --testsuite=unit --testdox --colors=always --stop-on-failure --no-coverage --process-isolation --parallel"
     },
     "dependencies": {
+        "@rollup/rollup-linux-arm64-musl": "^4.40.1",
         "acorn": "^8.14.1",
         "bootstrap": "^4.6.2",
+        "bootstrap-icons": "^1.13.1",
         "braces": "^3.0.3",
         "buffer-from": "^1.1.2",
         "debug": "^4.4.0",
@@ -39,7 +44,6 @@
         "fast-glob": "^3.3.3",
         "fastq": "^1.19.1",
         "fill-range": "^7.1.1",
-        "font-awesome": "^4.7.0",
         "glob-parent": "^5.1.2",
         "immutable": "^5.1.1",
         "is-extglob": "^2.1.1",
@@ -54,6 +58,7 @@
         "node-addon-api": "^7.1.1",
         "picocolors": "^1.1.1",
         "picomatch": "^2.3.1",
+        "popper.js": "^1.16.1",
         "postcss": "^8.5.3",
         "queue-microtask": "^1.2.3",
         "reusify": "^1.1.0",
@@ -75,5 +80,6 @@
     },
     "devDependencies": {
         "vite-plugin-symfony": "^8.0.2"
-    }
+    },
+    "packageManager": "yarn@4.12.0"
 }

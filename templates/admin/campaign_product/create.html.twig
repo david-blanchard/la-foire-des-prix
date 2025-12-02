@@ -1,0 +1,68 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% block title %}
+    Association Campagne/Produit
+{% endblock %}
+
+{% block children %}
+
+    <div class="container">
+        <h2 class="text-center my-5">
+            Ajouter un produit à une campagne
+        </h2>
+        <table class="table table-striped table-sm">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Campagne</th>
+                <th scope="col">
+                    Produits associés
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in assocProducts %}
+                <tr>
+                    <th>
+                    <span class="btn btn-outline-warning">
+                        {{ campaign.id }}
+                    </span>
+                    </th>
+                    <td>{{ campaign.name }}</td>
+                    <td>{{ product.name }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4">
+                    <form method="POST" action="{{ path('admin_campaign_product_create', { 'id': campaign.id } ) }}">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('campaign_products') }}">
+                        <input type="hidden" name="campaign" value="{{ campaign.id }}"/>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Produit</label>
+                                <label>
+                                    <select name="product" class="form-control">
+                                        {% for product in products %}
+                                            <option value="{{ product.id }}">
+                                                {{ product.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-center mb-5">
+                                <button type="submit" class="btn btn-outline-primary">Valider</button>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="{{ path('admin_campaign_product_index') }}">back to list</a>
+    </div>
+
+
+{% endblock %}

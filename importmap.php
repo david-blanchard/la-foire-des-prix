@@ -17,7 +17,7 @@ return [
         'entrypoint' => true,
     ],
     'style' => [
-        'path' => './assets/css/app.cc',
+        'path' => './assets/styles/app.css',
         'entrypoint' => true,
     ],
 ];

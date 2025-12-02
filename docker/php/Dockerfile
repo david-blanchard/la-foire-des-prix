@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 # Install system dependencies and PHP extensions
 RUN apk add --no-cache --virtual .build-deps \
@@ -12,13 +12,14 @@ RUN apk add --no-cache --virtual .build-deps \
     g++ \
     make \
     zlib-dev \
+    linux-headers \
     && apk add --no-cache \
     libmemcached \
     cyrus-sasl-dev \
     libpq \
     libzip \
-    && pecl install memcached \
-    && docker-php-ext-enable memcached \
+    && pecl install memcached apcu xdebug \
+    && docker-php-ext-enable memcached apcu xdebug \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql pdo_mysql mysqli zip bcmath \
     && apk del .build-deps
@@ -26,11 +27,20 @@ RUN apk add --no-cache --virtual .build-deps \
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Configure Xdebug
+RUN echo "xdebug.mode=debug,develop,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.log_level=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 # Set working directory
 WORKDIR /var/www/html
 
-# Configure PHP-FPM
-RUN echo "pm.max_children = 5" >> /usr/local/etc/php-fpm.d/www.conf \
+# Configure PHP-FPM to listen on TCP instead of Unix socket
+RUN sed -i 's/listen = 127.0.0.1:9000/listen = 9000/' /usr/local/etc/php-fpm.d/www.conf \
+    && echo "pm.max_children = 5" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.start_servers = 2" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.min_spare_servers = 1" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "pm.max_spare_servers = 3" >> /usr/local/etc/php-fpm.d/www.conf
@@ -48,11 +58,36 @@ RUN apk add --no-cache \
     && adduser $USERNAME www-data \
     && rm -rf /var/cache/apk/*
 
-RUN apk add --no-cache \
-    bash python3 nodejs-current npm
+# Configure PHP-FPM to run as the same user
+RUN sed -i 's/user = www-data/user = david/' /usr/local/etc/php-fpm.d/www.conf \
+    && sed -i 's/group = www-data/group = david/' /usr/local/etc/php-fpm.d/www.conf
 
-USER $USERNAME
+RUN apk add --no-cache \
+    bash python3 nodejs-current npm git
+
+RUN npm install -g npm@latest \
+    && npm install -g corepack \
+    && corepack prepare yarn@stable --activate
+
+# Fix pour le problème rollup sur ARM64 Alpine
+# Installer globalement le package rollup avec les binaires natifs
+RUN apk add --no-cache libstdc++
+
+# Copy entrypoint script
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+COPY docker/php/init-database.sh /usr/local/bin/init-database.sh
+RUN chmod +x /usr/local/bin/init-database.sh
+
+COPY docker/php/healthcheck.sh /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/healthcheck.sh
+
+# Don't switch to user here - we need root to start php-fpm
+# The entrypoint will handle user switching for other tasks
 
 EXPOSE 9000
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
 CMD ["php-fpm"]

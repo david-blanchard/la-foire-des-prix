@@ -3,12 +3,22 @@
 namespace App\Controller\Auth;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    #[Route('/csrf_token', name: 'api_get_csrf_token', methods: ['GET'])]
+    public function getCsrf(CsrfTokenManagerInterface $csrfTokenManager): JsonResponse
+    {
+        $token = $csrfTokenManager->getToken('api')->getValue();
+
+        return new JsonResponse(['csrfToken' => $token]);
+    }
+
     #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {

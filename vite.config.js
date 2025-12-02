@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import symfonyPlugin from 'vite-plugin-symfony'
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import {viteStaticCopy} from 'vite-plugin-static-copy';
 
 export default defineConfig({
     plugins: [
@@ -10,7 +10,7 @@ export default defineConfig({
                 {
                     src: 'assets/images/*',
                     dest: 'images'  // Cela va copier dans /dist/images
-                }
+                },
             ]
         })
     ],
@@ -25,13 +25,19 @@ export default defineConfig({
             input: {
                 app: './assets/js/app.js',
                 style: './assets/styles/app.css',
-
             }
         }
     },
     server: {
         port: 5173,
         strictPort: true,
-        cors: true
+        host: true, // Écouter sur toutes les interfaces
+        cors: true,
+        hmr: {
+            host: 'localhost' // HMR accessible depuis le navigateur
+        },
+        watch: {
+            usePolling: true // Nécessaire pour Docker
+        }
     }
 })

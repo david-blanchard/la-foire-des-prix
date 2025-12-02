@@ -1,26 +1,21 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -e
 
-function accept_connections() {
-  return "$(pg_isready -U root -d postgres | grep 'accepting connections' )"
-}
+# Ce script s'exécute avec les variables d'environnement du runtime
+# PostgreSQL crée automatiquement la base et l'utilisateur, on donne juste les privilèges
 
-function is_ready() {
-    IS_READY=$(accept_connections);
-    while [ -z "$IS_READY" ];
-    do
-        IS_READY=$(accept_connections)
-    done
-}
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    -- Donner tous les privilèges sur le schéma public
+    GRANT ALL PRIVILEGES ON SCHEMA public TO $POSTGRES_USER;
 
-is_ready;
+    -- Donner les privilèges sur toutes les tables (pour celles qui existent déjà)
+    GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $POSTGRES_USER;
+    GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO $POSTGRES_USER;
 
-pg_isready -U root -d postgres;
+    -- Définir les privilèges par défaut pour les futures tables
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO $POSTGRES_USER;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO $POSTGRES_USER;
+EOSQL
 
-echo "psql -U root -d postgres -c 'create database $POSTGRES_DB';"
-psql -U root -d postgres -c "create database $POSTGRES_DB";
+echo "PostgreSQL initialization completed for database: $POSTGRES_DB"
 
-echo "psql -U root -d postgres -c \"create user $POSTGRES_USER with encrypted password '$POSTGRES_PASSWORD'\";"
-psql -U root -d postgres -c "create user $POSTGRES_USER with encrypted password '$POSTGRES_PASSWORD'";
-
-echo "psql -U root -d postgres -c 'grant all privileges on database $POSTGRES_DB to $POSTGRES_USER';"
-psql -U root -d postgres -c "grant all privileges on database $POSTGRES_DB to $POSTGRES_USER";

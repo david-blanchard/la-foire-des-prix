@@ -30,7 +30,7 @@ class CampaignProductsFixture extends Fixture implements DependentFixtureInterfa
             $campaignProduct->setCampaign($campaign);
             $campaignProduct->setProduct($product);
 
-//            $campaign->addCampaignProduct($campaignProduct);
+            //            $campaign->addCampaignProduct($campaignProduct);
 
             $manager->persist($campaignProduct);
         }

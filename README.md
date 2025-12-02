@@ -6,7 +6,7 @@
 
 ### 1.1 - Pré-requis
 
-Vous avez un serveur de base de données **MySQL** fonctionnel et accessible sur localhost.
+Vous avez un serveur de base de données **Postgres** fonctionnel et accessible sur localhost.
 
 Vous avez **PHP** en version **8.3** minimum ainsi que **Composer**.
 
@@ -35,7 +35,23 @@ git clone https://github.com/david-blanchard/la-foire-des-prix.git
 Installez les dépendances :
 
 ```zsh
-composer u
+composer install
+```
+
+### 1.3 - Configuration de JWT
+
+Créez la clé de signature JWT :
+
+```zsh
+php bin/console lexik:jwt:generate-keypair
+```
+
+ou 
+
+```zsh
+mkdir config/jwt
+openssl genrsa -out config/jwt/private.pem -aes256 4096 
+openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 ```
 
 ## 2 - Phase de test
@@ -43,7 +59,7 @@ composer u
 ### 2.1 - Migration des données
 
 
-Dans le fichier .env.testing, modifiez les accès **MySQL** pour refléter vos paramètres de connexion afin que les migrations en base s'effectuent sans problème.
+Dans le fichier .env.testing, modifiez les accès **Postgres** pour refléter vos paramètres de connexion afin que les migrations en base s'effectuent sans problème.
 
 > `DB_USERNAME=`**root**
 
@@ -216,5 +232,3 @@ La suppression de l'association d'une image à un produit n'a pas été impléme
 La modification et la suppression d'une image n'ont pas été implémentées.
 
 La modification et la suppression d'une marque n'ont pas été implémentées.
-
-La gestion complète des campagnes de promos n'est pas implémentée.
