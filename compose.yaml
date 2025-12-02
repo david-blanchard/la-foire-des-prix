@@ -36,7 +36,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html:cached
-      - /var/www/html/node_modules
+      - vite_node_modules:/var/www/html/node_modules:delegated
     ports:
       - "5173:5173"
     environment:
@@ -93,6 +93,7 @@ services:
 
 volumes:
   pgsql_data:
+  vite_node_modules:
 
 networks:
     lfdp-network:

@@ -1,6 +1,19 @@
 #!/bin/sh
 set -e
 
+# NOTE:
+# - During image build we run `yarn install` which installs dependencies into
+#   the image's /var/www/html/node_modules. When using a host bind-mount for
+#   the project directory (."/:/var/www/html) this directory would be hidden
+#   and the installed node_modules lost at container start. To avoid that we
+#   mount a named volume on /var/www/html/node_modules in docker-compose so
+#   the modules installed in the image remain available at runtime.
+#
+# - This script runs `yarn build` (which calls the local `vite` binary)
+#   and then starts the vite dev server (`yarn dev`). Ensure `yarn install`
+#   has run during image build or run `docker compose run --rm vite yarn install`
+#   if you rebuild volumes manually.
+
 echo "Building Vite assets..."
 yarn build
 
