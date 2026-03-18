@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Brand;
-use App\Entity\Product;
+use App\Entity\Product\ClothProduct;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -47,7 +47,7 @@ class ProductsFixture extends Fixture implements DependentFixtureInterface
         ];
 
         foreach ($products as $key => $data) {
-            $product = new Product();
+            $product = new ClothProduct();
             $product->setName($data['name']);
             $product->setDescription($data['description']);
             $product->setMoreInfo($data['more_infos']);

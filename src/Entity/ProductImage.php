@@ -20,6 +20,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 #[ORM\Entity(repositoryClass: ProductImageRepository::class)]
 #[ORM\Table(name: 'product_images')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'dtype', type: 'string')]
+#[ORM\DiscriminatorMap(['product_image' => ProductImage::class, 'cloth_product_image' => 'App\Entity\Image\ClothProductImage'])]
 class ProductImage
 {
     use Identifier;

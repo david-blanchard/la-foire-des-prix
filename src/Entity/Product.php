@@ -24,6 +24,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\Table(name: 'products')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'dtype', type: 'string')]
+#[ORM\DiscriminatorMap(['product' => Product::class, 'cloth_product' => 'App\Entity\Product\ClothProduct'])]
 class Product implements ProductInterface
 {
     use Identifier;
